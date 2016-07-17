@@ -3,9 +3,14 @@ if RUBY_ENGINE == 'rbx'
   CodeClimate::TestReporter.start
 end
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-
 require 'pathname'
+
+module DryStructSpec
+  ROOT = Pathname.new(__dir__).parent.expand_path.freeze
+end
+
+$LOAD_PATH.unshift DryStructSpec::ROOT.join('lib').to_s
+
 require 'dry-struct'
 
 begin
