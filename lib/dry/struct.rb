@@ -2,6 +2,7 @@ require 'dry-types'
 
 require 'dry/struct/version'
 require 'dry/struct/errors'
+require 'dry/struct/symbolize_keys'
 require 'dry/struct/class_interface'
 require 'dry/struct/hashify'
 require 'dry/struct/value'

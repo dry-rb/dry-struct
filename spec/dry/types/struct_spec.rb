@@ -46,6 +46,21 @@ RSpec.describe Dry::Struct do
       )
     end
 
+    it 'accepts hashes with stringified keys' do
+      address = Test::Address.new('city' => 'NYC', 'zipcode' => '312')
+      user = user_type['name' => 'Jane', 'age' => 21, 'address' => address]
+
+      expect(user.address).to be(address)
+    end
+
+    it 'accepts any value that support #to_hash' do
+      address = double to_hash: { 'city' => 'NYC', 'zipcode' => '312' }
+      user = user_type[name: 'Jane', age: 21, address: address]
+
+      expect(user.address)
+        .to eq(Test::Address.new('city' => 'NYC', 'zipcode' => '312'))
+    end
+
     it 'passes through values when they are structs already' do
       address = Test::Address.new(city: 'NYC', zipcode: '312')
       user = user_type[name: 'Jane', age: 21, address: address]
