@@ -100,6 +100,10 @@ module Dry
       def valid?(value)
         self === value
       end
+
+      def constrained?
+        false
+      end
     end
   end
 end
