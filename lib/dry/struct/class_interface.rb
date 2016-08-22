@@ -11,9 +11,14 @@ module Dry
 
       protected :constructor=, :equalizer=, :constructor_type=
 
+      def self.extended(base)
+        base.instance_variable_set(:@schema, {})
+      end
+
       def inherited(klass)
         super
 
+        klass.instance_variable_set(:@schema, {})
         klass.equalizer = Equalizer.new(*schema.keys)
         klass.constructor_type = constructor_type
         klass.send(:include, klass.equalizer)

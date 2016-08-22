@@ -10,6 +10,7 @@ module DryStructSpec
 end
 
 $LOAD_PATH.unshift DryStructSpec::ROOT.join('lib').to_s
+$VERBOSE = true
 
 require 'dry-struct'
 

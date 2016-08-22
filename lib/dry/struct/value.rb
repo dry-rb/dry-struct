@@ -1,7 +1,5 @@
 require 'ice_nine'
 
-require 'dry/struct'
-
 module Dry
   class Struct
     class Value < self
