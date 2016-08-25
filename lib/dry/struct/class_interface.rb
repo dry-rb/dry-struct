@@ -1,3 +1,5 @@
+require 'dry/struct/errors'
+
 module Dry
   class Struct
     module ClassInterface
@@ -52,7 +54,7 @@ module Dry
       def check_schema_duplication(new_schema)
         shared_keys = new_schema.keys & schema.keys
 
-        fail Types::RepeatedAttributeError, shared_keys.first if shared_keys.any?
+        raise RepeatedAttributeError, shared_keys.first if shared_keys.any?
       end
       private :check_schema_duplication
 

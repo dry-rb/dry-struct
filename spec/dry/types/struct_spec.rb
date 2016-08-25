@@ -111,7 +111,7 @@ RSpec.describe Dry::Struct do
           attribute :bar, 'strict.string'
         end
       }.to raise_error(
-        Dry::Types::RepeatedAttributeError,
+        Dry::Struct::RepeatedAttributeError,
         'Attribute :bar has already been defined'
       )
     end
