@@ -1,4 +1,4 @@
-if RUBY_ENGINE == 'rbx'
+if RUBY_ENGINE == 'mri' && RUBY_VERSION >= '2.3.1'
   require 'codeclimate-test-reporter'
   CodeClimate::TestReporter.start
 end

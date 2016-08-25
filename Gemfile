@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :test do
-  gem 'codeclimate-test-reporter', platform: :rbx, require: false
+  gem 'codeclimate-test-reporter', platform: :mri, require: false
 end
 
 group :tools do
