@@ -1,8 +1,10 @@
 # coding: utf-8
 
+require_relative 'lib/dry/struct/version'
+
 Gem::Specification.new do |spec|
   spec.name          = 'dry-struct'
-  spec.version       = '0.0.1'
+  spec.version       = Dry::Struct::VERSION
   spec.authors       = ['Piotr Solnica']
   spec.email         = ['piotr.solnica@gmail.com']
   spec.license       = 'MIT'
