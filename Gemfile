@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'dry-types', github: 'dry-rb/dry-types', branch: 'master'
+
 group :test do
   gem 'codeclimate-test-reporter', platform: :mri, require: false
 end
