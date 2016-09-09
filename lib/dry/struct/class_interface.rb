@@ -77,7 +77,7 @@ module Dry
         else
           super(constructor[attributes])
         end
-      rescue Types::SchemaError, Types::SchemaKeyError => error
+      rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
         raise Struct::Error, "[#{self}.new] #{error}"
       end
       alias_method :call, :new
@@ -94,6 +94,18 @@ module Dry
       rescue Struct::Error => e
         failure = Types::Result::Failure.new(input, e.message)
         block_given? ? yield(failure) : failure
+      end
+
+      def success(*args)
+        result(Types::Result::Success, *args)
+      end
+
+      def failure(*args)
+        result(Types::Result::Failure, *args)
+      end
+
+      def result(klass, *args)
+        klass.new(*args)
       end
 
       def maybe?

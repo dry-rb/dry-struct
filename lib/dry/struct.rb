@@ -10,7 +10,7 @@ module Dry
   class Struct
     extend ClassInterface
 
-    constructor_type(:strict)
+    constructor_type(:permissive)
 
     def initialize(attributes)
       attributes.each { |key, value| instance_variable_set("@#{key}", value) }
