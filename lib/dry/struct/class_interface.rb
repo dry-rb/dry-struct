@@ -123,6 +123,10 @@ module Dry
       def constrained?
         false
       end
+
+      def primitive
+        self
+      end
     end
   end
 end
