@@ -42,7 +42,7 @@ RSpec.describe Dry::Struct do
         user_type[name: :Jane, age: '21', address: nil]
       }.to raise_error(
         Dry::Struct::Error,
-        '[Test::User.new] nil (NilClass) has invalid type for :address'
+        '[Test::Address.new] :city is missing in Hash input'
       )
     end
 
@@ -173,7 +173,7 @@ RSpec.describe Dry::Struct do
 
     it 'raises error when values have incorrect types' do
       expect { struct.new(name: 'Jane', age: 21, admin: 'true') }.to raise_error(
-        Dry::Types::ConstraintError, /"true" violates constraints/
+        Dry::Struct::Error, %r["true" \(String\) has invalid type for :admin]
       )
 
       expect { struct.new }.to raise_error(
