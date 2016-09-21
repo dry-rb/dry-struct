@@ -9,7 +9,7 @@ RSpec.describe Dry::Struct::Value do
       class User < Dry::Struct::Value
         attribute :name, 'coercible.string'
         attribute :age, 'coercible.int'
-        attribute :address, 'test.address'
+        attribute :address, Test::Address
       end
 
       class SuperUser < User
@@ -19,7 +19,7 @@ RSpec.describe Dry::Struct::Value do
   end
 
   it_behaves_like Dry::Struct do
-    subject(:type) { Dry::Types['test.super_user'] }
+    subject(:type) { Test::SuperUser }
   end
 
   it 'is deeply frozen' do

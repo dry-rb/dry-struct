@@ -1,6 +1,6 @@
 RSpec.describe Dry::Struct do
-  let(:user_type) { Dry::Types['test.user'] }
-  let(:root_type) { Dry::Types['test.super_user'] }
+  let(:user_type) { Test::User }
+  let(:root_type) { Test::SuperUser }
 
   before do
     module Test
@@ -13,7 +13,7 @@ RSpec.describe Dry::Struct do
       class AbstractUser < Dry::Struct
         attribute :name, 'coercible.string'
         attribute :age, 'coercible.int'
-        attribute :address, 'test.address'
+        attribute :address, Test::Address
       end
 
       class User < AbstractUser
@@ -183,12 +183,12 @@ RSpec.describe Dry::Struct do
   end
 
   describe '#to_hash' do
-    let(:parent_type) { Dry::Types['test.parent'] }
+    let(:parent_type) { Test::Parent }
 
     before do
       module Test
         class Parent < User
-          attribute :children, Dry::Types['coercible.array'].member('test.user')
+          attribute :children, Dry::Types['coercible.array'].member(Test::User)
         end
       end
     end
@@ -204,6 +204,31 @@ RSpec.describe Dry::Struct do
       }
 
       expect(parent_type[attributes].to_hash).to eql(attributes)
+    end
+  end
+
+  describe 'unanonymous structs' do
+    let(:struct) do
+      Class.new(Dry::Struct) do
+        def self.name
+          'PersonName'
+        end
+
+        attribute :name, 'strict.string'
+      end
+    end
+
+    before do
+      struct_type = struct
+
+      Test::Person = Class.new(Dry::Struct) do
+        attribute :name, struct_type
+      end
+    end
+
+    it 'works fine' do
+      expect(struct.new(name: 'Jane')).to be_an_instance_of(struct)
+      expect(Test::Person.new(name: { name: 'Jane' })).to be_an_instance_of(Test::Person)
     end
   end
 end
