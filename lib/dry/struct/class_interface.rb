@@ -27,7 +27,6 @@ module Dry
 
         unless klass == Value
           klass.constructor = Types['coercible.hash']
-          Types.register(Types.identifier(klass), klass)
         end
 
         klass.attributes({}) unless equal?(Struct)
