@@ -66,12 +66,6 @@ RSpec.shared_examples_for Dry::Struct do
       end
     end
 
-    describe '.maybe?' do
-      it 'is not a maybe' do
-        expect(type).not_to be_maybe
-      end
-    end
-
     describe '.default?' do
       it 'is not a default' do
         expect(type).not_to be_default

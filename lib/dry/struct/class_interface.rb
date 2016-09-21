@@ -108,10 +108,6 @@ module Dry
         klass.new(*args)
       end
 
-      def maybe?
-        false
-      end
-
       def default?
         false
       end
