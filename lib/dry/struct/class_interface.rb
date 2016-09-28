@@ -13,14 +13,9 @@ module Dry
 
       protected :constructor=, :equalizer=, :constructor_type=
 
-      def self.extended(base)
-        base.instance_variable_set(:@schema, {})
-      end
-
       def inherited(klass)
         super
 
-        klass.instance_variable_set(:@schema, {})
         klass.equalizer = Equalizer.new(*schema.keys)
         klass.constructor_type = constructor_type
         klass.send(:include, klass.equalizer)
@@ -58,16 +53,15 @@ module Dry
       private :check_schema_duplication
 
       def constructor_type(type = nil)
-        if type
-          @constructor_type = type
-        else
-          @constructor_type || :strict
-        end
+        @constructor_type ||= :strict
+        @constructor_type = type if type
+        @constructor_type
       end
 
       def schema
+        @schema ||= {}
         super_schema = superclass.respond_to?(:schema) ? superclass.schema : {}
-        super_schema.merge(@schema || {})
+        super_schema.merge(@schema)
       end
 
       def new(attributes = default_attributes)
