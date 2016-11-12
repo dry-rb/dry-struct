@@ -116,7 +116,7 @@ module Dry
       end
 
       def constrained?
-        false
+        true
       end
 
       def primitive
