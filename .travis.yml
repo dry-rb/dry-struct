@@ -1,24 +1,20 @@
 language: ruby
-sudo: false
-cache: bundler
+dist: trusty
+sudo: required
 bundler_args: --without benchmarks tools
 script:
   - bundle exec rake spec
+after_success:
+  - '[ "$TRAVIS_RUBY_VERSION" = "2.3.1" ] && [ "$TRAVIS_BRANCH" = "master" ] && bundle exec codeclimate-test-reporter'
 rvm:
-  - 2.1
-  - 2.2
+  - 2.1.10
+  - 2.2.5
   - 2.3.1
-  - rbx
+  - rbx-3
   - jruby-9.1.5.0
 env:
   global:
     - JRUBY_OPTS='--dev -J-Xmx1024M'
-matrix:
-  allow_failures:
-    - rvm: rbx
-  include:
-    - rvm: jruby-head
-      before_install: gem install bundler --no-ri --no-rdoc
 notifications:
   email: false
   webhooks:
