@@ -1,8 +1,10 @@
-# to-be-released
+# v0.1.1 2016-11-13
 
 ## Fixed
 
 * Make `Dry::Struct` act as a constrained type. This fixes the behavior of sum types containing structs (flash-gordon)
+
+[Compare v0.1.0...v0.1.1](https://github.com/dry-rb/dry-struct/compare/v0.1.0...v0.1.1)
 
 # v0.1.0 2016-09-21
 
