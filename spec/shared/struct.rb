@@ -60,7 +60,7 @@ RSpec.shared_examples_for Dry::Struct do
       let(:sum_type) { type | Dry::Types['strict.nil'] }
 
       it 'returns Sum type' do
-        expect(sum_type).to be_instance_of(Dry::Types::Sum::Constrained)
+        expect(sum_type).to be_constrained
         expect(sum_type[nil]).to be_nil
         expect(sum_type[jane]).to eql(type[jane])
       end
