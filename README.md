@@ -14,7 +14,7 @@
 [![Test Coverage](https://codeclimate.com/github/dry-rb/dry-struct/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-struct.svg?branch=master)][inchpages]
 
-WIP extraction from dry-struct
+Typed structs and value objects
 
 ## Development
 
