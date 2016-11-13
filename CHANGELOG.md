@@ -1,3 +1,9 @@
+# to-be-released
+
+## Fixed
+
+* Make `Dry::Struct` act as a constrained type. This fixes the behavior of sum types containing structs (flash-gordon)
+
 # v0.1.0 2016-09-21
 
 ## Added
