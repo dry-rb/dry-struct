@@ -106,6 +106,16 @@ module Dry
 
       # Sets or retrieves {#constructor} type as a symbol
       #
+      # @note All examples below assume that you have defined {Struct} with
+      #   following attributes and explicitly call only {#constructor_type}:
+      #
+      #   ```ruby
+      #   class User < Dry::Struct
+      #     attribute :name, Types::Strict::String.default('John Doe')
+      #     attribute :age, Types::Strict::Int
+      #   end
+      #   ```
+      #
       # ### Common constructor types include:
       #
       # * `:permissive` - the default constructor type, useful for defining
@@ -121,11 +131,6 @@ module Dry
       #   you specified as attributes* in the input hash
       # * `:strict_with_defaults` - same as `:strict` but you are OK that some
       #   values may be nil and you want defaults to be set
-      # * `:weak` and `:symbolized` - *don't use those with {Struct}*,
-      #   and instead use [`dry-validation`][] to process and validate
-      #   attributes, otherwise your struct will behave as a data validator
-      #   which raises exceptions on invalid input (assuming your attributes
-      #   types are strict)
       #
       # To feel the difference between constructor types, look into examples.
       # Each of them provide the same attributes' definitions,
@@ -136,14 +141,16 @@ module Dry
       # 3. Input contains nil for a value that specifies a default
       # 4. Input includes a key that was not specified in the schema
       #
-      # [`dry-validation`]: https://github.com/dry-rb/dry-validation
+      # @note Don’t use `:weak` and `:symbolized` as {#constructor_type},
+      #   and instead use [`dry-validation`][] to process and validate
+      #   attributes, otherwise your struct will behave as a data validator
+      #   which raises exceptions on invalid input (assuming your attributes
+      #   types are strict)
+      #   [`dry-validation`]: https://github.com/dry-rb/dry-validation
       #
       # @example `:permissive` constructor
       #   class User < Dry::Struct
       #     constructor_type :permissive
-      #
-      #     attribute :name, Types::Strict::String.default('John Doe')
-      #     attribute :age, Types::Strict::Int
       #   end
       #
       #   User.new(name: "Jane")
@@ -158,9 +165,6 @@ module Dry
       # @example `:schema` constructor
       #   class User < Dry::Struct
       #     constructor_type :schema
-      #
-      #     attribute :name, Types::Strict::String.default('John Doe')
-      #     attribute :age, Types::Strict::Int
       #   end
       #
       #   User.new(name: "Jane")        #=> #<User name="Jane" age=nil>
@@ -172,9 +176,6 @@ module Dry
       # @example `:strict` constructor
       #   class User < Dry::Struct
       #     constructor_type :strict
-      #
-      #     attribute :name, Types::Strict::String.default('John Doe')
-      #     attribute :age, Types::Strict::Int
       #   end
       #
       #   User.new(name: "Jane")
@@ -189,9 +190,6 @@ module Dry
       # @example `:strict_with_defaults` constructor
       #   class User < Dry::Struct
       #     constructor_type :strict_with_defaults
-      #
-      #     attribute :name, Types::Strict::String.default('John Doe')
-      #     attribute :age, Types::Strict::Int
       #   end
       #
       #   User.new(name: "Jane")
@@ -257,6 +255,8 @@ module Dry
       end
 
       # @param [Hash{Symbol => Object}] input
+      # @yieldparam [Dry::Types::Result::Failure] failure
+      # @yieldreturn [Dry::Types::ResultResult]
       # @return [Dry::Types::Result]
       def try(input)
         Types::Result::Success.new(self[input])
@@ -283,7 +283,7 @@ module Dry
         klass.new(*args)
       end
 
-      # @return [Boolean]
+      # @return [false]
       def default?
         false
       end
@@ -294,12 +294,12 @@ module Dry
         self === value
       end
 
-      # @return [Boolean]
+      # @return [true]
       def constrained?
         true
       end
 
-      # @return [Dry::Struct]
+      # @return [self]
       def primitive
         self
       end
