@@ -51,7 +51,7 @@ module Dry
       end
 
       def check_schema_duplication(new_schema)
-        shared_keys = new_schema.keys & schema.keys
+        shared_keys = new_schema.keys & (schema.keys - superclass.schema.keys)
 
         raise RepeatedAttributeError, shared_keys.first if shared_keys.any?
       end
@@ -67,7 +67,7 @@ module Dry
 
       def schema
         super_schema = superclass.respond_to?(:schema) ? superclass.schema : {}
-        super_schema.merge(@schema || {})
+        super_schema.merge(@schema)
       end
 
       def new(attributes = default_attributes)
