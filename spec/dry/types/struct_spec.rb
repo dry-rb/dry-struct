@@ -116,6 +116,18 @@ RSpec.describe Dry::Struct do
       )
     end
 
+    it 'allows to redefine attributes in a subclass' do
+      expect {
+        class Test::Foo < Dry::Struct
+          attribute :bar, 'strict.string'
+        end
+
+        class Test::Bar < Test::Foo
+          attribute :bar, 'strict.int'
+        end
+      }.not_to raise_error
+    end
+
     it 'can be chained' do
       class Test::Foo < Dry::Struct
       end
