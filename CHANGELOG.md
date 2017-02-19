@@ -1,3 +1,9 @@
+# to-be-released
+
+## Changed
+
+* Struct attributes can be overridden in a subclass (flash-gordon)
+
 # v0.1.1 2016-11-13
 
 ## Fixed
