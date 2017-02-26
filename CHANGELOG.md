@@ -1,8 +1,10 @@
-# to-be-released
+# v0.2.0 2016-02-26
 
 ## Changed
 
 * Struct attributes can be overridden in a subclass (flash-gordon)
+
+[Compare v0.1.1...v0.2.0](https://github.com/dry-rb/dry-struct/compare/v0.1.1...v0.2.0)
 
 # v0.1.1 2016-11-13
 
