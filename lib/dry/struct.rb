@@ -4,7 +4,6 @@ require 'dry/struct/version'
 require 'dry/struct/errors'
 require 'dry/struct/class_interface'
 require 'dry/struct/hashify'
-require 'dry/struct/value'
 
 module Dry
   class Struct
@@ -28,3 +27,5 @@ module Dry
     alias_method :to_h, :to_hash
   end
 end
+
+require 'dry/struct/value'

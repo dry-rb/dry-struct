@@ -53,4 +53,6 @@ RSpec.configure do |config|
 
     Object.send(:remove_const, Test.remove_constants.name)
   end
+
+  config.order = :random
 end
