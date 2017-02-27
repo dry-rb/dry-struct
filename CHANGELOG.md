@@ -1,3 +1,9 @@
+# v0.2.1 2017-02-27
+
+## Fixed
+
+* Fixed `Dry::Struct::Value` which appeared to be broken in the last release (flash-gordon)
+
 # v0.2.0 2016-02-26
 
 ## Changed
