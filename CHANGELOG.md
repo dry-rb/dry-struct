@@ -4,6 +4,8 @@
 
 * Fixed `Dry::Struct::Value` which appeared to be broken in the last release (flash-gordon)
 
+[Compare v0.2.0...v0.2.1](https://github.com/dry-rb/dry-struct/compare/v0.2.0...v0.2.1)
+
 # v0.2.0 2016-02-26
 
 ## Changed
