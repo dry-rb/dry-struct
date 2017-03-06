@@ -249,9 +249,19 @@ module Dry
       #
       # @return [Hash{Symbol => Object}]
       def default_attributes
+        check_invalid_schema_keys
         schema.each_with_object({}) { |(name, type), result|
           result[name] = type.default? ? type.evaluate : type[nil]
         }
+      end
+
+      def check_invalid_schema_keys
+        invalid_keys = schema.select { |name, type|  type.instance_of?(String) }
+        raise ArgumentError, argument_error_msg(invalid_keys.keys) if invalid_keys.any?
+      end
+
+      def argument_error_msg(keys)
+        "Invaild argument for #{keys.join(', ')}"
       end
 
       # @param [Hash{Symbol => Object}] input

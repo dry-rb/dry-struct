@@ -46,6 +46,15 @@ RSpec.describe Dry::Struct do
       )
     end
 
+    it 'raise ArgumentError when the attributes types are strings' do
+      expect {
+        user_type.new
+      }.to raise_error(
+        ArgumentError,
+        'Invaild argument for name, age'
+      )
+    end
+
     it 'passes through values when they are structs already' do
       address = Test::Address.new(city: 'NYC', zipcode: '312')
       user = construct_user(name: 'Jane', age: 21, address: address)
