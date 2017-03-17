@@ -74,7 +74,7 @@ module Dry
         if attributes.instance_of?(self)
           attributes
         else
-          super(constructor[attributes])
+          super(constructor[SymbolizeKeys[attributes]])
         end
       rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
         raise Struct::Error, "[#{self}.new] #{error}"
