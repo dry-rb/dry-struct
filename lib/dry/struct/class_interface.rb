@@ -71,7 +71,7 @@ module Dry
       end
 
       def new(attributes = default_attributes)
-        if attributes.is_a?(self)
+        if attributes.instance_of?(self)
           attributes
         else
           super(constructor[attributes])
@@ -79,8 +79,12 @@ module Dry
       rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
         raise Struct::Error, "[#{self}.new] #{error}"
       end
-      alias_method :call, :new
-      alias_method :[], :new
+
+      def call(attributes = default_attributes)
+        return attributes if attributes.is_a?(self)
+        new(attributes)
+      end
+      alias_method :[], :call
 
       def default_attributes
         schema.each_with_object({}) { |(name, type), result|

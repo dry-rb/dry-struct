@@ -29,17 +29,17 @@ RSpec.describe Dry::Struct do
     subject(:type) { root_type }
   end
 
-  describe '.new' do
+  shared_examples_for 'typical constructor' do
     it 'raises StructError when attribute constructor failed' do
       expect {
-        user_type[age: {}]
+        construct_user(age: {})
       }.to raise_error(
         Dry::Struct::Error,
         '[Test::User.new] :name is missing in Hash input'
       )
 
       expect {
-        user_type[name: :Jane, age: '21', address: nil]
+        construct_user(name: :Jane, age: '21', address: nil)
       }.to raise_error(
         Dry::Struct::Error,
         '[Test::Address.new] :city is missing in Hash input'
@@ -48,25 +48,17 @@ RSpec.describe Dry::Struct do
 
     it 'passes through values when they are structs already' do
       address = Test::Address.new(city: 'NYC', zipcode: '312')
-      user = user_type[name: 'Jane', age: 21, address: address]
+      user = construct_user(name: 'Jane', age: 21, address: address)
 
       expect(user.address).to be(address)
     end
 
-    it 'returns itself when an object is an instance of given class' do
+    it 'returns itself when an argument is an instance of given class' do
       user = user_type[
         name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
       ]
 
-      expect(user_type[user]).to be_equal(user)
-    end
-
-    it 'returns itself when an object is an instance of subclass' do
-      user = root_type[
-        name: :Jane, age: '21', root: true, address: { city: 'NYC', zipcode: 123 }
-      ]
-
-      expect(user_type[user]).to be_equal(user)
+      expect(construct_user(user)).to be_equal(user)
     end
 
     it 'creates an empty struct when called without arguments' do
@@ -76,6 +68,42 @@ RSpec.describe Dry::Struct do
 
       expect { Test::Empty.new }.to_not raise_error
     end
+  end
+
+  describe '.new' do
+    def construct_user(attributes)
+      user_type.new(attributes)
+    end
+
+    it_behaves_like 'typical constructor'
+
+    it 'returns new object when an argument is an instance of subclass' do
+      user = root_type[
+        name: :Jane, age: '21', root: true, address: { city: 'NYC', zipcode: 123 }
+      ]
+
+      expect(construct_user(user)).to be_instance_of(user_type)
+    end
+  end
+
+  describe '.call' do
+    def construct_user(attributes)
+      user_type.call(attributes)
+    end
+
+    it_behaves_like 'typical constructor'
+
+    it 'returns itself when an argument is an instance of subclass' do
+      user = root_type[
+        name: :Jane, age: '21', root: true, address: { city: 'NYC', zipcode: 123 }
+      ]
+
+      expect(construct_user(user)).to be_equal(user)
+    end
+  end
+
+  it 'defines #[] alias' do
+    expect(described_class.method(:[])).to eq described_class.method(:call)
   end
 
   describe '.attribute' do
