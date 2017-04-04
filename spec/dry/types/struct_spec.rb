@@ -53,6 +53,22 @@ RSpec.describe Dry::Struct do
       expect(user.address).to be(address)
     end
 
+    it 'returns itself when an object is an instance of given class' do
+      user = user_type[
+        name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
+      ]
+
+      expect(user_type[user]).to be_equal(user)
+    end
+
+    it 'returns itself when an object is an instance of subclass' do
+      user = root_type[
+        name: :Jane, age: '21', root: true, address: { city: 'NYC', zipcode: 123 }
+      ]
+
+      expect(user_type[user]).to be_equal(user)
+    end
+
     it 'creates an empty struct when called without arguments' do
       class Test::Empty < Dry::Struct
         @constructor = Dry::Types['strict.hash'].strict(schema)
