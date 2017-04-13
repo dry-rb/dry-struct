@@ -1,3 +1,15 @@
+master
+
+## Fixed
+
+* `.[]` and `.call` does not coerce subclass to superclass anymore (Kukunin)
+
+## Added
+
+* `Dry::Struct#with` method to return new instance with applied changeset (Kukunin)
+
+[Compare v0.2.1...master](https://github.com/dry-rb/dry-struct/compare/v0.2.1...master)
+
 # v0.2.1 2017-02-27
 
 ## Fixed
