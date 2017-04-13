@@ -25,6 +25,10 @@ module Dry
       end
     end
     alias_method :to_h, :to_hash
+
+    def with(changeset)
+      self.class[to_hash.merge(changeset)]
+    end
   end
 end
 
