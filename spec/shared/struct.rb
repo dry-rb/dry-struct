@@ -43,6 +43,26 @@ RSpec.shared_examples_for Dry::Struct do
     end
   end
 
+  describe '#with' do
+    let(:original) { type[jane].freeze }
+    let(:updated) { original.with(age: '25') }
+
+    it 'applies changeset' do
+      expect(updated.age).to eq 25
+    end
+
+    it 'remains other attributes the same' do
+      expect(updated.name).to eq original.name
+      expect(updated.root).to eq original.root
+      expect(updated.address).to eq original.address
+    end
+
+    it 'does not do deep merge' do
+      expect { original.with(address: {city: 'LA'}) }
+        .to raise_error(Dry::Struct::Error)
+    end
+  end
+
   describe '#inspect' do
     let(:user_1) { type[jane] }
 
