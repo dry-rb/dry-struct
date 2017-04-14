@@ -6,7 +6,7 @@ master
 
 ## Added
 
-* `Dry::Struct#with` method to return new instance with applied changeset (Kukunin)
+* `Dry::Struct#new` method to return new instance with applied changeset (Kukunin)
 
 [Compare v0.2.1...master](https://github.com/dry-rb/dry-struct/compare/v0.2.1...master)
 
