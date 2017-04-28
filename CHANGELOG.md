@@ -1,5 +1,9 @@
 master
 
+## Added
+
+* Raise ArgumentError when attribute type is a string and no value provided is for `new` (GustavoCaso)
+
 ## Fixed
 
 * `.[]` and `.call` does not coerce subclass to superclass anymore (Kukunin)
