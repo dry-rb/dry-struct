@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'dry-equalizer', '~> 0.2'
   spec.add_runtime_dependency 'dry-configurable', '~> 0.1'
   spec.add_runtime_dependency 'dry-types', '~> 0.9', '>= 0.9.0'
+  spec.add_runtime_dependency 'dry-core', '~> 0.2', '>= 0.2.4'
   spec.add_runtime_dependency 'ice_nine', '~> 0.11'
 
   spec.add_development_dependency 'bundler', '~> 1.6'
