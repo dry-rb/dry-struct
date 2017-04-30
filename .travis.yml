@@ -5,16 +5,21 @@ bundler_args: --without benchmarks tools
 script:
   - bundle exec rake spec
 after_success:
-  - '[ "$TRAVIS_RUBY_VERSION" = "2.3.1" ] && [ "$TRAVIS_BRANCH" = "master" ] && bundle exec codeclimate-test-reporter'
+  - '[ -d coverage ] && bundle exec codeclimate-test-reporter'
 rvm:
   - 2.1.10
-  - 2.2.5
-  - 2.3.1
+  - 2.2.7
+  - 2.3.3
+  - 2.4.1
   - rbx-3
-  - jruby-9.1.5.0
+  - jruby-9.1.8.0
 env:
   global:
+    - COVERAGE=true
     - JRUBY_OPTS='--dev -J-Xmx1024M'
+matrix:
+  allow_failures:
+    - rvm: rbx-3
 notifications:
   email: false
   webhooks:
