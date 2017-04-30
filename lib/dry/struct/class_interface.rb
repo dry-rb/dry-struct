@@ -251,7 +251,7 @@ module Dry
       def default_attributes
         check_invalid_schema_keys
         schema.each_with_object({}) { |(name, type), result|
-          result[name] = type.default? ? type.evaluate : type[nil]
+          result[name] = type.evaluate if type.default?
         }
       end
 

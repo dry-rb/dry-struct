@@ -93,6 +93,27 @@ RSpec.describe Dry::Struct do
 
       expect(construct_user(user)).to be_instance_of(user_type)
     end
+
+    context 'with default' do
+      it 'resolves missing missing values with defaults' do
+        struct = Class.new(Dry::Struct) do
+          attribute :name, Dry::Types['strict.string'].default('Jane')
+          attribute :admin, Dry::Types['strict.bool'].default(true)
+        end
+
+        expect(struct.new.to_h).
+          to eql(name: 'Jane', admin: true)
+      end
+
+      it "doesn't tolerate missing required keys" do
+        struct = Class.new(Dry::Struct) do
+          attribute :name, Dry::Types['strict.string'].default('Jane')
+          attribute :age, Dry::Types['strict.int']
+        end
+
+        expect { struct.new }.to raise_error(Dry::Struct::Error, /:age is missing in Hash input/)
+      end
+    end
   end
 
   describe '.call' do
@@ -239,10 +260,6 @@ RSpec.describe Dry::Struct do
     it 'raises error when values have incorrect types' do
       expect { struct.new(name: 'Jane', age: 21, admin: 'true') }.to raise_error(
         Dry::Struct::Error, %r["true" \(String\) has invalid type for :admin]
-      )
-
-      expect { struct.new }.to raise_error(
-        Dry::Types::ConstraintError, /nil violates constraints/
       )
     end
   end
