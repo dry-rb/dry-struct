@@ -1,44 +1,30 @@
+require 'dry/core/class_attributes'
+require 'dry/equalizer'
+
 require 'dry/struct/errors'
 
 module Dry
   class Struct
     # Class-level interface of {Struct} and {Value}
     module ClassInterface
+      include Core::ClassAttributes
+
       include Dry::Types::Builder
-
-      # {Dry::Types::Hash} subclass with specific behaviour defined for
-      # @return [Dry::Types::Hash]
-      # @see #constructor_type
-      attr_accessor :constructor
-
-      # @return [Dry::Equalizer]
-      attr_accessor :equalizer
-
-      # @return [Symbol]
-      # @see #constructor_type
-      attr_writer :constructor_type
-
-      protected :constructor=, :equalizer=, :constructor_type=
 
       # @param [Module] base
       def self.extended(base)
-        base.instance_variable_set(:@schema, {})
+        base.instance_variable_set(:@schema, EMPTY_HASH)
       end
 
       # @param [Class] klass
       def inherited(klass)
         super
 
-        klass.instance_variable_set(:@schema, {})
-        klass.equalizer = Equalizer.new(*schema.keys)
-        klass.constructor_type = constructor_type
+        klass.instance_variable_set(:@schema, EMPTY_HASH)
+        klass.equalizer Equalizer.new(*schema.keys)
         klass.send(:include, klass.equalizer)
 
-        unless klass == Value
-          klass.constructor = Types['coercible.hash']
-        end
-
-        klass.attributes({}) unless equal?(Struct)
+        klass.attributes(EMPTY_HASH) unless equal?(Struct)
       end
 
       # Adds an attribute for this {Struct} with given `name` and `type`
@@ -86,7 +72,7 @@ module Dry
         prev_schema = schema
 
         @schema = prev_schema.merge(new_schema)
-        @constructor = Types['coercible.hash'].public_send(constructor_type, schema)
+        input Types['coercible.hash'].public_send(constructor_type, schema)
 
         attr_reader(*new_schema.keys)
         equalizer.instance_variable_get('@keys').concat(new_schema.keys)
@@ -104,140 +90,30 @@ module Dry
       end
       private :check_schema_duplication
 
-      # Sets or retrieves {#constructor} type as a symbol
-      #
-      # @note All examples below assume that you have defined {Struct} with
-      #   following attributes and explicitly call only {#constructor_type}:
-      #
-      #   ```ruby
-      #   class User < Dry::Struct
-      #     attribute :name, Types::Strict::String.default('John Doe')
-      #     attribute :age, Types::Strict::Int
-      #   end
-      #   ```
-      #
-      # ### Common constructor types include:
-      #
-      # * `:permissive` - the default constructor type, useful for defining
-      #   {Struct}s that are instantiated using data from the database
-      #   (i.e. results of a database query), where you expect *all defined
-      #   attributes to be present* and it's OK to ignore other keys
-      #   (i.e. keys used for joining, that are not relevant from your domain
-      #   {Struct}s point of view). Default values **are not used** otherwise
-      #   you wouldn't notice missing data.
-      # * `:schema` - missing keys will result in setting them using default
-      #   values, unexpected keys will be ignored.
-      # * `:strict` - useful when you *do not expect keys other than the ones
-      #   you specified as attributes* in the input hash
-      # * `:strict_with_defaults` - same as `:strict` but you are OK that some
-      #   values may be nil and you want defaults to be set
-      #
-      # To feel the difference between constructor types, look into examples.
-      # Each of them provide the same attributes' definitions,
-      # different constructor type, and 4 cases of given input:
-      #
-      # 1. Input omits a key for a value that does not have a default
-      # 2. Input omits a key for a value that has a default
-      # 3. Input contains nil for a value that specifies a default
-      # 4. Input includes a key that was not specified in the schema
-      #
-      # @note Don’t use `:weak` and `:symbolized` as {#constructor_type},
-      #   and instead use [`dry-validation`][] to process and validate
-      #   attributes, otherwise your struct will behave as a data validator
-      #   which raises exceptions on invalid input (assuming your attributes
-      #   types are strict)
-      #   [`dry-validation`]: https://github.com/dry-rb/dry-validation
-      #
-      # @example `:permissive` constructor
-      #   class User < Dry::Struct
-      #     constructor_type :permissive
-      #   end
-      #
-      #   User.new(name: "Jane")
-      #     #=> Dry::Struct::Error: [User.new] :age is missing in Hash input
-      #   User.new(age: 31)
-      #     #=> Dry::Struct::Error: [User.new] :name is missing in Hash input
-      #   User.new(name: nil, age: 31)
-      #     #=> #<User name="John Doe" age=31>
-      #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-      #     #=> #<User name="Jane" age=31>
-      #
-      # @example `:schema` constructor
-      #   class User < Dry::Struct
-      #     constructor_type :schema
-      #   end
-      #
-      #   User.new(name: "Jane")        #=> #<User name="Jane" age=nil>
-      #   User.new(age: 31)             #=> #<User name="John Doe" age=31>
-      #   User.new(name: nil, age: 31)  #=> #<User name="John Doe" age=31>
-      #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-      #     #=> #<User name="Jane" age=31>
-      #
-      # @example `:strict` constructor
-      #   class User < Dry::Struct
-      #     constructor_type :strict
-      #   end
-      #
-      #   User.new(name: "Jane")
-      #     #=> Dry::Struct::Error: [User.new] :age is missing in Hash input
-      #   User.new(age: 31)
-      #     #=> Dry::Struct::Error: [User.new] :name is missing in Hash input
-      #   User.new(name: nil, age: 31)
-      #     #=> Dry::Struct::Error: [User.new] nil (NilClass) has invalid type for :name
-      #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-      #     #=> Dry::Struct::Error: [User.new] unexpected keys [:unexpected] in Hash input
-      #
-      # @example `:strict_with_defaults` constructor
-      #   class User < Dry::Struct
-      #     constructor_type :strict_with_defaults
-      #   end
-      #
-      #   User.new(name: "Jane")
-      #     #=> Dry::Struct::Error: [User.new] :age is missing in Hash input
-      #   User.new(age: 31)
-      #     #=> #<User name="John Doe" age=31>
-      #   User.new(name: nil, age: 31)
-      #     #=> Dry::Struct::Error: [User.new] nil (NilClass) has invalid type for :name
-      #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-      #     #=> Dry::Struct::Error: [User.new] unexpected keys [:unexpected] in Hash input
-      #
-      # @see http://dry-rb.org/gems/dry-types/hash-schemas
-      #
-      # @overload constructor_type(type)
-      #   Sets the constructor type for {Struct}
-      #   @param [Symbol] type one of constructor types, see above
-      #   @return [Symbol]
-      #
-      # @overload constructor_type
-      #   Returns the constructor type for {Struct}
-      #   @return [Symbol] (:strict)
-      def constructor_type(type = nil)
-        if type
-          @constructor_type = type
-        else
-          @constructor_type || :strict
-        end
-      end
-
       # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
       def schema
-        super_schema = superclass.respond_to?(:schema) ? superclass.schema : {}
+        super_schema = superclass.respond_to?(:schema) ? superclass.schema : EMPTY_HASH
         super_schema.merge(@schema)
       end
 
-      # @param [Hash{Symbol => Object}] attributes
+      # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
       #   with given {#constructor_type}
       def new(attributes = default_attributes)
         if attributes.instance_of?(self)
           attributes
         else
-          super(constructor[attributes])
+          super(input[attributes])
         end
       rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
         raise Struct::Error, "[#{self}.new] #{error}"
       end
 
+      # Calls type constructor. The behavior is identical to `.new` but returns
+      # returns the input back if it's a subclass of the struct.
+      #
+      # @param [Hash{Symbol => Object},Dry::Struct] attributes
+      # @return [Dry::Struct]
       def call(attributes = default_attributes)
         return attributes if attributes.is_a?(self)
         new(attributes)
