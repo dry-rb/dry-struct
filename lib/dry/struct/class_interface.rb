@@ -313,6 +313,11 @@ module Dry
       def primitive
         self
       end
+
+      # @return [false]
+      def optional?
+        false
+      end
     end
   end
 end
