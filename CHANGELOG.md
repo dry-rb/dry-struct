@@ -2,15 +2,16 @@ master
 
 ## Added
 
-* Raise ArgumentError when attribute type is a string and no value provided is for `new` (GustavoCaso)
+* `Dry::Struct#new` method to return new instance with applied changeset (Kukunin)
 
 ## Fixed
 
 * `.[]` and `.call` does not coerce subclass to superclass anymore (Kukunin)
+* Raise ArgumentError when attribute type is a string and no value provided is for `new` (GustavoCaso)
 
-## Added
+## Changed
 
-* `Dry::Struct#new` method to return new instance with applied changeset (Kukunin)
+* `.new` without arguments doesn't use nil as an input for non-default types anymore (flash-gordon)
 
 [Compare v0.2.1...master](https://github.com/dry-rb/dry-struct/compare/v0.2.1...master)
 
