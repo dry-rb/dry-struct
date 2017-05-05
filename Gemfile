@@ -21,5 +21,3 @@ group :benchmarks do
   gem 'fast_attributes'
   gem 'attrio'
 end
-
-gem 'dry-core', git: 'https://github.com/dry-rb/dry-core.git'
