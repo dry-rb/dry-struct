@@ -1,4 +1,4 @@
-master
+# v0.3.0 2017-05-05
 
 ## Added
 
@@ -13,7 +13,7 @@ master
 
 * `.new` without arguments doesn't use nil as an input for non-default types anymore (flash-gordon)
 
-[Compare v0.2.1...master](https://github.com/dry-rb/dry-struct/compare/v0.2.1...master)
+[Compare v0.2.1...v0.3.0](https://github.com/dry-rb/dry-struct/compare/v0.2.1...v0.3.0)
 
 # v0.2.1 2017-02-27
 
