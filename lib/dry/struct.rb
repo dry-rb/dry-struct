@@ -227,6 +227,26 @@ module Dry
     end
     alias_method :to_h, :to_hash
 
+    # Create a copy of {Dry::Struct} with overriden attributes
+    #
+    # @param [Hash{Symbol => Object}] changeset
+    #
+    # @return [Struct]
+    #
+    # @example
+    #   class Book < Dry::Struct
+    #     attribute :title, Types::Strict::String
+    #     attribute :subtitle, Types::Strict::String.optional
+    #   end
+    #
+    #   rom_n_roda = Book.new(
+    #     title: 'Web Development with ROM and Roda',
+    #     subtitle: '2nd edition'
+    #   )
+    #     #=> #<Book title="Web Development with ROM and Roda" subtitle="2nd edition">
+    #
+    #   rom_n_roda.new(subtitle: '3nd edition')
+    #     #=> #<Book title="Web Development with ROM and Roda" subtitle="3nd edition">
     def new(changeset)
       self.class[to_hash.merge(changeset)]
     end
