@@ -2,6 +2,7 @@ require 'dry/core/class_attributes'
 require 'dry/equalizer'
 
 require 'dry/struct/errors'
+require 'dry/struct/constructor'
 
 module Dry
   class Struct
@@ -119,6 +120,14 @@ module Dry
         new(attributes)
       end
       alias_method :[], :call
+
+      # @param [#call,nil] constructor
+      # @param [Hash] options
+      # @param [#call,nil] block
+      # @return [Dry::Struct::Constructor]
+      def constructor(constructor = nil, **_options, &block)
+        Struct::Constructor.new(self, fn: constructor || block)
+      end
 
       # Retrieves default attributes from defined {.schema}.
       # Used in a {Struct} constructor if no attributes provided to {.new}

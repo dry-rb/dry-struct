@@ -86,6 +86,12 @@ RSpec.shared_examples_for Dry::Struct do
       end
     end
 
+    describe '.constructor' do
+      it 'uses constructor function to process input' do
+        expect(type.constructor(&:to_h)[jane.to_a]).to be_eql type[jane]
+      end
+    end
+
     describe '.default?' do
       it 'is not a default' do
         expect(type).not_to be_default
