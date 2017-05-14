@@ -110,7 +110,7 @@ module Dry
       end
 
       # Calls type constructor. The behavior is identical to `.new` but returns
-      # returns the input back if it's a subclass of the struct.
+      # the input back if it's a subclass of the struct.
       #
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @return [Dry::Struct]
