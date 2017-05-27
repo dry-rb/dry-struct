@@ -61,6 +61,10 @@ RSpec.shared_examples_for Dry::Struct do
       expect { original.new(address: {city: 'LA'}) }
         .to raise_error(Dry::Struct::Error)
     end
+
+    it 'has the __new__ alias' do
+      expect(updated).to eql(original.__new__(age: '25'))
+    end
   end
 
   describe '#inspect' do

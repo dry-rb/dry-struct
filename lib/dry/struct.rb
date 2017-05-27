@@ -250,6 +250,7 @@ module Dry
     def new(changeset)
       self.class[to_hash.merge(changeset)]
     end
+    alias_method :__new__, :new
   end
 end
 
