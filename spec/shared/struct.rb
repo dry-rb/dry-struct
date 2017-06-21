@@ -99,7 +99,7 @@ RSpec.shared_examples_for Dry::Struct do
     describe '.default' do
       let(:default_type) { type.default(type[jane]) }
 
-      it 'retruns Default type' do
+      it 'returns Default type' do
         expect(default_type).to be_instance_of(Dry::Types::Default)
         expect(default_type[nil]).to eql(type[jane])
       end
