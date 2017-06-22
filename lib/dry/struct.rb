@@ -1,3 +1,4 @@
+require 'dry/core/constants'
 require 'dry-types'
 
 require 'dry/struct/version'
@@ -56,6 +57,7 @@ module Dry
   #   refactoring.title #=> 'Refactoring'
   #   refactoring.subtitle #=> 'Improving the Design of Existing Code'
   class Struct
+    include Dry::Core::Constants
     extend ClassInterface
 
     # {Dry::Types::Hash} subclass with specific behaviour defined for
@@ -63,6 +65,10 @@ module Dry
     # @see #constructor_type
     defines :input
     input Types['coercible.hash']
+
+    # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
+    defines :schema
+    schema EMPTY_HASH
 
     # Sets or retrieves {#constructor} type as a symbol
     #

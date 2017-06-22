@@ -12,20 +12,12 @@ module Dry
 
       include Dry::Types::Builder
 
-      # @param [Module] base
-      def self.extended(base)
-        base.instance_variable_set(:@schema, EMPTY_HASH)
-      end
-
       # @param [Class] klass
       def inherited(klass)
         super
 
-        klass.instance_variable_set(:@schema, EMPTY_HASH)
         klass.equalizer Equalizer.new(*schema.keys)
         klass.send(:include, klass.equalizer)
-
-        klass.attributes(EMPTY_HASH) unless equal?(Struct)
       end
 
       # Adds an attribute for this {Struct} with given `name` and `type`
@@ -70,9 +62,7 @@ module Dry
       def attributes(new_schema)
         check_schema_duplication(new_schema)
 
-        prev_schema = schema
-
-        @schema = prev_schema.merge(new_schema)
+        schema schema.merge(new_schema)
         input Types['coercible.hash'].public_send(constructor_type, schema)
 
         attr_reader(*new_schema.keys)
@@ -90,12 +80,6 @@ module Dry
         raise RepeatedAttributeError, shared_keys.first if shared_keys.any?
       end
       private :check_schema_duplication
-
-      # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
-      def schema
-        super_schema = superclass.respond_to?(:schema) ? superclass.schema : EMPTY_HASH
-        super_schema.merge(@schema)
-      end
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
