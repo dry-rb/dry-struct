@@ -133,6 +133,19 @@ RSpec.shared_examples_for Dry::Struct do
         expect { optional_type[foo: :bar] }.to raise_error(Dry::Types::ConstraintError)
       end
     end
+
+    describe '.attribute?' do
+      it 'checks if a struct has an attribute' do
+        expect(type.attribute?(:name)).to be true
+        expect(type.attribute?(:last_name)).to be false
+      end
+    end
+
+    describe '.attribute_names' do
+      it 'returns the list of schema keys' do
+        expect(type.attribute_names).to eql(%i(name age address root))
+      end
+    end
   end
 
   it 'registered without wrapping' do

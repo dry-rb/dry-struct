@@ -187,6 +187,21 @@ module Dry
       def optional?
         false
       end
+
+      # Checks if this {Struct} has the given attribute
+      #
+      # @param [Symbol] key Attribute name
+      # @return [Boolean]
+      def attribute?(key)
+        schema.key?(key)
+      end
+
+      # Gets the list of attribute names
+      #
+      # @return [Array<Symbol>]
+      def attribute_names
+        schema.keys
+      end
     end
   end
 end
