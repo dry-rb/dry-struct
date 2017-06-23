@@ -1,4 +1,4 @@
-# v0.3.1 to-be-relased
+# v0.3.1 to-be-released
 
 ## Added
 
