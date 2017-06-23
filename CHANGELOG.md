@@ -1,3 +1,13 @@
+# v0.3.1 to-be-relased
+
+## Added
+
+* `Struct.constructor` that makes dry-struct more aligned with dry-types; now you can have a struct with a custom constructor that will be called _before_ calling the `new` method (v-kolesnikov)
+* `Struct.attribute?` and `Struct.attribute_names` for introspecting struct attributes (flash-gordon)
+* `Struct#__new__` is a safe-to-use-in-gems alias for `Struct#new` (flash-gordon)
+
+[Compare v0.3.0...master](https://github.com/dry-rb/dry-struct/compare/v0.3.0...master)
+
 # v0.3.0 2017-05-05
 
 ## Added
