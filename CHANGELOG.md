@@ -1,4 +1,4 @@
-# v0.3.1 to-be-released
+# v0.3.1 2017-06-30
 
 ## Added
 
@@ -6,7 +6,7 @@
 * `Struct.attribute?` and `Struct.attribute_names` for introspecting struct attributes (flash-gordon)
 * `Struct#__new__` is a safe-to-use-in-gems alias for `Struct#new` (flash-gordon)
 
-[Compare v0.3.0...master](https://github.com/dry-rb/dry-struct/compare/v0.3.0...master)
+[Compare v0.3.0...v0.3.1](https://github.com/dry-rb/dry-struct/compare/v0.3.0...v0.3.1)
 
 # v0.3.0 2017-05-05
 
