@@ -114,6 +114,25 @@ RSpec.describe Dry::Struct do
         expect { struct.new }.to raise_error(Dry::Struct::Error, /:age is missing in Hash input/)
       end
     end
+
+    it "doesn't coerce to a hash recurcively" do
+      properties = Class.new(Dry::Struct) do
+        attribute :age, Dry::Types['strict.int'].constructor(-> v { v + 1 })
+      end
+
+      struct = Class.new(Dry::Struct) do
+        attribute :name, Dry::Types['strict.string']
+        attribute :properties, properties
+      end
+
+      original = struct.new(name: 'Jane', properties: { age: 20 })
+
+      expect(original.properties.age).to eql(21)
+
+      transformed = original.new(name: 'John')
+
+      expect(transformed.properties.age).to eql(21)
+    end
   end
 
   describe '.call' do

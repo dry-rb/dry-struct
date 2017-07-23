@@ -1,3 +1,9 @@
+# to-be-released
+
+## Fixed
+
+* `Struct#new` doesn't call `.to_hash` recursively
+
 # v0.3.1 2017-06-30
 
 ## Added

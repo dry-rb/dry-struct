@@ -254,7 +254,11 @@ module Dry
     #   rom_n_roda.new(subtitle: '3nd edition')
     #     #=> #<Book title="Web Development with ROM and Roda" subtitle="3nd edition">
     def new(changeset)
-      self.class[to_hash.merge(changeset)]
+      data = self.class.schema.keys.each_with_object({}) do |key, result|
+        result[key] = self[key]
+      end
+
+      self.class[data.merge(changeset)]
     end
     alias_method :__new__, :new
   end
