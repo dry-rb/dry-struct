@@ -65,7 +65,10 @@ module Dry
         schema schema.merge(new_schema)
         input Types['coercible.hash'].public_send(constructor_type, schema)
 
-        attr_reader(*new_schema.keys)
+        new_schema.each_key do |key|
+          attr_reader(key) unless instance_methods.include?(key)
+        end
+
         equalizer.instance_variable_get('@keys').concat(new_schema.keys)
 
         self
