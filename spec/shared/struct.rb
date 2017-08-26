@@ -58,12 +58,23 @@ RSpec.shared_examples_for Dry::Struct do
     end
 
     it 'does not do deep merge' do
-      expect { original.new(address: {city: 'LA'}) }
+      expect { original.new(address: { city: 'LA' }) }
         .to raise_error(Dry::Struct::Error)
     end
 
     it 'has the __new__ alias' do
       expect(updated).to eql(original.__new__(age: '25'))
+    end
+
+    it 'uses attribute values, not accessors result' do
+      decorator = Module.new do
+        def name
+          :"#{ super } Doe"
+        end
+      end
+
+      original.class.prepend(decorator)
+      expect(updated.name).to eql(:'Jane Doe')
     end
   end
 

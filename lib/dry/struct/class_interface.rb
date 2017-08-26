@@ -203,7 +203,7 @@ module Dry
       #
       # @return [Array<Symbol>]
       def attribute_names
-        schema.keys
+        @attribute_names ||= schema.keys
       end
     end
   end

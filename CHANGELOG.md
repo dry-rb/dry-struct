@@ -3,6 +3,7 @@
 ## Changed
 
 * Attribute readers don't override existing instance methods (solnic)
+* `Struct#new` uses raw attributes instead of method calls, this makes the behavior consistent with the change above (flash-gordon)
 
 ## Fixed
 
