@@ -1,8 +1,12 @@
 # to-be-released
 
+## Changed
+
+* Attribute readers don't override existing instance methods (solnic)
+
 ## Fixed
 
-* `Struct#new` doesn't call `.to_hash` recursively
+* `Struct#new` doesn't call `.to_hash` recursively (flash-gordon)
 
 # v0.3.1 2017-06-30
 
