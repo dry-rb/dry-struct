@@ -234,6 +234,20 @@ RSpec.describe Dry::Struct do
       expect(foo.foo).to eql('foo')
       expect(foo.bar).to eql(123)
     end
+
+    it "doesn't define readers if methods are present" do
+      class Test::Foo < Dry::Struct
+        def age
+          "#{ @age } years old"
+        end
+      end
+
+      Test::Foo
+        .attribute(:age, 'strict.int')
+
+      struct = Test::Foo.new(age: 18)
+      expect(struct.age).to eql("18 years old")
+    end
   end
 
   describe '.inherited' do
