@@ -1,4 +1,4 @@
-# to-be-released
+# v0.4.0 2017-11-03
 
 ## Changed
 
@@ -8,6 +8,8 @@
 ## Fixed
 
 * `Struct#new` doesn't call `.to_hash` recursively (flash-gordon)
+
+[Compare v0.3.1...v0.4.0](https://github.com/dry-rb/dry-struct/compare/v0.3.1...v0.4.0)
 
 # v0.3.1 2017-06-30
 
