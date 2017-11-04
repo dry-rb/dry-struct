@@ -265,6 +265,14 @@ RSpec.describe Dry::Struct do
     end
   end
 
+  describe 'defining constructor_type with weak or symbolized' do
+    it 'raises InvalidClassAttributeValue' do
+      expect{
+        class Test::Parent < Dry::Struct; constructor_type(:weak); end
+      }.to raise_error(Dry::Core::InvalidClassAttributeValue)
+    end
+  end
+
   describe 'with a blank schema' do
     it 'works for blank structs' do
       class Test::Foo < Dry::Struct; end

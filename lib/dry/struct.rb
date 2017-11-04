@@ -70,6 +70,8 @@ module Dry
     defines :schema
     schema EMPTY_HASH
 
+    CONSTRUCTOR_TYPE = Dry::Types['symbol'].enum(:permissive, :schema, :strict, :strict_with_defaults)
+
     # Sets or retrieves {#constructor} type as a symbol
     #
     # @note All examples below assume that you have defined {Struct} with
@@ -106,13 +108,6 @@ module Dry
     # 2. Input omits a key for a value that has a default
     # 3. Input contains nil for a value that specifies a default
     # 4. Input includes a key that was not specified in the schema
-    #
-    # @note Don’t use `:weak` and `:symbolized` as {#constructor_type},
-    #   and instead use [`dry-validation`][] to process and validate
-    #   attributes, otherwise your struct will behave as a data validator
-    #   which raises exceptions on invalid input (assuming your attributes
-    #   types are strict)
-    #   [`dry-validation`]: https://github.com/dry-rb/dry-validation
     #
     # @example `:permissive` constructor
     #   class User < Dry::Struct
@@ -177,7 +172,7 @@ module Dry
     # @overload constructor_type
     #   Returns the constructor type for {Struct}
     #   @return [Symbol] (:strict)
-    defines :constructor_type
+    defines :constructor_type, type: CONSTRUCTOR_TYPE
     constructor_type :permissive
 
     # @return [Dry::Equalizer]
