@@ -10,6 +10,7 @@ module Dry
     module ClassInterface
       include Core::ClassAttributes
 
+      include Dry::Types::Type
       include Dry::Types::Builder
 
       # @param [Class] klass

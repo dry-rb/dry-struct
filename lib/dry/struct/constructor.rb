@@ -2,6 +2,7 @@ module Dry
   class Struct
     class Constructor
       include Dry::Equalizer(:type)
+      include Dry::Types::Type
 
       # @return [#call]
       attr_reader :fn
