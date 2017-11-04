@@ -70,9 +70,7 @@ module Dry
     defines :schema
     schema EMPTY_HASH
 
-    def self.valid_constructor_types
-      Dry::Types['symbol'].enum(:permissive, :schema, :strict, :strict_with_defaults)
-    end
+    CONSTRUCTOR_TYPE = Dry::Types['symbol'].enum(:permissive, :schema, :strict, :strict_with_defaults)
 
     # Sets or retrieves {#constructor} type as a symbol
     #
@@ -174,7 +172,7 @@ module Dry
     # @overload constructor_type
     #   Returns the constructor type for {Struct}
     #   @return [Symbol] (:strict)
-    defines :constructor_type, type: valid_constructor_types
+    defines :constructor_type, type: CONSTRUCTOR_TYPE
     constructor_type :permissive
 
     # @return [Dry::Equalizer]
