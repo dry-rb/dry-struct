@@ -1,9 +1,5 @@
 module Dry
   class Struct
-    extend Dry::Configurable
-
-    setting :namespace, self
-
     # Raised when given input doesn't conform schema and constructor type
     Error = Class.new(TypeError)
 
