@@ -13,6 +13,14 @@ end
 
 require 'pathname'
 
+begin
+  require 'warning'
+  Warning.ignore(/regexp_parser/)
+  Warning.ignore(/mutant/)
+  Warning.ignore(/parser/)
+rescue LoadError
+end
+
 module DryStructSpec
   ROOT = Pathname.new(__dir__).parent.expand_path.freeze
 end
@@ -29,6 +37,7 @@ begin
   module Mutant
     class Selector
       class Expression < self
+        undef call
         def call(_subject)
           integration.all_tests
         end
