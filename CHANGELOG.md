@@ -1,9 +1,10 @@
-# v0.4.0 2017-11-03
+# v0.4.0 2017-11-04
 
 ## Changed
 
 * Attribute readers don't override existing instance methods (solnic)
 * `Struct#new` uses raw attributes instead of method calls, this makes the behavior consistent with the change above (flash-gordon)
+* `constructor_type` now actively rejects `:weak` and `:symbolized` values (GustavoCaso)
 
 ## Fixed
 
