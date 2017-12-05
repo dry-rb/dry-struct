@@ -97,10 +97,8 @@ module Dry
 
       # @param [Dry::Struct] superclass the superclass of the nested struct
       # @yield the body of the nested struct
-      def build_nested_type(superclass, &body)
-        Class.new(superclass).tap do |struct|
-          struct.instance_eval(&body)
-        end
+      def build_nested_type(superclass, &block)
+        Class.new(superclass, &block)
       end
       private :build_nested_type
 
