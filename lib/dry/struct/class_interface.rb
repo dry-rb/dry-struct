@@ -79,11 +79,18 @@ module Dry
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
       def check_schema_duplication(new_schema)
-        shared_keys = new_schema.keys & (schema.keys - superclass.schema.keys)
+        self_unique_keys = schema.keys - super_schema.keys
+        conflicting_keys = new_schema.keys & self_unique_keys
 
-        raise RepeatedAttributeError, shared_keys.first if shared_keys.any?
+        raise RepeatedAttributeError, conflicting_keys.first if conflicting_keys.any?
       end
       private :check_schema_duplication
+
+      # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
+      def super_schema
+        defined?(superclass.schema) ? superclass.schema : EMPTY_HASH
+      end
+      private :super_schema
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}

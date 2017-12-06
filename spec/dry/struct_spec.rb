@@ -263,6 +263,35 @@ RSpec.describe Dry::Struct do
       class Test::Child < Test::Parent; end
       expect(Test::Child.constructor_type).to eql(:schema)
     end
+
+    it 'child class inherits schema' do
+      class Test::ParentSchema < Dry::Struct
+        attribute :bar, 'string'
+      end
+
+      Test::ChildSchema = Class.new(Test::ParentSchema)
+
+      [Test::ParentSchema,
+       Test::ChildSchema].each do |klass|
+        expect(klass.schema[:bar]).to eq 'string'
+        expect(klass.instance_methods).to include :bar
+      end
+    end
+
+    context 'when parent schema is changed after inheritance' do
+      it 'child class inherits changed schema' do
+        Test::ParentSchemaChange = Class.new(Dry::Struct)
+        Test::ChildSchemaChange  = Class.new(Test::ParentSchemaChange)
+
+        Test::ParentSchemaChange.attribute :foo, 'string'
+
+        [Test::ParentSchemaChange,
+         Test::ChildSchemaChange].each do |klass|
+          expect(klass.schema[:foo]).to eq 'string'
+          expect(klass.instance_methods).to include :foo
+        end
+      end
+    end
   end
 
   describe 'defining constructor_type with weak or symbolized' do
