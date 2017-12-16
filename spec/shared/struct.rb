@@ -157,6 +157,12 @@ RSpec.shared_examples_for Dry::Struct do
         expect(type.attribute_names).to eql(%i(name age address root))
       end
     end
+
+    describe '.meta' do
+      it 'return an empty hash' do
+        expect(type.meta).to eql({})
+      end
+    end
   end
 
   it 'registered without wrapping' do

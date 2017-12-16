@@ -206,6 +206,11 @@ module Dry
       def attribute_names
         @attribute_names ||= schema.keys
       end
+
+      # @return [{Symbol => Object}]
+      def meta
+        EMPTY_HASH
+      end
     end
   end
 end
