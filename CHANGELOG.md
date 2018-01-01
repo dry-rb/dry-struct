@@ -1,3 +1,21 @@
+# to-be-released
+
+## Added
+
+* Support for `Struct.meta`, note that `.meta` returns a _new class_ (flash-gordon)
+
+```ruby
+class User < Dry::Struct
+  attribute :name, Dry::Types['strict.string']
+end
+
+UserWithMeta = User.meta(foo: :bar)
+
+User.new(name: 'Jade').class == UserWithMeta.new(name: 'Jade').class # => false
+```
+
+[Compare v0.4.0...master](https://github.com/dry-rb/dry-struct/compare/v0.4.0...master)
+
 # v0.4.0 2017-11-04
 
 ## Changed
