@@ -159,6 +159,12 @@ RSpec.shared_examples_for Dry::Struct do
     end
 
     describe '.meta' do
+      it 'builds a new class with meta' do
+        struct_with_meta = type.meta(foo: :bar)
+
+        expect(struct_with_meta.meta).to eql(foo: :bar)
+      end
+
       it 'return an empty hash' do
         expect(type.meta).to eql({})
       end

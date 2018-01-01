@@ -17,8 +17,14 @@ module Dry
       def inherited(klass)
         super
 
-        klass.equalizer Equalizer.new(*schema.keys)
-        klass.send(:include, klass.equalizer)
+        base = self
+
+        klass.class_eval do
+          equalizer Equalizer.new(*schema.keys)
+          include(klass.equalizer)
+
+          @meta = base.meta
+        end
       end
 
       # Adds an attribute for this {Struct} with given `name` and `type`
@@ -157,7 +163,7 @@ module Dry
       # @param [({Symbol => Object})] args
       # @return [Dry::Types::Result::Failure]
       def failure(*args)
-        result(Types::Result::Failure, *args)
+        result(::Dry::Types::Result::Failure, *args)
       end
 
       # @param [Class] klass
@@ -208,8 +214,14 @@ module Dry
       end
 
       # @return [{Symbol => Object}]
-      def meta
-        EMPTY_HASH
+      def meta(meta = Undefined)
+        if meta.equal?(Undefined)
+          @meta
+        else
+          Class.new(self) do
+            @meta = @meta.merge(meta) unless meta.empty?
+          end
+        end
       end
     end
   end

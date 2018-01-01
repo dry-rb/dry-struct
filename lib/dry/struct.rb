@@ -178,6 +178,8 @@ module Dry
     # @return [Dry::Equalizer]
     defines :equalizer
 
+    @meta = EMPTY_HASH
+
     # @param [Hash, #each] attributes
     def initialize(attributes)
       attributes.each { |key, value| instance_variable_set("@#{key}", value) }
