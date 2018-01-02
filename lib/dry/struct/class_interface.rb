@@ -77,6 +77,7 @@ module Dry
         end
 
         equalizer.instance_variable_get('@keys').concat(new_schema.keys)
+        @attribute_names = nil
 
         self
       end
