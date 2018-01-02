@@ -7,6 +7,32 @@ require 'dry/struct/class_interface'
 require 'dry/struct/hashify'
 
 module Dry
+  # Constructor method for easily creating a {Dry::Struct}.
+  # @return [Dry::Struct]
+  # @example
+  #   require 'dry-struct'
+  #
+  #   module Types
+  #     include Dry::Types.module
+  #   end
+  #
+  #   Person = Dry.Struct(name: Types::Strict::String, age: Types::Strict::Int)
+  #   matz = Person.new(name: "Matz", age: 52)
+  #   matz.name #=> "Matz"
+  #   matz.age #=> 52
+  #
+  #   Test = Dry.Struct(:strict, expected: Types::Strict::String)
+  #   Test[expected: "foo", unexpected: "bar"]
+  #   #=> Dry::Struct::Error: [Test.new] unexpected keys [:unexpected] in Hash input
+  # @see Dry::Struct#constructor_type
+  def self.Struct(constructor = :permissive, **attributes, &block)
+    klass = Class.new(Dry::Struct) do
+      constructor_type constructor
+      attributes.each { |a, type| attribute a, type }
+    end
+    klass.tap { |k| k.instance_eval(&block) if block }
+  end
+
   # Typed {Struct} with virtus-like DSL for defining schema.
   #
   # ### Differences between dry-struct and virtus
