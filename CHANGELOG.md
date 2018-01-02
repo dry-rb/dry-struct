@@ -1,5 +1,9 @@
 # to-be-released
 
+## Fixed
+
+* Adding a new attribute invalidates `attribute_names` (flash-gordon)
+
 ## Added
 
 * Support for `Struct.meta`, note that `.meta` returns a _new class_ (flash-gordon)
