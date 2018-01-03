@@ -74,6 +74,74 @@ module Dry
         attributes(name => type)
       end
 
+      # Adds an array attribute for this {Struct} with given `name` and
+      # `member_type` and modifies {.schema} accordingly.
+      #
+      # @param [Symbol] name name of the defined attribute
+      # @param [Dry::Types::Definition, nil] member_type or superclass of nested
+      #   member type
+      # @return [Dry::Struct]
+      # @yield
+      #   If a block is given, it will be evaluated in the context of
+      #   a new struct class, and set as the member type for the given
+      #   array attribute. A class with a singularized matching name will also
+      #   be defined for the nested member type.
+      # @raise [RepeatedAttributeError] when trying to define array attribute
+      #   with the same name as previously defined one
+      #
+      # @example
+      #   class Language < Dry::Struct
+      #     attribute :name, Types::String
+      #     array :versions, Types::String
+      #     array :celebrities, Dry::Struct do
+      #       attribute :name, Types::String
+      #       attribute :pseudonym, Types::String
+      #     end
+      #   end
+      #
+      #   Language.schema
+      #     #=> {
+      #           :name=>#<Dry::Types::Definition primitive=String options={} meta={}>,
+      #           :versions=>#<Dry::Types::Array::Member primitive=Array options={:member=>#<Dry::Types::Definition primitive=String options={} meta={}>} meta={}>,
+      #           :celebrities=>#<Dry::Types::Array::Member primitive=Array options={:member=>Language::Celebrity} meta={}>
+      #         }
+      #
+      #   ruby = Language.new(
+      #     name: 'Ruby',
+      #     versions: %w(1.8.7 1.9.8 2.0.1),
+      #     celebrities: [
+      #       { name: 'Yukihiro Matsumoto', pseudonym: 'Matz' },
+      #       { name: 'Aaron Patterson', pseudonym: 'tenderlove' }
+      #     ]
+      #   )
+      #   ruby.name #=> 'Ruby'
+      #   ruby.versions #=> ['1.8.7', '1.9.8', '2.0.1']
+      #   ruby.celebrities
+      #     #=> [
+      #           #<Language::Celebrity name='Yukihiro Matsumoto' pseudonym='Matz'>,
+      #           #<Language::Celebrity name='Aaron Patterson' pseudonym='tenderlove'>
+      #         ]
+      #   ruby.celebrities[0].name #=> 'Yukihiro Matsumoto'
+      #   ruby.celebrities[0].pseudonym #=> 'Matz'
+      #   ruby.celebrities[1].name #=> 'Aaron Patterson'
+      #   ruby.celebrities[1].pseudonym #=> 'tenderlove'
+      def array(name, type = nil, &block)
+        if block
+          type = build_nested_type(
+            Dry::Core::Inflector.singularize(name),
+            type || ::Dry::Struct,
+            &block
+          )
+        elsif type.nil?
+          raise(
+            ArgumentError,
+            'you must supply a type or a block to `Dry::Struct.array`'
+          )
+        end
+
+        attributes(name => Dry::Types['array'].of(type))
+      end
+
       # @param [Hash{Symbol => Dry::Types::Definition}] new_schema
       # @return [Dry::Struct]
       # @raise [RepeatedAttributeError] when trying to define attribute with the
