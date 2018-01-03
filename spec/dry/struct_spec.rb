@@ -178,50 +178,79 @@ RSpec.describe Dry::Struct do
     end
 
     context 'when given a block-style nested type' do
-      context 'with no superclass type' do
-        let(:user_type) do
-          Class.new(Dry::Struct) do
-            attribute :name, 'coercible.string'
-            attribute :age, 'coercible.int'
-            attribute :address do
-              attribute :city, 'strict.string'
-              attribute :zipcode, 'coercible.string'
+      context 'when the nested type is not already defined' do
+        context 'with no superclass type' do
+          let(:user_type) do
+            Class.new(Dry::Struct) do
+              attribute :name, 'coercible.string'
+              attribute :age, 'coercible.int'
+              attribute :address do
+                attribute :city, 'strict.string'
+                attribute :zipcode, 'coercible.string'
+              end
             end
+          end
+
+          it 'defines attributes for the constructor' do
+            user = user_type[
+              name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
+            ]
+
+            assert_valid_struct(user)
+          end
+
+          it 'defines a nested type' do
+            expect { user_type.const_get('Address') }.to_not raise_error
           end
         end
 
-        it 'defines attributes for the constructor' do
-          user = user_type[
-            name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
-          ]
+        context 'with a superclass type' do
+          let(:user_type) do
+            Class.new(Dry::Struct) do
+              attribute :name, 'coercible.string'
+              attribute :age, 'coercible.int'
+              attribute :address, Test::BaseAddress do
+                attribute :city, 'strict.string'
+                attribute :zipcode, 'coercible.string'
+              end
+            end
+          end
 
-          assert_valid_struct(user)
+          it 'defines attributes for the constructor' do
+            user = user_type[
+              name: :Jane, age: '21', address: {
+                street: '123 Fake Street',
+                city: 'NYC',
+                zipcode: 123
+              }
+            ]
+
+            assert_valid_struct(user)
+            expect(user.address.street).to eq('123 Fake Street')
+          end
+
+          it 'defines a nested type' do
+            expect { user_type.const_get('Address') }.to_not raise_error
+          end
         end
       end
 
-      context 'with a superclass type' do
-        let(:user_type) do
-          Class.new(Dry::Struct) do
-            attribute :name, 'coercible.string'
-            attribute :age, 'coercible.int'
-            attribute :address, Test::BaseAddress do
-              attribute :city, 'strict.string'
-              attribute :zipcode, 'coercible.string'
+      context 'when the nested type is not already defined' do
+        before do
+          module Test
+            module AlreadyDefined
+              class User < Dry::Struct
+                class Address
+                end
+              end
             end
           end
         end
 
-        it 'defines attributes for the constructor' do
-          user = user_type[
-            name: :Jane, age: '21', address: {
-              street: '123 Fake Street',
-              city: 'NYC',
-              zipcode: 123
-            }
-          ]
-
-          assert_valid_struct(user)
-          expect(user.address.street).to eq('123 Fake Street')
+        it 'raises a Dry::Struct::Error' do
+          expect {
+            Test::AlreadyDefined::User.attribute(:address) {}
+          }.to raise_error(Dry::Struct::Error)
         end
       end
     end
