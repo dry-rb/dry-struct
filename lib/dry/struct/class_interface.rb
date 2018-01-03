@@ -1,4 +1,5 @@
 require 'dry/core/class_attributes'
+require 'dry/core/inflector'
 require 'dry/equalizer'
 
 require 'dry/struct/errors'
@@ -29,8 +30,9 @@ module Dry
       # @return [Dry::Struct]
       # @yield
       #   If a block is given, it will be evaluated in the context of
-      #   and new struct class, and set as a nested type for the given
-      #   name
+      #   a new struct class, and set as a nested type for the given
+      #   attribute. A class with a matching name will also be defined for
+      #   the nested type.
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
       #
@@ -45,15 +47,16 @@ module Dry
       #   Language.schema
       #     #=> {
       #           :name=>#<Dry::Types::Definition primitive=String options={} meta={}>,
-      #           :details=>#<Class:0x000055b78c6bd9d0>
+      #           :details=>Language::Details
       #         }
       #
       #   ruby = Language.new(name: 'Ruby', details: { type: 'OO' })
       #   ruby.name #=> 'Ruby'
+      #   ruby.details #=> #<Language::Details type="OO">
       #   ruby.details.type #=> 'OO'
       def attribute(name, type = nil, &block)
         if block
-          type = build_nested_type(type || ::Dry::Struct, &block)
+          type = build_nested_type(name, type || ::Dry::Struct, &block)
         elsif type.nil?
           raise(
             ArgumentError,
@@ -95,10 +98,19 @@ module Dry
         self
       end
 
+      # @param [Symbol|String] name the name of the nested type
       # @param [Dry::Struct] superclass the superclass of the nested struct
       # @yield the body of the nested struct
-      def build_nested_type(superclass, &block)
-        Class.new(superclass, &block)
+      def build_nested_type(name, superclass, &block)
+        type = Class.new(superclass, &block)
+        const_name = Dry::Core::Inflector.camelize(name)
+
+        raise(
+          Struct::Error,
+          "Can't create nested attribute - `#{self.class}::#{const_name}` already defined"
+        ) if const_defined?(const_name)
+
+        const_set(const_name, type)
       end
       private :build_nested_type
 
