@@ -4,6 +4,10 @@ RSpec.describe Dry::Struct do
 
   before do
     module Test
+      class BaseAddress < Dry::Struct
+        attribute :street, 'strict.string'
+      end
+
       class Address < Dry::Struct
         attribute :city, 'strict.string'
         attribute :zipcode, 'coercible.string'
@@ -163,12 +167,92 @@ RSpec.describe Dry::Struct do
       expect(user.address.zipcode).to eql('123')
     end
 
-    it 'defines attributes for the constructor' do
-      user = user_type[
-        name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
-      ]
+    context 'when given a pre-defined nested type' do
+      it 'defines attributes for the constructor' do
+        user = user_type[
+          name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
+        ]
 
-      assert_valid_struct(user)
+        assert_valid_struct(user)
+      end
+    end
+
+    context 'when given a block-style nested type' do
+      context 'when the nested type is not already defined' do
+        context 'with no superclass type' do
+          let(:user_type) do
+            Class.new(Dry::Struct) do
+              attribute :name, 'coercible.string'
+              attribute :age, 'coercible.int'
+              attribute :address do
+                attribute :city, 'strict.string'
+                attribute :zipcode, 'coercible.string'
+              end
+            end
+          end
+
+          it 'defines attributes for the constructor' do
+            user = user_type[
+              name: :Jane, age: '21', address: { city: 'NYC', zipcode: 123 }
+            ]
+
+            assert_valid_struct(user)
+          end
+
+          it 'defines a nested type' do
+            expect { user_type.const_get('Address') }.to_not raise_error
+          end
+        end
+
+        context 'with a superclass type' do
+          let(:user_type) do
+            Class.new(Dry::Struct) do
+              attribute :name, 'coercible.string'
+              attribute :age, 'coercible.int'
+              attribute :address, Test::BaseAddress do
+                attribute :city, 'strict.string'
+                attribute :zipcode, 'coercible.string'
+              end
+            end
+          end
+
+          it 'defines attributes for the constructor' do
+            user = user_type[
+              name: :Jane, age: '21', address: {
+                street: '123 Fake Street',
+                city: 'NYC',
+                zipcode: 123
+              }
+            ]
+
+            assert_valid_struct(user)
+            expect(user.address.street).to eq('123 Fake Street')
+          end
+
+          it 'defines a nested type' do
+            expect { user_type.const_get('Address') }.to_not raise_error
+          end
+        end
+      end
+
+      context 'when the nested type is not already defined' do
+        before do
+          module Test
+            module AlreadyDefined
+              class User < Dry::Struct
+                class Address
+                end
+              end
+            end
+          end
+        end
+
+        it 'raises a Dry::Struct::Error' do
+          expect {
+            Test::AlreadyDefined::User.attribute(:address) {}
+          }.to raise_error(Dry::Struct::Error)
+        end
+      end
     end
 
     it 'ignores unknown keys' do
@@ -189,12 +273,26 @@ RSpec.describe Dry::Struct do
       expect(user.root).to be(true)
     end
 
-    it 'raises error when type is missing' do
-      expect {
-        class Test::Foo < Dry::Struct
-          attribute :bar
-        end
-      }.to raise_error(ArgumentError)
+    context 'when no nested attribute block given' do
+      it 'raises error when type is missing' do
+        expect {
+          class Test::Foo < Dry::Struct
+            attribute :bar
+          end
+        }.to raise_error(ArgumentError)
+      end
+    end
+
+    context 'when nested attribute block given' do
+      it 'does not raise error when type is missing' do
+        expect {
+          class Test::Foo < Dry::Struct
+            attribute :bar do
+              attribute :foo, 'strict.string'
+            end
+          end
+        }.to_not raise_error
+      end
     end
 
     it 'raises error when attribute is defined twice' do

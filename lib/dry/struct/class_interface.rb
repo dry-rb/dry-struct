@@ -1,4 +1,5 @@
 require 'dry/core/class_attributes'
+require 'dry/core/inflector'
 require 'dry/equalizer'
 
 require 'dry/struct/errors'
@@ -31,22 +32,44 @@ module Dry
       # and modifies {.schema} accordingly.
       #
       # @param [Symbol] name name of the defined attribute
-      # @param [Dry::Types::Definition] type
+      # @param [Dry::Types::Definition, nil] type or superclass of nested type
       # @return [Dry::Struct]
+      # @yield
+      #   If a block is given, it will be evaluated in the context of
+      #   a new struct class, and set as a nested type for the given
+      #   attribute. A class with a matching name will also be defined for
+      #   the nested type.
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
       #
       # @example
       #   class Language < Dry::Struct
       #     attribute :name, Types::String
+      #     attribute :details, Dry::Struct do
+      #       attribute :type, Types::String
+      #     end
       #   end
       #
       #   Language.schema
-      #     #=> {name: #<Dry::Types::Definition primitive=String options={}>}
+      #     #=> {
+      #           :name=>#<Dry::Types::Definition primitive=String options={} meta={}>,
+      #           :details=>Language::Details
+      #         }
       #
-      #   ruby = Language.new(name: 'Ruby')
+      #   ruby = Language.new(name: 'Ruby', details: { type: 'OO' })
       #   ruby.name #=> 'Ruby'
-      def attribute(name, type)
+      #   ruby.details #=> #<Language::Details type="OO">
+      #   ruby.details.type #=> 'OO'
+      def attribute(name, type = nil, &block)
+        if block
+          type = build_nested_type(name, type || ::Dry::Struct, &block)
+        elsif type.nil?
+          raise(
+            ArgumentError,
+            'you must supply a type or a block to `Dry::Struct.attribute`'
+          )
+        end
+
         attributes(name => type)
       end
 
@@ -81,6 +104,22 @@ module Dry
 
         self
       end
+
+      # @param [Symbol|String] name the name of the nested type
+      # @param [Dry::Struct] superclass the superclass of the nested struct
+      # @yield the body of the nested struct
+      def build_nested_type(name, superclass, &block)
+        type = Class.new(superclass, &block)
+        const_name = Dry::Core::Inflector.camelize(name)
+
+        raise(
+          Struct::Error,
+          "Can't create nested attribute - `#{self}::#{const_name}` already defined"
+        ) if const_defined?(const_name)
+
+        const_set(const_name, type)
+      end
+      private :build_nested_type
 
       # @param [Hash{Symbol => Dry::Types::Definition, Dry::Struct}] new_schema
       # @raise [RepeatedAttributeError] when trying to define attribute with the
