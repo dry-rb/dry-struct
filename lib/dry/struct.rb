@@ -93,8 +93,15 @@ module Dry
     input Types['coercible.hash']
 
     # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
-    defines :schema
-    schema EMPTY_HASH
+    def self.schema(value = Undefined)
+      @schema ||= EMPTY_HASH
+
+      if value == Undefined
+        super_schema.merge @schema
+      else
+        @schema = value
+      end
+    end
 
     CONSTRUCTOR_TYPE = Dry::Types['symbol'].enum(:permissive, :schema, :strict, :strict_with_defaults)
 
