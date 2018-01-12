@@ -87,10 +87,6 @@ module Dry
     defines :input
     input Types['coercible.hash'].schema(EMPTY_HASH)
 
-    # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
-    defines :schema
-    schema EMPTY_HASH
-
     # @return [Dry::Equalizer]
     defines :equalizer
 

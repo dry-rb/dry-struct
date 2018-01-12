@@ -175,6 +175,41 @@ RSpec.shared_examples_for Dry::Struct do
         expect(type.meta).to eql({})
       end
     end
+
+    describe '.transform_types' do
+      it 'adds a type transformation' do
+        type.transform_types { |t| t.meta(tranformed: true) }
+        type.attribute(:city, Dry::Types["strict.string"])
+        expect(type.schema[:city].meta).to eql(tranformed: true)
+      end
+
+      it 'accepts a proc' do
+        type.transform_types(-> t { t.meta(tranformed: true) })
+        type.attribute(:city, Dry::Types["strict.string"])
+        expect(type.schema[:city].meta).to eql(tranformed: true)
+      end
+    end
+
+    describe '.transform_keys' do
+      let(:jane_str) do
+        {
+          'name' => :Jane,
+          'age' => '21',
+          'root' => true,
+          'address' => { city: 'NYC', zipcode: 123 }
+        }
+      end
+
+      it 'adds a key tranformation' do
+        type.transform_keys(&:to_sym)
+        expect(type.(jane_str)).to eql(type.(jane))
+      end
+
+      it 'accepts a proc' do
+        type.transform_keys(:to_sym.to_proc)
+        expect(type.(jane_str)).to eql(type.(jane))
+      end
+    end
   end
 
   it 'registered without wrapping' do

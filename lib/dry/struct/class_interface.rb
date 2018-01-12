@@ -79,7 +79,7 @@ module Dry
       #   same name as previously defined one
       # @see #attribute
       # @example
-      #   class Book1 < Dry::Struct
+      #   class Book < Dry::Struct
       #     attributes(
       #       title: Types::String,
       #       author: Types::String
@@ -92,7 +92,6 @@ module Dry
       def attributes(new_schema)
         check_schema_duplication(new_schema)
 
-        schema schema.merge(new_schema)
         input input.schema(new_schema)
 
         new_schema.each_key do |key|
@@ -103,6 +102,40 @@ module Dry
         @attribute_names = nil
 
         self
+      end
+
+      # Add an arbitrary transformation for new attribute types.
+      #
+      # @param [#call,nil] proc
+      # @param [#call,nil] block
+      # @example
+      #   class Book < Dry::Struct
+      #     transform_types { |t| t.meta(struct: :Book) }
+      #
+      #     attribute :title, Types::Strict::String
+      #   end
+      #
+      #   Book.schema[:title].meta # => { struct: :Book }
+      #
+      def transform_types(proc = nil, &block)
+        input input.with_type_transform(proc || block)
+      end
+
+      # Add an arbitrary transformation for input hash keys.
+      #
+      # @param [#call,nil] proc
+      # @param [#call,nil] block
+      # @example
+      #   class Book < Dry::Struct
+      #     transform_keys(&:to_sym)
+      #
+      #     attribute :title, Types::Strict::String
+      #   end
+      #
+      #   Book.new('title' => "The Old Man and the Sea")
+      #   # => #<Book title="The Old Man and the Sea">
+      def transform_keys(proc = nil, &block)
+        input input.with_key_transform(proc || block)
       end
 
       # @param [Symbol|String] name the name of the nested type
@@ -133,7 +166,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = default_attributes)
+      def new(attributes = EMPTY_HASH)
         if attributes.instance_of?(self)
           attributes
         else
@@ -148,7 +181,7 @@ module Dry
       #
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @return [Dry::Struct]
-      def call(attributes = default_attributes)
+      def call(attributes = EMPTY_HASH)
         return attributes if attributes.is_a?(self)
         new(attributes)
       end
@@ -160,22 +193,6 @@ module Dry
       # @return [Dry::Struct::Constructor]
       def constructor(constructor = nil, **_options, &block)
         Struct::Constructor.new(self, fn: constructor || block)
-      end
-
-      # Retrieves default attributes from defined {.schema}.
-      # Used in a {Struct} constructor if no attributes provided to {.new}
-      #
-      # @return [Hash{Symbol => Object}]
-      def default_attributes
-        check_invalid_schema_keys
-        schema.each_with_object({}) { |(name, type), result|
-          result[name] = type.evaluate if type.default?
-        }
-      end
-
-      def check_invalid_schema_keys
-        invalid_keys = schema.select { |name, type|  type.instance_of?(String) }
-        raise ArgumentError, argument_error_msg(invalid_keys.keys) if invalid_keys.any?
       end
 
       def argument_error_msg(keys)
@@ -243,6 +260,11 @@ module Dry
       # @return [Boolean]
       def attribute?(key)
         schema.key?(key)
+      end
+
+      # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
+      def schema
+        input.member_types
       end
 
       # Gets the list of attribute names
