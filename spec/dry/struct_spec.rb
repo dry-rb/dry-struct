@@ -36,13 +36,6 @@ RSpec.describe Dry::Struct do
   shared_examples_for 'typical constructor' do
     it 'raises StructError when attribute constructor failed' do
       expect {
-        construct_user(age: {})
-      }.to raise_error(
-        Dry::Struct::Error,
-        '[Test::User.new] :name is missing in Hash input'
-      )
-
-      expect {
         construct_user(name: :Jane, age: '21', address: nil)
       }.to raise_error(
         Dry::Struct::Error,
@@ -356,18 +349,10 @@ RSpec.describe Dry::Struct do
   end
 
   describe 'when inheriting a struct from another struct' do
-    it 'also inherits the constructor_type' do
-      class Test::Parent < Dry::Struct; constructor_type(:schema); end
+    it 'also inherits the schema' do
+      class Test::Parent < Dry::Struct; input input.strict; end
       class Test::Child < Test::Parent; end
-      expect(Test::Child.constructor_type).to eql(:schema)
-    end
-  end
-
-  describe 'defining constructor_type with weak or symbolized' do
-    it 'raises InvalidClassAttributeValue' do
-      expect{
-        class Test::Parent < Dry::Struct; constructor_type(:weak); end
-      }.to raise_error(Dry::Core::InvalidClassAttributeValue)
+      expect(Test::Child.input).to be_strict
     end
   end
 
@@ -378,11 +363,9 @@ RSpec.describe Dry::Struct do
     end
   end
 
-  describe 'with a non-strict schema' do
+  describe 'default values' do
     subject(:struct) do
       Class.new(Dry::Struct) do
-        constructor_type(:schema)
-
         attribute :name, Dry::Types['strict.string'].default('Jane')
         attribute :age, Dry::Types['strict.int']
         attribute :admin, Dry::Types['strict.bool'].default(true)

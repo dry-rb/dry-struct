@@ -93,7 +93,7 @@ module Dry
         check_schema_duplication(new_schema)
 
         schema schema.merge(new_schema)
-        input Types['coercible.hash'].public_send(constructor_type, schema)
+        input input.schema(new_schema)
 
         new_schema.each_key do |key|
           attr_reader(key) unless instance_methods.include?(key)
@@ -133,7 +133,6 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      #   with given {#constructor_type}
       def new(attributes = default_attributes)
         if attributes.instance_of?(self)
           attributes

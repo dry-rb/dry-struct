@@ -4,8 +4,7 @@ RSpec.describe Dry do
     context 'constructor types' do
       %i[permissive schema strict strict_with_defaults].each do |constructor|
         it "returns a struct with constructor type #{constructor}" do
-          struct_klass = Dry.Struct(constructor, name: 'strict.string')
-          expect(struct_klass.constructor_type).to eq constructor
+          struct_klass = Dry.Struct(name: 'strict.string')
 
           struct = struct_klass.new(name: 'Test')
           expect(struct.__attributes__).to eq(name: 'Test')
@@ -17,7 +16,7 @@ RSpec.describe Dry do
       before do
         module Test
           Library = Dry.Struct do
-            constructor_type :strict
+            input input.strict
 
             attribute :library, 'strict.string'
             attribute :language, 'strict.string'

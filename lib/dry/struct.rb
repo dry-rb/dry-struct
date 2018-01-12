@@ -21,16 +21,14 @@ module Dry
   #   matz.name #=> "Matz"
   #   matz.age #=> 52
   #
-  #   Test = Dry.Struct(:strict, expected: Types::Strict::String)
+  #   Test = Dry.Struct(expected: Types::Strict::String) { input(input.strict) }
   #   Test[expected: "foo", unexpected: "bar"]
   #   #=> Dry::Struct::Error: [Test.new] unexpected keys [:unexpected] in Hash input
-  # @see Dry::Struct#constructor_type
-  def self.Struct(constructor = :permissive, **attributes, &block)
-    klass = Class.new(Dry::Struct) do
-      constructor_type constructor
+  def self.Struct(attributes = Dry::Core::Constants::EMPTY_HASH, &block)
+    Class.new(Dry::Struct) do
       attributes.each { |a, type| attribute a, type }
+      instance_eval(&block) if block
     end
-    klass.tap { |k| k.instance_eval(&block) if block }
   end
 
   # Typed {Struct} with virtus-like DSL for defining schema.
@@ -44,14 +42,12 @@ module Dry
   # * Handling of attribute values is provided by standalone type objects from
   #   [`dry-types`][].
   # * Handling of attribute hashes is provided by standalone hash schemas from
-  #   [`dry-types`][], which means there are different types of constructors in
-  #   {Struct} (see {Dry::Struct::ClassInterface#constructor_type})
+  #   [`dry-types`][].
   # * Struct classes quack like [`dry-types`][], which means you can use them
   #   in hash schemas, as array members or sum them
   #
   # {Struct} class can specify a constructor type, which uses [hash schemas][]
   # to handle attributes in `.new` method.
-  # See {ClassInterface#new} for constructor types descriptions and examples.
   #
   # [`dry-types`]: https://github.com/dry-rb/dry-types
   # [Virtus]: https://github.com/solnic/virtus
@@ -86,120 +82,14 @@ module Dry
     include Dry::Core::Constants
     extend ClassInterface
 
-    # {Dry::Types::Hash} subclass with specific behaviour defined for
-    # @return [Dry::Types::Hash]
-    # @see #constructor_type
+    # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
+    # @return [Dry::Types::Hash::Schema]
     defines :input
-    input Types['coercible.hash']
+    input Types['coercible.hash'].schema(EMPTY_HASH)
 
     # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
     defines :schema
     schema EMPTY_HASH
-
-    CONSTRUCTOR_TYPE = Dry::Types['symbol'].enum(:permissive, :schema, :strict, :strict_with_defaults)
-
-    # Sets or retrieves {#constructor} type as a symbol
-    #
-    # @note All examples below assume that you have defined {Struct} with
-    #   following attributes and explicitly call only {#constructor_type}:
-    #
-    #   ```ruby
-    #   class User < Dry::Struct
-    #     attribute :name, Types::Strict::String.default('John Doe')
-    #     attribute :age, Types::Strict::Int
-    #   end
-    #   ```
-    #
-    # ### Common constructor types include:
-    #
-    # * `:permissive` - the default constructor type, useful for defining
-    #   {Struct}s that are instantiated using data from the database
-    #   (i.e. results of a database query), where you expect *all defined
-    #   attributes to be present* and it's OK to ignore other keys
-    #   (i.e. keys used for joining, that are not relevant from your domain
-    #   {Struct}s point of view). Default values **are not used** otherwise
-    #   you wouldn't notice missing data.
-    # * `:schema` - missing keys will result in setting them using default
-    #   values, unexpected keys will be ignored.
-    # * `:strict` - useful when you *do not expect keys other than the ones
-    #   you specified as attributes* in the input hash
-    # * `:strict_with_defaults` - same as `:strict` but you are OK that some
-    #   values may be nil and you want defaults to be set
-    #
-    # To feel the difference between constructor types, look into examples.
-    # Each of them provide the same attributes' definitions,
-    # different constructor type, and 4 cases of given input:
-    #
-    # 1. Input omits a key for a value that does not have a default
-    # 2. Input omits a key for a value that has a default
-    # 3. Input contains nil for a value that specifies a default
-    # 4. Input includes a key that was not specified in the schema
-    #
-    # @example `:permissive` constructor
-    #   class User < Dry::Struct
-    #     constructor_type :permissive
-    #   end
-    #
-    #   User.new(name: "Jane")
-    #     #=> Dry::Struct::Error: [User.new] :age is missing in Hash input
-    #   User.new(age: 31)
-    #     #=> Dry::Struct::Error: [User.new] :name is missing in Hash input
-    #   User.new(name: nil, age: 31)
-    #     #=> #<User name="John Doe" age=31>
-    #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-    #     #=> #<User name="Jane" age=31>
-    #
-    # @example `:schema` constructor
-    #   class User < Dry::Struct
-    #     constructor_type :schema
-    #   end
-    #
-    #   User.new(name: "Jane")        #=> #<User name="Jane" age=nil>
-    #   User.new(age: 31)             #=> #<User name="John Doe" age=31>
-    #   User.new(name: nil, age: 31)  #=> #<User name="John Doe" age=31>
-    #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-    #     #=> #<User name="Jane" age=31>
-    #
-    # @example `:strict` constructor
-    #   class User < Dry::Struct
-    #     constructor_type :strict
-    #   end
-    #
-    #   User.new(name: "Jane")
-    #     #=> Dry::Struct::Error: [User.new] :age is missing in Hash input
-    #   User.new(age: 31)
-    #     #=> Dry::Struct::Error: [User.new] :name is missing in Hash input
-    #   User.new(name: nil, age: 31)
-    #     #=> Dry::Struct::Error: [User.new] nil (NilClass) has invalid type for :name
-    #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-    #     #=> Dry::Struct::Error: [User.new] unexpected keys [:unexpected] in Hash input
-    #
-    # @example `:strict_with_defaults` constructor
-    #   class User < Dry::Struct
-    #     constructor_type :strict_with_defaults
-    #   end
-    #
-    #   User.new(name: "Jane")
-    #     #=> Dry::Struct::Error: [User.new] :age is missing in Hash input
-    #   User.new(age: 31)
-    #     #=> #<User name="John Doe" age=31>
-    #   User.new(name: nil, age: 31)
-    #     #=> Dry::Struct::Error: [User.new] nil (NilClass) has invalid type for :name
-    #   User.new(name: "Jane", age: 31, unexpected: "attribute")
-    #     #=> Dry::Struct::Error: [User.new] unexpected keys [:unexpected] in Hash input
-    #
-    # @see http://dry-rb.org/gems/dry-types/hash-schemas
-    #
-    # @overload constructor_type(type)
-    #   Sets the constructor type for {Struct}
-    #   @param [Symbol] type one of constructor types, see above
-    #   @return [Symbol]
-    #
-    # @overload constructor_type
-    #   Returns the constructor type for {Struct}
-    #   @return [Symbol] (:strict)
-    defines :constructor_type, type: CONSTRUCTOR_TYPE
-    constructor_type :permissive
 
     # @return [Dry::Equalizer]
     defines :equalizer
