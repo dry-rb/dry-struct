@@ -18,6 +18,7 @@ begin
   Warning.ignore(/regexp_parser/)
   Warning.ignore(/mutant/)
   Warning.ignore(/parser/)
+  Warning.ignore(/slice\.rb/)
 rescue LoadError
 end
 
