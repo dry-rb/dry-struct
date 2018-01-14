@@ -16,7 +16,7 @@ RSpec.describe Dry::Struct do
       # This abstract user guarantees User preserves schema definition
       class AbstractUser < Dry::Struct
         attribute :name, 'coercible.string'
-        attribute :age, 'coercible.int'
+        attribute :age, 'coercible.integer'
         attribute :address, Test::Address
       end
 
@@ -96,7 +96,7 @@ RSpec.describe Dry::Struct do
       it "doesn't tolerate missing required keys" do
         struct = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['strict.string'].default('Jane')
-          attribute :age, Dry::Types['strict.int']
+          attribute :age, Dry::Types['strict.integer']
         end
 
         expect { struct.new }.to raise_error(Dry::Struct::Error, /:age is missing in Hash input/)
@@ -105,7 +105,7 @@ RSpec.describe Dry::Struct do
 
     it "doesn't coerce to a hash recurcively" do
       properties = Class.new(Dry::Struct) do
-        attribute :age, Dry::Types['strict.int'].constructor(-> v { v + 1 })
+        attribute :age, Dry::Types['strict.integer'].constructor(-> v { v + 1 })
       end
 
       struct = Class.new(Dry::Struct) do
@@ -167,7 +167,7 @@ RSpec.describe Dry::Struct do
           let(:user_type) do
             Class.new(Dry::Struct) do
               attribute :name, 'coercible.string'
-              attribute :age, 'coercible.int'
+              attribute :age, 'coercible.integer'
               attribute :address do
                 attribute :city, 'strict.string'
                 attribute :zipcode, 'coercible.string'
@@ -192,7 +192,7 @@ RSpec.describe Dry::Struct do
           let(:user_type) do
             Class.new(Dry::Struct) do
               attribute :name, 'coercible.string'
-              attribute :age, 'coercible.int'
+              attribute :age, 'coercible.integer'
               attribute :address, Test::BaseAddress do
                 attribute :city, 'strict.string'
                 attribute :zipcode, 'coercible.string'
@@ -298,7 +298,7 @@ RSpec.describe Dry::Struct do
         end
 
         class Test::Bar < Test::Foo
-          attribute :bar, 'strict.int'
+          attribute :bar, 'strict.integer'
         end
       }.not_to raise_error
     end
@@ -309,7 +309,7 @@ RSpec.describe Dry::Struct do
 
       Test::Foo
         .attribute(:foo, 'strict.string')
-        .attribute(:bar, 'strict.int')
+        .attribute(:bar, 'strict.integer')
 
       foo = Test::Foo.new(foo: 'foo', bar: 123)
 
@@ -325,7 +325,7 @@ RSpec.describe Dry::Struct do
       end
 
       Test::Foo
-        .attribute(:age, 'strict.int')
+        .attribute(:age, 'strict.integer')
 
       struct = Test::Foo.new(age: 18)
       expect(struct.age).to eql("18 years old")
@@ -358,7 +358,7 @@ RSpec.describe Dry::Struct do
     subject(:struct) do
       Class.new(Dry::Struct) do
         attribute :name, Dry::Types['strict.string'].default('Jane')
-        attribute :age, Dry::Types['strict.int']
+        attribute :age, Dry::Types['strict.integer']
         attribute :admin, Dry::Types['strict.bool'].default(true)
       end
     end

@@ -8,7 +8,7 @@ RSpec.describe Dry::Struct::Value do
 
       class User < Dry::Struct::Value
         attribute :name, 'coercible.string'
-        attribute :age, 'coercible.int'
+        attribute :age, 'coercible.integer'
         attribute :address, Test::Address
       end
 
