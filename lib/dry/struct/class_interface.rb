@@ -1,7 +1,5 @@
 require 'dry/core/class_attributes'
 require 'dry/core/inflector'
-require 'dry/equalizer'
-
 require 'dry/struct/errors'
 require 'dry/struct/constructor'
 
@@ -21,9 +19,6 @@ module Dry
         base = self
 
         klass.class_eval do
-          equalizer Equalizer.new(*schema.keys)
-          include(klass.equalizer)
-
           @meta = base.meta
         end
       end
@@ -95,10 +90,14 @@ module Dry
         input input.schema(new_schema)
 
         new_schema.each_key do |key|
-          attr_reader(key) unless instance_methods.include?(key)
+          next if instance_methods.include?(key)
+          class_eval(<<~RUBY)
+            def #{ key }
+              @attributes[#{ key.inspect }]
+            end
+          RUBY
         end
 
-        equalizer.instance_variable_get('@keys').concat(new_schema.keys)
         @attribute_names = nil
 
         self
