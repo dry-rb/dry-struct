@@ -426,4 +426,20 @@ RSpec.describe Dry::Struct do
       expect(Test::Person.new(name: { name: 'Jane' })).to be_an_instance_of(Test::Person)
     end
   end
+
+  describe 'protected methods' do
+    it 'allows having attributes with reserved names' do
+      struct = Class.new(Dry::Struct) do
+        attribute :hash, Dry::Types['strict.string']
+        attribute :attributes, Dry::Types['array'].of(Dry::Types['strict.string'])
+      end
+
+      value = struct.new(hash: 'abc', attributes: %w(name))
+
+      expect(value.hash).to be_a(Integer)
+      expect(value.attributes).to eql(hash: 'abc', attributes: %w(name))
+      expect(value[:hash]).to eql('abc')
+      expect(value[:attributes]).to eql(%w(name))
+    end
+  end
 end
