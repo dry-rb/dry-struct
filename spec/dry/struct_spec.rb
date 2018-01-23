@@ -320,7 +320,7 @@ RSpec.describe Dry::Struct do
     it "doesn't define readers if methods are present" do
       class Test::Foo < Dry::Struct
         def age
-          "#{ @age } years old"
+          "#{ @attributes[:age] } years old"
         end
       end
 

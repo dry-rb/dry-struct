@@ -1,5 +1,6 @@
 require 'dry/core/constants'
 require 'dry-types'
+require 'dry-equalizer'
 
 require 'dry/struct/version'
 require 'dry/struct/errors'
@@ -81,20 +82,22 @@ module Dry
   class Struct
     include Dry::Core::Constants
     extend ClassInterface
+    include Dry::Equalizer(:__attributes__)
 
     # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
     # @return [Dry::Types::Hash::Schema]
     defines :input
     input Types['coercible.hash'].schema(EMPTY_HASH)
 
-    # @return [Dry::Equalizer]
-    defines :equalizer
-
     @meta = EMPTY_HASH
+
+    # @!attribute [Hash{Symbol => Object}] attributes
+    attr_reader :attributes
+    alias_method :__attributes__, :attributes
 
     # @param [Hash, #each] attributes
     def initialize(attributes)
-      attributes.each { |key, value| instance_variable_set("@#{key}", value) }
+      @attributes = attributes
     end
 
     # Retrieves value of previously defined attribute by its' `name`
@@ -167,12 +170,11 @@ module Dry
     end
     alias_method :__new__, :new
 
-    # @return[Hash{Symbol => Object}]
-    # @api private
-    def __attributes__
-      self.class.attribute_names.each_with_object({}) do |key, h|
-        h[key] = instance_variable_get(:"@#{ key }")
-      end
+    # @return [String]
+    def inspect
+      klass = self.class
+      attrs = klass.attribute_names.map { |key| " #{key}=#{@attributes[key].inspect}" }.join
+      "#<#{ klass.name || klass.inspect }#{ attrs }>"
     end
   end
 end
