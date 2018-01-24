@@ -1,4 +1,3 @@
-require 'set'
 require 'dry-types'
 require 'dry-equalizer'
 require 'dry/core/constants'
