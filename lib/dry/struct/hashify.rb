@@ -8,8 +8,8 @@ module Dry
       def self.[](value)
         if value.respond_to?(:to_hash)
           value.to_hash
-        elsif value.respond_to?(:map)
-          value.map { |item| self[item] }
+        elsif value.respond_to?(:to_ary)
+          value.to_ary.map { |item| self[item] }
         else
           value
         end

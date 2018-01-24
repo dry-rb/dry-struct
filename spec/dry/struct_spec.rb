@@ -400,6 +400,22 @@ RSpec.describe Dry::Struct do
 
       expect(parent_type[attributes].to_hash).to eql(attributes)
     end
+
+    it "doesn't unwap blindly anything mappable" do
+      struct = Class.new(Dry::Struct) do
+        attribute :mappable, Dry::Types['any']
+      end
+
+      mappable = Object.new.tap do |obj|
+        def obj.map
+          raise "not reached"
+        end
+      end
+
+      value = struct.new(mappable: mappable)
+
+      expect(value.to_h).to eql(mappable: mappable)
+    end
   end
 
   describe 'unanonymous structs' do
