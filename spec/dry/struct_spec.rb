@@ -139,7 +139,7 @@ RSpec.describe Dry::Struct do
     end
   end
 
-  it 'defines #[] alias' do
+  it 'defines .[] alias' do
     expect(described_class.method(:[])).to eq described_class.method(:call)
   end
 
@@ -450,19 +450,46 @@ RSpec.describe Dry::Struct do
     end
   end
 
-  describe 'protected methods' do
-    it 'allows having attributes with reserved names' do
-      struct = Class.new(Dry::Struct) do
-        attribute :hash, Dry::Types['strict.string']
-        attribute :attributes, Dry::Types['array'].of(Dry::Types['strict.string'])
+  describe '#[]' do
+    before do
+      module Test
+        class Task < Dry::Struct
+          attribute :user, 'strict.string'
+          undef user
+        end
+      end
+    end
+
+    it 'fetches raw attributes' do
+      value = Test::Task[user: 'Jane']
+      expect(value[:user]).to eql('Jane')
+    end
+
+    it 'raises a missing attribute error when no attribute exists' do
+      value = Test::Task[user: 'Jane']
+
+      expect { value[:name] }.
+        to raise_error(Dry::Struct::MissingAttributeError).
+             with_message("Missing attribute: :name")
+    end
+
+    describe 'protected methods' do
+      before do
+        class Test::Task
+          attribute :hash, Dry::Types['strict.string']
+          attribute :attributes, Dry::Types['array'].of(Dry::Types['strict.string'])
+        end
       end
 
-      value = struct.new(hash: 'abc', attributes: %w(name))
+      it 'allows having attributes with reserved names' do
+        value = Test::Task[user: 'Jane', hash: 'abc', attributes: %w(name)]
 
-      expect(value.hash).to be_a(Integer)
-      expect(value.attributes).to eql(hash: 'abc', attributes: %w(name))
-      expect(value[:hash]).to eql('abc')
-      expect(value[:attributes]).to eql(%w(name))
+        expect(value.hash).to be_a(Integer)
+        expect(value.attributes).
+          to eql(user: 'Jane', hash: 'abc', attributes: %w(name))
+        expect(value[:hash]).to eql('abc')
+        expect(value[:attributes]).to eql(%w(name))
+      end
     end
   end
 end

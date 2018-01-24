@@ -88,9 +88,6 @@ module Dry
 
     include Dry::Equalizer(:__attributes__)
 
-    # @api private
-    PROTECTED_NAMES = (Kernel.public_methods + %i(attributes to_hash)).to_set.freeze
-
     # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
     # @return [Dry::Types::Hash::Schema]
     defines :input
@@ -125,11 +122,9 @@ module Dry
     #   rom_n_roda[:title] #=> 'Web Development with ROM and Roda'
     #   rom_n_roda[:subtitle] #=> nil
     def [](name)
-      if PROTECTED_NAMES.include?(name) && self.class.attribute?(name)
-        @attributes[name]
-      else
-        public_send(name)
-      end
+      @attributes.fetch(name)
+    rescue KeyError
+      raise MissingAttributeError.new(name)
     end
 
     # Converts the {Dry::Struct} to a hash with keys representing

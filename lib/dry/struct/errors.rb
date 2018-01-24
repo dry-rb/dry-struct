@@ -11,5 +11,12 @@ module Dry
         super("Attribute :#{key} has already been defined")
       end
     end
+
+    # Raised when a struct doesn't have an attribute
+    class MissingAttributeError < KeyError
+      def initialize(key)
+        super("Missing attribute: #{ key.inspect }")
+      end
+    end
   end
 end
