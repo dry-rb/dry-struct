@@ -100,6 +100,10 @@ module Dry
 
         @attribute_names = nil
 
+        descendants.
+          select { |d| d.superclass == self }.
+          each { |d| d.attributes(new_schema) }
+
         self
       end
 

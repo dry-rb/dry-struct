@@ -1,7 +1,8 @@
 require 'set'
-require 'dry/core/constants'
 require 'dry-types'
 require 'dry-equalizer'
+require 'dry/core/constants'
+require 'dry/core/descendants_tracker'
 
 require 'dry/struct/version'
 require 'dry/struct/errors'
@@ -83,6 +84,8 @@ module Dry
   class Struct
     include Dry::Core::Constants
     extend ClassInterface
+    extend Dry::Core::DescendantsTracker
+
     include Dry::Equalizer(:__attributes__)
 
     # @api private
