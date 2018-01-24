@@ -1,5 +1,7 @@
 require 'dry/core/class_attributes'
 require 'dry/core/inflector'
+require 'dry/core/descendants_tracker'
+
 require 'dry/struct/errors'
 require 'dry/struct/constructor'
 
@@ -20,6 +22,10 @@ module Dry
 
         klass.class_eval do
           @meta = base.meta
+
+          unless equal?(Value)
+            extend Dry::Core::DescendantsTracker
+          end
         end
       end
 
