@@ -408,7 +408,7 @@ RSpec.describe Dry::Struct do
       expect(parent_type[attributes].to_hash).to eql(attributes)
     end
 
-    it "doesn't unwap blindly anything mappable" do
+    it "doesn't unwrap blindly anything mappable" do
       struct = Class.new(Dry::Struct) do
         attribute :mappable, Dry::Types['any']
       end
