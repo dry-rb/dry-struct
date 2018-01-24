@@ -337,6 +337,13 @@ RSpec.describe Dry::Struct do
       expect { Dry::Struct.inherited(Dry::Struct::Value) }
         .to_not change(Dry::Types, :type_keys)
     end
+
+    it 'adds attributes to all descendants' do
+      Test::User.attribute(:signed_on, Dry::Types['strict.time'])
+
+      expect(Test::SuperUser.schema).
+        to include(signed_on: Dry::Types['strict.time'])
+    end
   end
 
   describe 'when inheriting a struct from another struct' do
