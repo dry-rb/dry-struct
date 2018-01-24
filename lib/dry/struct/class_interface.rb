@@ -91,7 +91,7 @@ module Dry
 
         new_schema.each_key do |key|
           next if instance_methods.include?(key)
-          class_eval(<<~RUBY)
+          class_eval(<<-RUBY)
             def #{ key }
               @attributes[#{ key.inspect }]
             end
