@@ -108,7 +108,7 @@ module Dry
 
         descendants.
           select { |d| d.superclass == self }.
-          each { |d| d.attributes(new_schema) }
+          each { |d| d.attributes(new_schema.reject { |k, _| d.schema.key?(k) }) }
 
         self
       end

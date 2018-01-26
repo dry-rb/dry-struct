@@ -344,6 +344,15 @@ RSpec.describe Dry::Struct do
       expect(Test::SuperUser.schema).
         to include(signed_on: Dry::Types['strict.time'])
     end
+
+    it "doesn't override already defined attributes accidentally" do
+      admin = Dry::Types['strict.string'].enum('admin')
+
+      Test::SuperUser.attribute(:role, admin)
+      Test::User.attribute(:role, Dry::Types['strict.string'].enum('author', 'subscriber'))
+
+      expect(Test::SuperUser.schema[:role]).to be(admin)
+    end
   end
 
   describe 'when inheriting a struct from another struct' do
