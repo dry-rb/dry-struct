@@ -16,7 +16,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       # This abstract user guarantees User preserves schema definition
       class AbstractUser < Dry::Struct
         attribute :name, 'coercible.string'
-        attribute :age, 'coercible.int'
+        attribute :age, 'coercible.integer'
         attribute :address, Test::Address
       end
 
@@ -52,7 +52,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
         let(:user_type) do
           Class.new(Dry::Struct) do
             attribute :name, 'coercible.string'
-            attribute :age, 'coercible.int'
+            attribute :age, 'coercible.integer'
             attribute :address do
               attribute :city, 'strict.string'
               attribute :zipcode, 'coercible.string'
@@ -77,7 +77,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
         let(:user_type) do
           Class.new(Dry::Struct) do
             attribute :name, 'coercible.string'
-            attribute :age, 'coercible.int'
+            attribute :age, 'coercible.integer'
             attribute :address, Test::BaseAddress do
               attribute :city, 'strict.string'
               attribute :zipcode, 'coercible.string'
@@ -183,7 +183,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       end
 
       class Test::Bar < Test::Foo
-        attribute :bar, 'strict.int'
+        attribute :bar, 'strict.integer'
       end
     }.not_to raise_error
   end
@@ -194,7 +194,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
 
     Test::Foo
       .attribute(:foo, 'strict.string')
-      .attribute(:bar, 'strict.int')
+      .attribute(:bar, 'strict.integer')
 
     foo = Test::Foo.new(foo: 'foo', bar: 123)
 
@@ -205,12 +205,12 @@ RSpec.describe Dry::Struct, method: '.attribute' do
   it "doesn't define readers if methods are present" do
     class Test::Foo < Dry::Struct
       def age
-        "#{ @age } years old"
+        "#{ @attributes[:age] } years old"
       end
     end
 
     Test::Foo
-      .attribute(:age, 'strict.int')
+      .attribute(:age, 'strict.integer')
 
     struct = Test::Foo.new(age: 18)
     expect(struct.age).to eql("18 years old")

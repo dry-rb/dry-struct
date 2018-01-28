@@ -32,7 +32,12 @@ $VERBOSE = true
 require 'dry-struct'
 
 begin
-  require 'byebug'
+  require 'pry'
+  require 'pry-byebug'
+rescue LoadError
+end
+
+begin
   require 'mutant'
 
   module Mutant

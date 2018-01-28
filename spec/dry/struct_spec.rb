@@ -399,7 +399,7 @@ RSpec.describe Dry::Struct do
     before do
       module Test
         class Parent < User
-          attribute :children, Dry::Types['coercible.array'].member(Test::User)
+          attribute :children, Dry::Types['coercible.array'].of(Test::User)
         end
       end
     end

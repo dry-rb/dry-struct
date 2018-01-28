@@ -6,6 +6,7 @@ require 'dry/struct/version'
 require 'dry/struct/errors'
 require 'dry/struct/class_interface'
 require 'dry/struct/hashify'
+require 'dry/struct/struct_builder'
 
 module Dry
   # Constructor method for easily creating a {Dry::Struct}.

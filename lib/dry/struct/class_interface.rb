@@ -43,7 +43,7 @@ module Dry
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
       #
-      # @example
+      # @example with nested structs
       #   class Language < Dry::Struct
       #     attribute :name, Types::String
       #     attribute :details, Dry::Struct do
@@ -61,39 +61,12 @@ module Dry
       #   ruby.name #=> 'Ruby'
       #   ruby.details #=> #<Language::Details type="OO">
       #   ruby.details.type #=> 'OO'
-      def attribute(name, type = nil, &block)
-        if block
-          type = build_nested_type(name, type || ::Dry::Struct, &block)
-        elsif type.nil?
-          raise(
-            ArgumentError,
-            'you must supply a type or a block to `Dry::Struct.attribute`'
-          )
-        end
-
-        attributes(name => type)
-      end
-
-      # Adds an array attribute for this {Struct} with given `name` and
-      # `member_type` and modifies {.schema} accordingly.
       #
-      # @param [Symbol] name name of the defined attribute
-      # @param [Dry::Types::Definition, nil] member_type or superclass of nested
-      #   member type
-      # @return [Dry::Struct]
-      # @yield
-      #   If a block is given, it will be evaluated in the context of
-      #   a new struct class, and set as the member type for the given
-      #   array attribute. A class with a singularized matching name will also
-      #   be defined for the nested member type.
-      # @raise [RepeatedAttributeError] when trying to define array attribute
-      #   with the same name as previously defined one
-      #
-      # @example
+      # @example with a nested array of structs
       #   class Language < Dry::Struct
       #     attribute :name, Types::String
       #     array :versions, Types::String
-      #     array :celebrities, Dry::Struct do
+      #     array :celebrities, Types::Array.of(Dry::Struct) do
       #       attribute :name, Types::String
       #       attribute :pseudonym, Types::String
       #     end
@@ -125,21 +98,17 @@ module Dry
       #   ruby.celebrities[0].pseudonym #=> 'Matz'
       #   ruby.celebrities[1].name #=> 'Aaron Patterson'
       #   ruby.celebrities[1].pseudonym #=> 'tenderlove'
-      def array(name, type = nil, &block)
+      def attribute(name, type = nil, &block)
         if block
-          type = build_nested_type(
-            Dry::Core::Inflector.singularize(name),
-            type || ::Dry::Struct,
-            &block
-          )
+          type = struct_builder.(name, type, &block)
         elsif type.nil?
           raise(
             ArgumentError,
-            'you must supply a type or a block to `Dry::Struct.array`'
+            'you must supply a type or a block to `Dry::Struct.attribute`'
           )
         end
 
-        attributes(name => Dry::Types['array'].of(type))
+        attributes(name => type)
       end
 
       # @param [Hash{Symbol => Dry::Types::Definition}] new_schema
@@ -214,22 +183,6 @@ module Dry
       def transform_keys(proc = nil, &block)
         input input.with_key_transform(proc || block)
       end
-
-      # @param [Symbol|String] name the name of the nested type
-      # @param [Dry::Struct] superclass the superclass of the nested struct
-      # @yield the body of the nested struct
-      def build_nested_type(name, superclass, &block)
-        type = Class.new(superclass, &block)
-        const_name = Dry::Core::Inflector.camelize(name)
-
-        raise(
-          Struct::Error,
-          "Can't create nested attribute - `#{self}::#{const_name}` already defined"
-        ) if const_defined?(const_name)
-
-        const_set(const_name, type)
-      end
-      private :build_nested_type
 
       # @param [Hash{Symbol => Dry::Types::Definition, Dry::Struct}] new_schema
       # @raise [RepeatedAttributeError] when trying to define attribute with the
@@ -361,6 +314,13 @@ module Dry
           end
         end
       end
+
+      # Stores an object for building nested struct classes
+      # @return [StructBuilder]
+      def struct_builder
+        @struct_builder ||= StructBuilder.new(self)#.freeze
+      end
+      private :struct_builder
     end
   end
 end
