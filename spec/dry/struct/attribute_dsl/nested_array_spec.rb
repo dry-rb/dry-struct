@@ -52,7 +52,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
                 end
               end
 
-              Test::User.attribute(:permissions, Dry::Types[array_type].of(Test::BasePermission)) do
+              Test::User.attribute(:permissions, Dry::Types[array_type].of(Test:: BasePermission)) do
                 attribute :name, 'strict.string'
               end
             end

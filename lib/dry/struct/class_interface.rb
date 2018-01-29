@@ -318,7 +318,7 @@ module Dry
       # Stores an object for building nested struct classes
       # @return [StructBuilder]
       def struct_builder
-        @struct_builder ||= StructBuilder.new(self)#.freeze
+        @struct_builder ||= StructBuilder.new(self).freeze
       end
       private :struct_builder
     end
