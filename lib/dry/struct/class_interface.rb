@@ -226,10 +226,6 @@ module Dry
         Struct::Constructor.new(self, fn: constructor || block)
       end
 
-      def argument_error_msg(keys)
-        "Invaild argument for #{keys.join(', ')}"
-      end
-
       # @param [Hash{Symbol => Object}] input
       # @yieldparam [Dry::Types::Result::Failure] failure
       # @yieldreturn [Dry::Types::ResultResult]

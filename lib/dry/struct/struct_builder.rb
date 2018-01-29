@@ -28,6 +28,8 @@ module Dry
         end
       end
 
+      private
+
       def array?(type)
         type.is_a?(Types::Type) && type.primitive.equal?(Array)
       end
