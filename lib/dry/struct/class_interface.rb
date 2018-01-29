@@ -100,6 +100,7 @@ module Dry
       #   ruby.celebrities[1].pseudonym #=> 'tenderlove'
       def attribute(name, type = nil, &block)
         if block
+          type = Dry::Types[type] if type.is_a?(String)
           type = struct_builder.(name, type, &block)
         elsif type.nil?
           raise(

@@ -80,6 +80,22 @@ RSpec.describe Dry::Struct, method: '.attribute' do
           end
         end
       end
+
+      context 'with a named type' do
+        before do
+          module Test
+            User.attribute(:permissions, 'strict.array') do
+              attribute :id, 'strict.integer'
+              attribute :name, 'strict.string'
+            end
+          end
+        end
+
+        it 'uses the given array type' do
+          expect(user_type.schema[:permissions]).
+            to eql(Dry::Types['strict.array'].of(Test::User::Permission))
+        end
+      end
     end
 
     context 'when the nested type is already defined' do
