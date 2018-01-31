@@ -4,6 +4,7 @@ require 'dry/core/descendants_tracker'
 
 require 'dry/struct/errors'
 require 'dry/struct/constructor'
+require 'dry/struct/sum'
 
 module Dry
   class Struct
@@ -226,7 +227,7 @@ module Dry
         Struct::Constructor.new(self, fn: constructor || block)
       end
 
-      # @param [Hash{Symbol => Object}] input
+      # @param [Hash{Symbol => Object},Dry::Struct] input
       # @yieldparam [Dry::Types::Result::Failure] failure
       # @yieldreturn [Dry::Types::ResultResult]
       # @return [Dry::Types::Result]
@@ -235,6 +236,17 @@ module Dry
       rescue Struct::Error => e
         failure = Types::Result::Failure.new(input, e.message)
         block_given? ? yield(failure) : failure
+      end
+
+      # @param [Hash{Symbol => Object},Dry::Struct] input
+      # @return [Dry::Types::Result]
+      # @private
+      def try_struct(input)
+        if input.is_a?(self)
+          Types::Result::Success.new(input)
+        else
+          yield
+        end
       end
 
       # @param [({Symbol => Object})] args
@@ -309,6 +321,17 @@ module Dry
           Class.new(self) do
             @meta = @meta.merge(meta) unless meta.empty?
           end
+        end
+      end
+
+      # Build a sum type
+      # @param [Dry::Types::Type] type
+      # @return [Dry::Types::Sum]
+      def |(type)
+        if type.is_a?(Class) && type < Struct
+          Struct::Sum.new(self, type)
+        else
+          super
         end
       end
 
