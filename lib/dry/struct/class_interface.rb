@@ -328,7 +328,7 @@ module Dry
       # @param [Dry::Types::Type] type
       # @return [Dry::Types::Sum]
       def |(type)
-        if type.is_a?(Class) && type < Struct
+        if type.is_a?(Class) && type <= Struct
           Struct::Sum.new(self, type)
         else
           super
