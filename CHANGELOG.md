@@ -1,22 +1,49 @@
 # to-be-released
 
-## Fixed
+## BREAKING CHANGES
 
-* Adding a new attribute invalidates `attribute_names` (flash-gordon)
+* `constructor_type` was removed, use `transform_types` and `transform_keys` as a replacement (see below)
+* Default types are evaluated _only_ on missing values. Again, use `tranform_types` as a work around for `nil`s
 
 ## Added
 
+* `Dry::Struct.transform_types` accepts a block which is yielded on every type to add. Since types are `dry-types`' objects that come with a robust DSL it's rather simple to restore the behavior of `constructor_type`. See https://github.com/dry-rb/dry-struct/pull/64 for details (flash-gordon)
+
+  Example: evaluate defaults on `nil` values
+
+  ```ruby
+  class User < Dry::Struct
+    transform_types do |type|
+      type.constructor { |value| value.nil? ? Undefined : value  }
+    end
+  end
+  ```
+
+* `Data::Struct.transform_keys` accepts a block/proc that transforms keys of input hashes. The most obvious usage is simbolization but arbitrary transformations are allowed (flash-gordon)
+
+* `Dry.Struct` builds a struct by a hash of attribute names and types (citizen428)
+
+  ```ruby
+  User = Dry::Struct(name: 'strict.string') do
+    attribute :email, 'strict.string'
+  end
+  ```
+
 * Support for `Struct.meta`, note that `.meta` returns a _new class_ (flash-gordon)
 
-```ruby
-class User < Dry::Struct
-  attribute :name, Dry::Types['strict.string']
-end
+  ```ruby
+  class User < Dry::Struct
+    attribute :name, Dry::Types['strict.string']
+  end
 
-UserWithMeta = User.meta(foo: :bar)
+  UserWithMeta = User.meta(foo: :bar)
 
-User.new(name: 'Jade').class == UserWithMeta.new(name: 'Jade').class # => false
-```
+  User.new(name: 'Jade').class == UserWithMeta.new(name: 'Jade').class # => false
+  ```
+
+## Fixed
+
+* Adding a new attribute invalidates `attribute_names` (flash-gordon)
 
 [Compare v0.4.0...master](https://github.com/dry-rb/dry-struct/compare/v0.4.0...master)
 
