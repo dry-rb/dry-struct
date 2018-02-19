@@ -215,6 +215,47 @@ RSpec.describe Dry::Struct do
 
       expect(value.to_h).to eql(mappable: mappable)
     end
+
+    context "with omittable keys" do
+      it "returns hash with attributes but will not try fetching omittable keys if not set" do
+        type = Class.new(Dry::Struct) do
+          attribute :name, Dry::Types['string']
+          attribute :last_name, Dry::Types['string'].meta(omittable: true)
+        end
+
+        attributes = { name: 'John' }
+        expect(type.new(attributes).to_hash).to eq (attributes)
+      end
+
+      it "returns hash with attributes but will fetch omittable keys if set" do
+        type = Class.new(Dry::Struct) do
+          attribute :name, Dry::Types['string']
+          attribute :last_name, Dry::Types['string'].meta(omittable: true)
+        end
+
+        attributes = { name: 'John', last_name: 'Doe' }
+        expect(type.new(attributes).to_hash).to eq (attributes)
+      end
+
+      it "returns empty hash if all attributes are ommitable and no value is set" do
+        type = Class.new(Dry::Struct) do
+          attribute :name, Dry::Types['string'].meta(omittable: true)
+        end
+
+        expect(type.new.to_hash).to eq ({})
+      end
+    end
+
+    context "with default value" do
+      it "returns hash with attributes" do
+        type = Class.new(Dry::Struct) do
+          attribute :name, Dry::Types['string'].default('John')
+        end
+
+        attributes = { name: 'John' }
+        expect(type.new.to_hash).to eq (attributes)
+      end
+    end
   end
 
   describe 'pseudonamed structs' do
