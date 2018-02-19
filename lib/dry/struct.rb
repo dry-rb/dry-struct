@@ -144,7 +144,7 @@ module Dry
     #     #=> {title: 'Web Development with ROM and Roda', subtitle: nil}
     def to_hash
       self.class.schema.keys.each_with_object({}) do |key, result|
-        result[key] = Hashify[self[key]]
+        result[key] = Hashify[self[key]] if attributes.key?(key)
       end
     end
     alias_method :to_h, :to_hash
