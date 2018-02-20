@@ -220,7 +220,7 @@ module Dry
       alias_method :[], :call
 
       # @param [#call,nil] constructor
-      # @param [Hash] options
+      # @param [Hash] _options
       # @param [#call,nil] block
       # @return [Dry::Struct::Constructor]
       def constructor(constructor = nil, **_options, &block)
