@@ -55,7 +55,7 @@ RSpec.describe Dry::Struct do
     end
 
     context 'with default' do
-      it 'resolves missing missing values with defaults' do
+      it 'resolves missing values with defaults' do
         struct = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['strict.string'].default('Jane')
           attribute :admin, Dry::Types['strict.bool'].default(true)
@@ -69,6 +69,28 @@ RSpec.describe Dry::Struct do
         struct = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['strict.string'].default('Jane')
           attribute :age, Dry::Types['strict.integer']
+        end
+
+        expect { struct.new }.to raise_error(Dry::Struct::Error, /:age is missing in Hash input/)
+      end
+
+      it "resolves missing values for nested attributes" do
+        struct = Class.new(Dry::Struct) do
+          attribute :kid do
+            attribute :age, Dry::Types['strict.integer'].default(16)
+          end
+        end
+
+        expect(struct.new.to_h).
+          to eql({kid: {age: 16}})
+      end
+
+      it "doesn't tolerate missing required keys for nested attributes" do
+        struct = Class.new(Dry::Struct) do
+          attribute :kid do
+            attribute :name, Dry::Types['strict.string'].default('Jane')
+            attribute :age, Dry::Types['strict.integer']
+          end
         end
 
         expect { struct.new }.to raise_error(Dry::Struct::Error, /:age is missing in Hash input/)

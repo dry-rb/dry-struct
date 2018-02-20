@@ -198,7 +198,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = EMPTY_HASH)
+      def new(attributes = default_attributes)
         if attributes.instance_of?(self)
           attributes
         else
@@ -213,7 +213,7 @@ module Dry
       #
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @return [Dry::Struct]
-      def call(attributes = EMPTY_HASH)
+      def call(attributes = default_attributes)
         return attributes if attributes.is_a?(self)
         new(attributes)
       end
@@ -341,6 +341,17 @@ module Dry
         @struct_builder ||= StructBuilder.new(self).freeze
       end
       private :struct_builder
+
+      # Retrieves default attributes from defined {.schema}.
+      # Used in a {Struct} constructor if no attributes provided to {.new}
+      #
+      # @return [Hash{Symbol => Object}]
+      def default_attributes(default_schema = schema)
+        default_schema.each_with_object({}) do |(name, type), result|
+          result[name] = default_attributes(type.schema) if type.respond_to?(:schema)
+        end
+      end
+      private :default_attributes
     end
   end
 end
