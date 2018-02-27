@@ -348,10 +348,19 @@ module Dry
       # @return [Hash{Symbol => Object}]
       def default_attributes(default_schema = schema)
         default_schema.each_with_object({}) do |(name, type), result|
-          result[name] = default_attributes(type.schema) if type.respond_to?(:schema)
+          result[name] = default_attributes(type.schema) if struct?(type)
         end
       end
       private :default_attributes
+
+      # Checks if the given type is a Dry::Struct
+      #
+      # @param [Dry::Types::Definition, Dry::Struct] type
+      # @return [Boolean]
+      def struct?(type)
+        type.is_a?(Class) && type <= Struct
+      end
+      private :struct?
     end
   end
 end
