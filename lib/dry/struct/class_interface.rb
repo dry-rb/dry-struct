@@ -348,10 +348,38 @@ module Dry
       # @return [Hash{Symbol => Object}]
       def default_attributes(default_schema = schema)
         default_schema.each_with_object({}) do |(name, type), result|
-          result[name] = default_attributes(type.schema) if type.respond_to?(:schema)
+          if hash_type?(type)
+            result[name] = {}
+          elsif array_type?(type)
+            result[name] = []
+          elsif type.respond_to?(:schema)
+            result[name] = default_attributes(type.schema)
+          end
         end
       end
       private :default_attributes
+
+      # check if current type is a Dry::Types::Hash
+      #
+      # @return [Boolean]
+      def hash_type?(type)
+        type?(type, Hash)
+      end
+      private :hash_type?
+
+      # check if current type is a Dry::Types::Array
+      #
+      # @return [Boolean]
+      def array_type?(type)
+        type?(type, Array)
+      end
+      private :array_type?
+
+      # @return [Boolean]
+      def type?(type, klass)
+        type.is_a?(Types::Type) && type.respond_to?(:primitive) && type.primitive.equal?(klass)
+      end
+      private :type?
     end
   end
 end
