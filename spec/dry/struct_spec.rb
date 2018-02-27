@@ -65,6 +65,44 @@ RSpec.describe Dry::Struct do
           to eql(name: 'Jane', admin: true)
       end
 
+      it 'resolves missing values with defaults for array type' do
+        struct = Class.new(Dry::Struct) do
+          attribute :user, Dry::Types['strict.array'].of(Dry::Struct) do
+            attribute :name, Dry::Types['strict.string']
+            attribute :admin, Dry::Types['strict.bool'].default(true)
+          end
+        end
+
+        expect(struct.new.to_h).
+          to eql(user: [])
+      end
+
+      it 'resolves missing values with defaults for hash type' do
+        type = Dry::Types['hash'].schema(
+          name: Dry::Types['strict.string'].default('dry_development'),
+          password: Dry::Types['strict.string'].default('***')
+        )
+        struct = Class.new(Dry::Struct) do
+          attribute :db, type
+          attribute :admin, Dry::Types['strict.bool'].default(true)
+        end
+
+        expect(struct.new.to_h).
+          to eql({db: {name: 'dry_development', password: '***'}, admin: true})
+      end
+
+      it "doesn't tolerate missing required keys for hash type" do
+        type = Dry::Types['hash'].schema(
+          name: Dry::Types['strict.string'].default('dry_development'),
+          password: Dry::Types['strict.string']
+        )
+        struct = Class.new(Dry::Struct) do
+          attribute :db, type
+        end
+
+        expect { struct.new }.to raise_error(Dry::Struct::Error, /:password is missing in Hash input/)
+      end
+
       it "doesn't tolerate missing required keys" do
         struct = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['strict.string'].default('Jane')
