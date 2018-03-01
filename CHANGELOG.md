@@ -24,7 +24,7 @@
 * `Dry.Struct` builds a struct by a hash of attribute names and types (citizen428)
 
   ```ruby
-  User = Dry::Struct(name: 'strict.string') do
+  User = Dry.Struct(name: 'strict.string') do
     attribute :email, 'strict.string'
   end
   ```
