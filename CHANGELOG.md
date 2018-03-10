@@ -4,6 +4,8 @@
 
 * `constructor_type` was removed, use `transform_types` and `transform_keys` as a replacement (see below)
 * Default types are evaluated _only_ on missing values. Again, use `tranform_types` as a work around for `nil`s
+* Values are now stored within a single instance variable names `@attributes`, this sped up struct creation and improved support for reserved attribute names such as `hash`, they don't get a getter but still can be read via `#[]`
+* Ruby 2.3 is a minimal supported version
 
 ## Added
 
@@ -40,10 +42,29 @@
 
   User.new(name: 'Jade').class == UserWithMeta.new(name: 'Jade').class # => false
   ```
+  
+* `Struct.attribute` yields a block with definition for nested structs. It defines a nested constant for the new struct and supports arrays (AMHOL + flash-gordon)
+
+  ```ruby
+    class User < Dry::Struct
+      attribute :name, Types::Strict::String
+      attribute :address do
+        attribute :country, Types::Strict::String
+        attribute :city, Types::Strict::String
+      end
+      attribute :accounts, Types::Strict::Array do
+        attribute :currency, Types::Strict::String
+        attribute :balance, Types::Strict::Decimal
+      end
+    end
+    
+    # ^This automatically defines User::Address and User::Account
+  ```
 
 ## Fixed
 
 * Adding a new attribute invalidates `attribute_names` (flash-gordon)
+* Struct classes track subclasses and define attributes in them, now it doesn't matter whether you define attributes first and _then_ subclass or vice versa. Note this can lead to memory leaks in Rails environment when struct classes are reloaded (flash-gordon)
 
 [Compare v0.4.0...master](https://github.com/dry-rb/dry-struct/compare/v0.4.0...master)
 
