@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'dry-equalizer', '~> 0.2'
-  spec.add_runtime_dependency 'dry-types', '>= 1.0.0.beta', '< 2'
+  spec.add_runtime_dependency 'dry-types', '>= 0.13', '< 2'
   spec.add_runtime_dependency 'dry-core', '~> 0.4', '>= 0.4.3'
   spec.add_runtime_dependency 'ice_nine', '~> 0.11'
 
