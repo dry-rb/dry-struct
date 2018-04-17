@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'dry-types', git: 'https://github.com/dry-rb/dry-types'
+gem 'dry-inflector', git: 'https://github.com/dry-rb/dry-inflector'
 
 group :test do
   gem 'codeclimate-test-reporter', platform: :mri, require: false
