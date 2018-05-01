@@ -1,4 +1,4 @@
-# to-be-released
+# v0.5.0 to-be-released
 
 ## BREAKING CHANGES
 
@@ -42,7 +42,7 @@
 
   User.new(name: 'Jade').class == UserWithMeta.new(name: 'Jade').class # => false
   ```
-  
+
 * `Struct.attribute` yields a block with definition for nested structs. It defines a nested constant for the new struct and supports arrays (AMHOL + flash-gordon)
 
   ```ruby
@@ -57,7 +57,7 @@
         attribute :balance, Types::Strict::Decimal
       end
     end
-    
+
     # ^This automatically defines User::Address and User::Account
   ```
 
