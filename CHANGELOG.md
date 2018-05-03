@@ -1,4 +1,4 @@
-# v0.5.0 to-be-released
+# v0.5.0 2018-05-03
 
 ## BREAKING CHANGES
 
@@ -66,7 +66,7 @@
 * Adding a new attribute invalidates `attribute_names` (flash-gordon)
 * Struct classes track subclasses and define attributes in them, now it doesn't matter whether you define attributes first and _then_ subclass or vice versa. Note this can lead to memory leaks in Rails environment when struct classes are reloaded (flash-gordon)
 
-[Compare v0.4.0...master](https://github.com/dry-rb/dry-struct/compare/v0.4.0...master)
+[Compare v0.4.0...v0.5.0](https://github.com/dry-rb/dry-struct/compare/v0.4.0...v0.5.0)
 
 # v0.4.0 2017-11-04
 
