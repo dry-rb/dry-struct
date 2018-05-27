@@ -1,6 +1,5 @@
 [gem]: https://rubygems.org/gems/dry-struct
 [travis]: https://travis-ci.org/dry-rb/dry-struct
-[gemnasium]: https://gemnasium.com/dry-rb/dry-struct
 [codeclimate]: https://codeclimate.com/github/dry-rb/dry-struct
 [coveralls]: https://coveralls.io/r/dry-rb/dry-struct
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-struct
@@ -9,7 +8,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][gem]
 [![Build Status](https://travis-ci.org/dry-rb/dry-struct.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/dry-rb/dry-struct.svg)][gemnasium]
 [![Code Climate](https://codeclimate.com/github/dry-rb/dry-struct/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/dry-rb/dry-struct/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-struct.svg?branch=master)][inchpages]
