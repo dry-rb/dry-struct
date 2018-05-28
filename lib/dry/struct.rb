@@ -1,5 +1,6 @@
 require 'dry-types'
 require 'dry-equalizer'
+require 'dry/core/extensions'
 require 'dry/core/constants'
 
 require 'dry/struct/version'
@@ -81,6 +82,7 @@ module Dry
   #   refactoring.title #=> 'Refactoring'
   #   refactoring.subtitle #=> 'Improving the Design of Existing Code'
   class Struct
+    extend Dry::Core::Extensions
     include Dry::Core::Constants
     extend ClassInterface
 
@@ -184,3 +186,4 @@ module Dry
 end
 
 require 'dry/struct/value'
+require 'dry/struct/extensions'
