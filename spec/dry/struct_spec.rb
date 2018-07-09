@@ -168,6 +168,51 @@ RSpec.describe Dry::Struct do
     end
   end
 
+  describe 'when there is a constant with same name as new attribute type' do
+    it 'ignore constant outside struct' do
+      Object.send(:remove_const, :Article) if Object.const_defined?(:Article)
+      Object.send(:remove_const, :ArticleForm) if Object.const_defined?(:ArticleForm)
+
+      class Article; attr_accessor :title; end
+      class ArticleForm < Dry::Struct
+        module Types
+          include ::Dry::Types.module
+        end
+
+        attribute :article do
+          attribute :title, Types::Coercible::String.meta(omittable: true)
+        end
+      end
+
+      expect(Article == ArticleForm::Article).to be_falsey
+    end
+
+    it 'prevents existing constant inside struct to be overridden' do
+      Object.send(:remove_const, :Article) if Object.const_defined?(:Article)
+      Object.send(:remove_const, :ArticleForm) if Object.const_defined?(:ArticleForm)
+
+      class ArticleForm < Dry::Struct
+        module Types
+          include ::Dry::Types.module
+        end
+
+        class Article; attr_accessor :title; end
+      end
+
+      expect {
+        ArticleForm.class_eval do
+          attribute :article do
+            attribute :title, Types::Coercible::String.meta(omittable: true)
+          end
+        end
+        construct_user(name: :Jane, age: '21', address: nil)
+      }.to raise_error(
+        Dry::Struct::Error,
+        %r|Can't create nested attribute - `ArticleForm::Article` already defined|
+      )
+    end
+  end
+
   describe 'with a blank schema' do
     it 'works for blank structs' do
       class Test::Foo < Dry::Struct; end
