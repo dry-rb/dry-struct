@@ -76,7 +76,15 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       end
     end
 
-    context 'when the nested type is not already defined' do
+    context 'when the nested type is not defined' do
+      let(:struct) { Class.new(Dry::Struct) }
+
+      it 'should check constant existence within class scope only' do
+        expect { struct.attribute(:test) { attribute(:abc, 'string') } }.not_to raise_error
+      end
+    end
+
+    context 'when the nested type is already defined' do
       before do
         module Test
           module AlreadyDefined
