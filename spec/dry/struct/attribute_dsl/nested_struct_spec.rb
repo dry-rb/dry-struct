@@ -19,7 +19,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
   end
 
   context 'when given a block-style nested type' do
-    context 'when the nested type is already defined' do
+    context 'when the nested type is not already defined' do
       context 'with no superclass type' do
         let(:user_type) do
           Class.new(Dry::Struct) do
@@ -76,7 +76,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       end
     end
 
-    context 'when the nested type is not already defined' do
+    context 'when the nested type is already defined' do
       before do
         module Test
           module AlreadyDefined
@@ -92,6 +92,27 @@ RSpec.describe Dry::Struct, method: '.attribute' do
         expect {
           Test::AlreadyDefined::User.attribute(:address) {}
         }.to raise_error(Dry::Struct::Error)
+      end
+    end
+
+    context 'when the nested type is already defined as a top level constant' do
+      before do
+        class Address
+        end
+      end
+
+      after do
+        Object.send(:remove_const, :Address)
+      end
+
+      let(:user_type) do
+        Class.new(Dry::Struct) do
+          attribute(:address) {}
+        end
+      end
+
+      it 'defines a nested type' do
+        expect { user_type.const_get('Address') }.to_not raise_error
       end
     end
   end
