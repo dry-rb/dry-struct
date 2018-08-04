@@ -120,9 +120,7 @@ module Dry
     #   rom_n_roda[:title] #=> 'Web Development with ROM and Roda'
     #   rom_n_roda[:subtitle] #=> nil
     def [](name)
-      @attributes.fetch(name)
-    rescue KeyError
-      raise MissingAttributeError.new(name)
+      @attributes.fetch(name) { raise MissingAttributeError.new(name) }
     end
 
     # Converts the {Dry::Struct} to a hash with keys representing
