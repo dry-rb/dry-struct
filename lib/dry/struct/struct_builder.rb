@@ -60,7 +60,7 @@ module Dry
         raise(
           Struct::Error,
           "Can't create nested attribute - `#{struct}::#{name}` already defined"
-        ) if struct.const_defined?(name)
+        ) if struct.const_defined?(name, false)
       end
 
       def visit_constrained(node)
