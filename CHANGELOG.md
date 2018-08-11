@@ -1,3 +1,23 @@
+# v0.5.1 2018-08-11
+
+## Fixed
+
+* Constant resolution is now restricted to the current module when structs are automatically defined using the block syntax. This shouldn't break any existing code (piktur)
+
+## Added
+
+* Pretty print extension (ojab)
+  ```ruby
+  Dry::Struct.load_extensions(:pretty_print)
+  PP.pp(user)
+  #<Test::User
+   name="Jane",
+   age=21,
+   address=#<Test::Address city="NYC", zipcode="123">>
+  ```
+
+[Compare v0.5.0...v0.5.1](https://github.com/dry-rb/dry-struct/compare/v0.5.0...v0.5.1)
+
 # v0.5.0 2018-05-03
 
 ## BREAKING CHANGES
