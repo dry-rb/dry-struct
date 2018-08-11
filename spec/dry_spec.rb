@@ -1,15 +1,11 @@
 
 RSpec.describe Dry do
   describe '.Struct' do
-    context 'constructor types' do
-      %i[permissive schema strict strict_with_defaults].each do |constructor|
-        it "returns a struct with constructor type #{constructor}" do
-          struct_klass = Dry.Struct(name: 'strict.string')
+    it "returns a struct" do
+      struct_klass = Dry.Struct(name: 'strict.string')
 
-          struct = struct_klass.new(name: 'Test')
-          expect(struct.__attributes__).to eq(name: 'Test')
-        end
-      end
+      struct = struct_klass.new(name: 'Test')
+      expect(struct.attributes).to eql(name: 'Test')
     end
 
     context 'initializer block' do
