@@ -145,7 +145,14 @@ RSpec.shared_examples_for Dry::Struct do
       end
     end
 
-    describe '.attribute?' do
+    describe '.has_attribute?' do
+      it 'checks if a struct has an attribute' do
+        expect(type.has_attribute?(:name)).to be true
+        expect(type.has_attribute?(:last_name)).to be false
+      end
+    end
+
+    describe '.attribute?', :suppress_deprecations do
       it 'checks if a struct has an attribute' do
         expect(type.attribute?(:name)).to be true
         expect(type.attribute?(:last_name)).to be false

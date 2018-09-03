@@ -76,4 +76,11 @@ RSpec.configure do |config|
   end
 
   config.order = :random
+
+  config.around :each, :suppress_deprecations do |ex|
+    logger = Dry::Core::Deprecations.logger
+    Dry::Core::Deprecations.set_logger!(DryStructSpec::ROOT.join('log/deprecations.log'))
+    ex.run
+    Dry::Core::Deprecations.set_logger!(logger)
+  end
 end

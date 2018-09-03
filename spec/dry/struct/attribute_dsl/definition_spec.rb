@@ -187,4 +187,32 @@ RSpec.describe Dry::Struct, method: '.attribute' do
     struct = Test::Foo.new(age: 18)
     expect(struct.age).to eql("18 years old")
   end
+
+  context 'attribute?' do
+    it 'defines omittable keys' do
+      class Test::Foo < Dry::Struct
+        attribute  :foo, 'strict.string'
+        attribute? :bar, 'strict.string'
+      end
+
+      struct = Test::Foo.new(foo: 'value')
+      expect(struct.foo).to eql('value')
+      expect(struct.attributes).not_to have_key(:bar)
+      expect(Test::Foo.has_attribute?(:bar)).to be true
+    end
+
+    it 'defines omittable structs' do
+      class Test::Foo < Dry::Struct
+        attribute  :foo, 'strict.string'
+        attribute? :nested do
+          attribute :bar, 'strict.string'
+        end
+      end
+
+      struct = Test::Foo.new(foo: 'value')
+      expect(struct.foo).to eql('value')
+      expect(struct.attributes).not_to have_key(:nested)
+      expect(Test::Foo.has_attribute?(:nested)).to be true
+    end
+  end
 end
