@@ -100,17 +100,37 @@ module Dry
       #   ruby.celebrities[1].name #=> 'Aaron Patterson'
       #   ruby.celebrities[1].pseudonym #=> 'tenderlove'
       def attribute(name, type = nil, &block)
-        if block
-          type = Dry::Types[type] if type.is_a?(String)
-          type = struct_builder.(name, type, &block)
-        elsif type.nil?
-          raise(
-            ArgumentError,
-            'you must supply a type or a block to `Dry::Struct.attribute`'
-          )
-        end
+        attributes(name => build_type(name, type, &block))
+      end
 
-        attributes(name => type)
+      # Adds an omittable (key is not required on initialization) attribute for this {Struct}
+      #
+      # @example
+      #   class User < Dry::Struct
+      #     attribute  :name,  Types::Strict::String
+      #     attribute? :email, Types::Strict::String
+      #   end
+      #
+      #   User.new(name: 'John') # => #<User name="John">
+      #
+      # @param [Symbol] name name of the defined attribute
+      # @param [Dry::Types::Definition, nil] type or superclass of nested type
+      # @return [Dry::Struct]
+      #
+      def attribute?(*args, &block)
+        if args.size == 1 && block.nil?
+          Dry::Core::Deprecations.warn(
+            'Dry::Struct.attribute? is deprecated for checking attribute presence, '\
+            'use has_attribute? instead',
+            tag: :'dry-struct'
+          )
+
+          has_attribute?(args[0])
+        else
+          name, type = args
+
+          attribute(name, build_type(name, type, &block).meta(omittable: true))
+        end
       end
 
       # @param [Hash{Symbol => Dry::Types::Definition}] new_schema
@@ -297,7 +317,7 @@ module Dry
       #
       # @param [Symbol] key Attribute name
       # @return [Boolean]
-      def attribute?(key)
+      def has_attribute?(key)
         schema.key?(key)
       end
 
@@ -361,6 +381,30 @@ module Dry
         type.is_a?(Class) && type <= Struct
       end
       private :struct?
+
+      # Constructs a type
+      #
+      # @return [Dry::Types::Type, Dry::Struct]
+      def build_type(name, type, &block)
+        type_object =
+          if type.is_a?(String)
+            Dry::Types[type]
+          elsif block.nil? && type.nil?
+            raise(
+              ArgumentError,
+              'you must supply a type or a block to `Dry::Struct.attribute`'
+            )
+          else
+            type
+          end
+
+        if block
+          struct_builder.(name, type_object, &block)
+        else
+          type_object
+        end
+      end
+      private :build_type
     end
   end
 end
