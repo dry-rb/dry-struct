@@ -167,8 +167,8 @@ module Dry
     #   )
     #     #=> #<Book title="Web Development with ROM and Roda" subtitle="2nd edition">
     #
-    #   rom_n_roda.new(subtitle: '3nd edition')
-    #     #=> #<Book title="Web Development with ROM and Roda" subtitle="3nd edition">
+    #   rom_n_roda.new(subtitle: '3rd edition')
+    #     #=> #<Book title="Web Development with ROM and Roda" subtitle="3rd edition">
     def new(changeset)
       self.class[__attributes__.merge(changeset)]
     end
