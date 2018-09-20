@@ -7,7 +7,7 @@ module Dry
       # @return [Hash, Array]
       def self.[](value)
         if value.respond_to?(:to_hash)
-          value.to_hash
+          Hash[value.to_hash.map{ |k, item| [k, self[item]] }]
         elsif value.respond_to?(:to_ary)
           value.to_ary.map { |item| self[item] }
         else

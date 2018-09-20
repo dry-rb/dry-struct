@@ -278,6 +278,21 @@ RSpec.describe Dry::Struct do
         expect(type.new.to_hash).to eq (attributes)
       end
     end
+
+    context 'on an Dry::Types::Hash.map with nested types' do
+      NestedType = Class.new(Dry::Struct::Value) do
+        attribute :age, Dry::Types['strict.integer']
+      end
+
+      type = Class.new(Dry::Struct) do
+        attribute :people, Dry::Types['hash'].map(Dry::Types['strict.string'], NestedType)
+      end
+
+      it 'hashifies the values within the hash map' do
+        attributes = { people: { 'John' => { age: 35 } } }
+        expect(type.new(attributes).to_hash).to eq(attributes)
+      end
+    end
   end
 
   describe 'pseudonamed structs' do
