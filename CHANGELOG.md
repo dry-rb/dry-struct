@@ -1,3 +1,27 @@
+# to-be-released
+
+## BREAKING CHANGES
+
+* `Struct.attribute?` in the old sense is deprecated, use `has_attribute?` as a replacement
+
+## Added
+
+* `Struct.attribute?` is an easy way to define omittable attributes (flash-gordon):
+
+  ```ruby
+  class User < Dry::Struct
+    attribute  :name,  Types::Strict::String
+    attribute? :email, Types::Strict::String
+  end
+  # User.new(name: 'John') # => #<User name="John">
+  ```
+
+## Fixed
+
+* `Struct#to_h` recursively converts hash values to hashes, this was done to be consistent with current behavior for arrays (oeoeaio + ZimbiX)
+
+[Compare v0.5.1...master](https://github.com/dry-rb/dry-struct/compare/v0.5.1...master)
+
 # v0.5.1 2018-08-11
 
 ## Fixed
