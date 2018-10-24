@@ -1,4 +1,4 @@
-# to-be-released
+# v0.6.0 2018-10-24
 
 ## BREAKING CHANGES
 
@@ -20,7 +20,7 @@
 
 * `Struct#to_h` recursively converts hash values to hashes, this was done to be consistent with current behavior for arrays (oeoeaio + ZimbiX)
 
-[Compare v0.5.1...master](https://github.com/dry-rb/dry-struct/compare/v0.5.1...master)
+[Compare v0.5.1...v0.6.0](https://github.com/dry-rb/dry-struct/compare/v0.5.1...v0.6.0)
 
 # v0.5.1 2018-08-11
 
