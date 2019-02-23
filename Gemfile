@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
 gemspec
 
-gem 'dry-types', git: 'https://github.com/dry-rb/dry-types'
-gem 'dry-inflector', git: 'https://github.com/dry-rb/dry-inflector'
+gem 'dry-types', github: 'dry-rb/dry-types', branch: 'rework-schemas'
 
 group :test do
   gem 'codeclimate-test-reporter', platform: :mri, require: false
@@ -12,8 +13,8 @@ group :test do
 end
 
 group :tools do
+  gem 'pry'
   gem 'pry-byebug', platform: :mri
-  gem 'pry', platform: :jruby
   gem 'mutant'
   gem 'mutant-rspec'
 end

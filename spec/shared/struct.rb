@@ -187,13 +187,13 @@ RSpec.shared_examples_for Dry::Struct do
       it 'adds a type transformation' do
         type.transform_types { |t| t.meta(tranformed: true) }
         type.attribute(:city, Dry::Types["strict.string"])
-        expect(type.schema[:city].meta).to eql(tranformed: true)
+        expect(type.schema.key(:city).type.meta).to eql(tranformed: true)
       end
 
       it 'accepts a proc' do
         type.transform_types(-> (t, _name) { t.meta(tranformed: true) })
         type.attribute(:city, Dry::Types["strict.string"])
-        expect(type.schema[:city].meta).to eql(tranformed: true)
+        expect(type.schema.key(:city).type.meta).to eql(tranformed: true)
       end
     end
 

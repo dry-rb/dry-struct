@@ -58,7 +58,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
             end
 
             it 'uses the given array type' do
-              expect(user_type.schema[:permissions]).
+              expect(user_type.schema.key(:permissions).type).
                 to eql(Dry::Types[array_type].of(Test::User::Permission))
             end
 
@@ -92,7 +92,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
         end
 
         it 'uses the given array type' do
-          expect(user_type.schema[:permissions]).
+          expect(user_type.schema.key(:permissions).type).
             to eql(Dry::Types['strict.array'].of(Test::User::Permission))
         end
       end

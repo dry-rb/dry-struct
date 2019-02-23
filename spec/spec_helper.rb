@@ -76,6 +76,7 @@ RSpec.configure do |config|
   end
 
   config.order = :random
+  config.filter_run_when_matching :focus
 
   config.around :each, :suppress_deprecations do |ex|
     logger = Dry::Core::Deprecations.logger
