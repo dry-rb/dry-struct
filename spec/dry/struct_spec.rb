@@ -241,7 +241,7 @@ RSpec.describe Dry::Struct do
       it "returns hash with attributes but will not try fetching omittable keys if not set" do
         type = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['string']
-          attribute :last_name, Dry::Types['string'].meta(omittable: true)
+          attribute :last_name, Dry::Types['string'].meta(required: false)
         end
 
         attributes = { name: 'John' }
@@ -251,7 +251,7 @@ RSpec.describe Dry::Struct do
       it "returns hash with attributes but will fetch omittable keys if set" do
         type = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['string']
-          attribute :last_name, Dry::Types['string'].meta(omittable: true)
+          attribute :last_name, Dry::Types['string'].meta(required: false)
         end
 
         attributes = { name: 'John', last_name: 'Doe' }
@@ -260,7 +260,7 @@ RSpec.describe Dry::Struct do
 
       it "returns empty hash if all attributes are ommitable and no value is set" do
         type = Class.new(Dry::Struct) do
-          attribute :name, Dry::Types['string'].meta(omittable: true)
+          attribute :name, Dry::Types['string'].meta(required: false)
         end
 
         expect(type.new.to_hash).to eq ({})

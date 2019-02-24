@@ -129,7 +129,7 @@ module Dry
         else
           name, type = args
 
-          attribute(name, build_type(name, type, &block).meta(omittable: true))
+          attribute(:"#{ name }?", build_type(name, type, &block))
         end
       end
 
