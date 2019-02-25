@@ -150,11 +150,12 @@ module Dry
       #     #=> {title: #<Dry::Types::Definition primitive=String options={}>,
       #     #    author: #<Dry::Types::Definition primitive=String options={}>}
       def attributes(new_schema)
-        check_schema_duplication(new_schema)
+        keys = new_schema.keys.map { |k| k.to_s.chomp('?').to_sym }
+        check_schema_duplication(keys)
 
         schema schema.schema(new_schema)
 
-        new_schema.each_key do |key|
+        keys.each do |key|
           next if instance_methods.include?(key)
           class_eval(<<-RUBY)
             def #{ key }
@@ -165,9 +166,11 @@ module Dry
 
         @attribute_names = nil
 
-        descendants.
-          select { |d| d.superclass == self }.
-          each { |d| d.attributes(new_schema.reject { |k, _| d.schema.key?(k) }) }
+        direct_descendants = descendants.select { |d| d.superclass == self }
+        direct_descendants.each do |d|
+          inherited_attrs = new_schema.reject { |k, _| d.has_attribute?(k.to_s.chomp('?').to_sym) }
+          d.attributes(inherited_attrs)
+        end
 
         self
       end
@@ -209,8 +212,8 @@ module Dry
       # @param [Hash{Symbol => Dry::Types::Definition, Dry::Struct}] new_schema
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
-      def check_schema_duplication(new_schema)
-        overlapping_keys = new_schema.keys & (attribute_names - superclass.attribute_names)
+      def check_schema_duplication(new_keys)
+        overlapping_keys = new_keys & (attribute_names - superclass.attribute_names)
 
         if overlapping_keys.any?
           raise RepeatedAttributeError, overlapping_keys.first
