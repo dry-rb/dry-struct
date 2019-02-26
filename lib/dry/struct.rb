@@ -90,8 +90,8 @@ module Dry
 
     # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
     # @return [Dry::Types::Hash::Schema]
-    defines :input
-    input Types['coercible.hash'].schema(EMPTY_HASH)
+    defines :schema
+    schema Types['coercible.hash'].schema(EMPTY_HASH)
 
     @meta = EMPTY_HASH
 
@@ -143,8 +143,8 @@ module Dry
     #   rom_n_roda.to_hash
     #     #=> {title: 'Web Development with ROM and Roda', subtitle: nil}
     def to_hash
-      self.class.schema.keys.each_with_object({}) do |key, result|
-        result[key] = Hashify[self[key]] if attributes.key?(key)
+      self.class.schema.each_with_object({}) do |key, result|
+        result[key.name] = Hashify[self[key.name]] if attributes.key?(key.name)
       end
     end
     alias_method :to_h, :to_hash

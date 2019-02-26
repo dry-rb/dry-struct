@@ -12,7 +12,7 @@ RSpec.describe Dry do
       before do
         module Test
           Library = Dry.Struct do
-            input input.strict
+            schema schema.strict
 
             attribute :library, 'strict.string'
             attribute :language, 'strict.string'

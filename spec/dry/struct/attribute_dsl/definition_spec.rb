@@ -199,6 +199,9 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       expect(struct.foo).to eql('value')
       expect(struct.attributes).not_to have_key(:bar)
       expect(Test::Foo.has_attribute?(:bar)).to be true
+
+      struct = Test::Foo.new(foo: 'value', bar: 'another value')
+      expect(struct.bar).to eql('another value')
     end
 
     it 'defines omittable structs' do

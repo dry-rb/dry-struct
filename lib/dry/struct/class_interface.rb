@@ -129,7 +129,7 @@ module Dry
         else
           name, type = args
 
-          attribute(name, build_type(name, type, &block).meta(omittable: true))
+          attribute(:"#{ name }?", build_type(name, type, &block))
         end
       end
 
@@ -150,11 +150,12 @@ module Dry
       #     #=> {title: #<Dry::Types::Definition primitive=String options={}>,
       #     #    author: #<Dry::Types::Definition primitive=String options={}>}
       def attributes(new_schema)
-        check_schema_duplication(new_schema)
+        keys = new_schema.keys.map { |k| k.to_s.chomp('?').to_sym }
+        check_schema_duplication(keys)
 
-        input input.schema(new_schema)
+        schema schema.schema(new_schema)
 
-        new_schema.each_key do |key|
+        keys.each do |key|
           next if instance_methods.include?(key)
           class_eval(<<-RUBY)
             def #{ key }
@@ -165,9 +166,11 @@ module Dry
 
         @attribute_names = nil
 
-        descendants.
-          select { |d| d.superclass == self }.
-          each { |d| d.attributes(new_schema.reject { |k, _| d.schema.key?(k) }) }
+        direct_descendants = descendants.select { |d| d.superclass == self }
+        direct_descendants.each do |d|
+          inherited_attrs = new_schema.reject { |k, _| d.has_attribute?(k.to_s.chomp('?').to_sym) }
+          d.attributes(inherited_attrs)
+        end
 
         self
       end
@@ -183,10 +186,10 @@ module Dry
       #     attribute :title, Types::Strict::String
       #   end
       #
-      #   Book.schema[:title].meta # => { struct: :Book }
+      #   Book.schema.key(:title).meta # => { struct: :Book }
       #
       def transform_types(proc = nil, &block)
-        input input.with_type_transform(proc || block)
+        schema schema.with_type_transform(proc || block)
       end
 
       # Add an arbitrary transformation for input hash keys.
@@ -203,16 +206,18 @@ module Dry
       #   Book.new('title' => "The Old Man and the Sea")
       #   # => #<Book title="The Old Man and the Sea">
       def transform_keys(proc = nil, &block)
-        input input.with_key_transform(proc || block)
+        schema schema.with_key_transform(proc || block)
       end
 
       # @param [Hash{Symbol => Dry::Types::Definition, Dry::Struct}] new_schema
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
-      def check_schema_duplication(new_schema)
-        shared_keys = new_schema.keys & (schema.keys - superclass.schema.keys)
+      def check_schema_duplication(new_keys)
+        overlapping_keys = new_keys & (attribute_names - superclass.attribute_names)
 
-        raise RepeatedAttributeError, shared_keys.first if shared_keys.any?
+        if overlapping_keys.any?
+          raise RepeatedAttributeError, overlapping_keys.first
+        end
       end
       private :check_schema_duplication
 
@@ -222,7 +227,7 @@ module Dry
         if attributes.instance_of?(self)
           attributes
         else
-          super(input[attributes])
+          super(schema[attributes])
         end
       rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
         raise Struct::Error, "[#{self}.new] #{error}"
@@ -321,16 +326,11 @@ module Dry
         schema.key?(key)
       end
 
-      # @return [Hash{Symbol => Dry::Types::Definition, Dry::Struct}]
-      def schema
-        input.member_types
-      end
-
       # Gets the list of attribute names
       #
       # @return [Array<Symbol>]
       def attribute_names
-        @attribute_names ||= schema.keys
+        @attribute_names ||= schema.map(&:name)
       end
 
       # @return [{Symbol => Object}]
@@ -367,8 +367,8 @@ module Dry
       #
       # @return [Hash{Symbol => Object}]
       def default_attributes(default_schema = schema)
-        default_schema.each_with_object({}) do |(name, type), result|
-          result[name] = default_attributes(type.schema) if struct?(type)
+        default_schema.each_with_object({}) do |key, result|
+          result[key.name] = default_attributes(key.schema) if struct?(key.type)
         end
       end
       private :default_attributes

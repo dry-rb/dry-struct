@@ -1,8 +1,34 @@
+# to-be-released
+
+## Changed
+
+* [BREAKING] `Struct.input` was renamed `Struct.schema`, hence `Struct.schema` returns an instance of `Dry::Types::Hash::Schema` rather than a `Hash`. Schemas are also implementing `Enumerable` but they iterate over key types.
+  New API:
+  ```ruby
+  User.schema.each do |key|
+    puts "Key name: #{ key.name }"
+    puts "Key type: #{ key.type }"
+  end
+  ```
+  To get a type by its name use `.key`:
+  ```ruby
+  User.schema.key(:id) # => #<Dry::Types::Hash::Key ...>
+  ```
+* [BREAKING] `transform_types` now passes one argument to the block, an instance of the `Key` type. Combined with the new API from dry-types it simplifies declaring omittable keys:
+  ```ruby
+  class StructWithOptionalKeys < Dry::Struct
+    transform_types { |key| key.required(false) }
+    # or simply
+    transform_types(&:omittable)
+  end
+  ```
+* [BREAKING] Minimal supported Ruby version is 2.4
+
 # v0.6.0 2018-10-24
 
-## BREAKING CHANGES
+## Changed
 
-* `Struct.attribute?` in the old sense is deprecated, use `has_attribute?` as a replacement
+* [BREAKING] `Struct.attribute?` in the old sense is deprecated, use `has_attribute?` as a replacement
 
 ## Added
 
