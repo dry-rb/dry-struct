@@ -4,7 +4,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gemspec
 
-gem 'dry-types', github: 'dry-rb/dry-types', branch: 'rework-schemas'
+gem 'dry-types', github: 'dry-rb/dry-types'
 
 group :test do
   gem 'codeclimate-test-reporter', platform: :mri, require: false
