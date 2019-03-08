@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_context 'user type' do
   let(:user_type) { Test::User }
   let(:root_type) { Test::SuperUser }

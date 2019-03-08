@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Struct do
   include_context 'user type'
 
@@ -32,7 +34,7 @@ RSpec.describe Dry::Struct do
 
     it 'creates an empty struct when called without arguments' do
       class Test::Empty < Dry::Struct
-        @constructor = Dry::Types['strict.hash'].strict(schema)
+        @constructor = Dry::Types['strict.hash'].schema(schema).strict
       end
 
       expect { Test::Empty.new }.to_not raise_error

@@ -4,6 +4,8 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gemspec
 
+gem 'dry-equalizer', github: 'dry-rb/dry-equalizer'
+# gem 'dry-types', github: 'dry-rb/dry-types', branch: 'move-parameters-out-of-meta'
 gem 'dry-types', github: 'dry-rb/dry-types'
 
 group :test do

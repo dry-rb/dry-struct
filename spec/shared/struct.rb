@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples_for Dry::Struct do
   let(:jane) { { name: :Jane, age: '21', root: true, address: { city: 'NYC', zipcode: 123 } } }
   let(:mike) { { name: :Mike, age: '43', root: false, address: { city: 'Atlantis', zipcode: 456 } } }
@@ -114,7 +116,7 @@ RSpec.shared_examples_for Dry::Struct do
     end
 
     describe '.default' do
-      let(:default_type) { type.default(type[jane]) }
+      let(:default_type) { type.default(type[jane].freeze) }
 
       it 'returns Default type' do
         expect(default_type).to be_instance_of(Dry::Types::Default)

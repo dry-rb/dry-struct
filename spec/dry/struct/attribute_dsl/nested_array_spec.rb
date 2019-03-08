@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Struct, method: '.attribute' do
   let(:user_type) { Test::User }
 
