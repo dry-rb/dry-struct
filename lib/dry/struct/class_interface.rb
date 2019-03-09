@@ -233,6 +233,13 @@ module Dry
         raise Struct::Error, "[#{self}.new] #{error}"
       end
 
+      # @api private
+      def load(attributes)
+        struct = allocate
+        struct.send(:initialize, attributes)
+        struct
+      end
+
       # Calls type constructor. The behavior is identical to `.new` but returns
       # the input back if it's a subclass of the struct.
       #

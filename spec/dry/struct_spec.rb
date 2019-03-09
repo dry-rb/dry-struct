@@ -99,7 +99,7 @@ RSpec.describe Dry::Struct do
       end
     end
 
-    it "doesn't coerce to a hash recurcively" do
+    it "doesn't coerce to a hash recursively" do
       properties = Class.new(Dry::Struct) do
         attribute :age, Dry::Types['strict.integer'].constructor(-> v { v + 1 })
       end
