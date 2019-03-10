@@ -170,7 +170,7 @@ module Dry
     #   rom_n_roda.new(subtitle: '3rd edition')
     #     #=> #<Book title="Web Development with ROM and Roda" subtitle="3rd edition">
     def new(changeset)
-      new_attributes = self.class.schema.apply(changeset, skip_missing: true)
+      new_attributes = self.class.schema.apply(changeset, skip_missing: true, resolve_defaults: false)
       self.class.load(__attributes__.merge(new_attributes))
     rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
       raise Struct::Error, "[#{self}.new] #{error}"

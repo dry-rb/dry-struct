@@ -78,6 +78,19 @@ RSpec.shared_examples_for Dry::Struct do
       original.class.prepend(decorator)
       expect(updated.name).to eql(:'Jane Doe')
     end
+
+    context 'default values' do
+      subject(:struct) do
+        Class.new(Dry::Struct) {
+          attribute :name, 'strict.string'
+          attribute :age,  Dry::Types['strict.integer'].default(18)
+        }.new(name: 'Jack', age: 20)
+      end
+
+      it "doesn't re-write values with defaults if keys are missing in the changeset" do
+        expect(struct.new(name: 'John').age).to eql(20)
+      end
+    end
   end
 
   describe '#inspect' do
