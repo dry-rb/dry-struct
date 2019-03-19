@@ -16,7 +16,6 @@ require 'pathname'
 begin
   require 'warning'
   Warning.ignore(/regexp_parser/)
-  Warning.ignore(/mutant/)
   Warning.ignore(/parser/)
   Warning.ignore(/slice\.rb/)
 rescue LoadError
@@ -36,21 +35,6 @@ begin
   require 'pry-byebug'
 rescue LoadError
 end
-
-begin
-  require 'mutant'
-
-  module Mutant
-    class Selector
-      class Expression < self
-        undef call
-        def call(_subject)
-          integration.all_tests
-        end
-      end # Expression
-    end # Selector
-  end # Mutant
-rescue LoadError; end
 
 Dir[Pathname(__dir__).join('shared/*.rb')].each(&method(:require))
 require 'dry/types/spec/types'
