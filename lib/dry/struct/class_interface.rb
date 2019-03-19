@@ -34,7 +34,7 @@ module Dry
       # and modifies {.schema} accordingly.
       #
       # @param [Symbol] name name of the defined attribute
-      # @param [Dry::Types::Definition, nil] type or superclass of nested type
+      # @param [Dry::Types::Type, nil] type or superclass of nested type
       # @return [Dry::Struct]
       # @yield
       #   If a block is given, it will be evaluated in the context of
@@ -53,10 +53,7 @@ module Dry
       #   end
       #
       #   Language.schema
-      #     #=> {
-      #           :name=>#<Dry::Types::Definition primitive=String options={} meta={}>,
-      #           :details=>Language::Details
-      #         }
+      #   # => #<Dry::Types[Constructor<Schema<keys={name: Nominal<String> details: Language::Details}> fn=Kernel.Hash>]>
       #
       #   ruby = Language.new(name: 'Ruby', details: { type: 'OO' })
       #   ruby.name #=> 'Ruby'
@@ -74,11 +71,11 @@ module Dry
       #   end
       #
       #   Language.schema
-      #     #=> {
-      #           :name=>#<Dry::Types::Definition primitive=String options={} meta={}>,
-      #           :versions=>#<Dry::Types::Array::Member primitive=Array options={:member=>#<Dry::Types::Definition primitive=String options={} meta={}>} meta={}>,
-      #           :celebrities=>#<Dry::Types::Array::Member primitive=Array options={:member=>Language::Celebrity} meta={}>
-      #         }
+      #   => #<Dry::Types[Constructor<Schema<keys={
+      #         name: Nominal<String>
+      #         versions: Array<Nominal<String>>
+      #         celebrities: Array<Language::Celebrity>
+      #      }> fn=Kernel.Hash>]>
       #
       #   ruby = Language.new(
       #     name: 'Ruby',
@@ -114,7 +111,7 @@ module Dry
       #   User.new(name: 'John') # => #<User name="John">
       #
       # @param [Symbol] name name of the defined attribute
-      # @param [Dry::Types::Definition, nil] type or superclass of nested type
+      # @param [Dry::Types::Type, nil] type or superclass of nested type
       # @return [Dry::Struct]
       #
       def attribute?(*args, &block)
@@ -133,7 +130,7 @@ module Dry
         end
       end
 
-      # @param [Hash{Symbol => Dry::Types::Definition}] new_schema
+      # @param [Hash{Symbol => Dry::Types::Type}] new_schema
       # @return [Dry::Struct]
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
@@ -147,8 +144,10 @@ module Dry
       #   end
       #
       #   Book.schema
-      #     #=> {title: #<Dry::Types::Definition primitive=String options={}>,
-      #     #    author: #<Dry::Types::Definition primitive=String options={}>}
+      #   # => #<Dry::Types[Constructor<Schema<keys={
+      #   #      title: Nominal<String>
+      #   #      author: Nominal<String>
+      #   #    }> fn=Kernel.Hash>]>
       def attributes(new_schema)
         keys = new_schema.keys.map { |k| k.to_s.chomp('?').to_sym }
         check_schema_duplication(keys)
@@ -209,7 +208,7 @@ module Dry
         schema schema.with_key_transform(proc || block)
       end
 
-      # @param [Hash{Symbol => Dry::Types::Definition, Dry::Struct}] new_schema
+      # @param [Hash{Symbol => Dry::Types::Type, Dry::Struct}] new_schema
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
       def check_schema_duplication(new_keys)
@@ -382,7 +381,7 @@ module Dry
 
       # Checks if the given type is a Dry::Struct
       #
-      # @param [Dry::Types::Definition, Dry::Struct] type
+      # @param [Dry::Types::Type] type
       # @return [Boolean]
       def struct?(type)
         type.is_a?(Class) && type <= Struct

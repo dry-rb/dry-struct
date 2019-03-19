@@ -73,7 +73,7 @@ module Dry
         member
       end
 
-      def visit_definition(*)
+      def visit_nominal(*)
         default_superclass
       end
 

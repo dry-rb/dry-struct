@@ -9,4 +9,11 @@ module Types
   include Dry::Types.module
 end
 
+        class Book < Dry::Struct
+          attributes(
+            title: Types::String,
+            author: Types::String
+          )
+        end
+
 binding.irb

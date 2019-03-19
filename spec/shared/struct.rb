@@ -104,7 +104,7 @@ RSpec.shared_examples_for Dry::Struct do
   end
 
   context 'class interface' do
-    it_behaves_like Dry::Types::Definition
+    it_behaves_like Dry::Types::Nominal
 
     describe '.|' do
       let(:sum_type) { type | Dry::Types['strict.nil'] }
