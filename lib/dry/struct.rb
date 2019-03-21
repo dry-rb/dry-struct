@@ -16,7 +16,7 @@ module Dry
   #   require 'dry-struct'
   #
   #   module Types
-  #     include Dry::Types.module
+  #     include Dry.Types
   #   end
   #
   #   Person = Dry.Struct(name: Types::Strict::String, age: Types::Strict::Int)
@@ -60,12 +60,12 @@ module Dry
   #   require 'dry-struct'
   #
   #   module Types
-  #     include Dry::Types.module
+  #     include Dry.Types
   #   end
   #
   #   class Book < Dry::Struct
-  #     attribute :title, Types::Strict::String
-  #     attribute :subtitle, Types::Strict::String.optional
+  #     attribute :title, Types::String
+  #     attribute :subtitle, Types::String.optional
   #   end
   #
   #   rom_n_roda = Book.new(

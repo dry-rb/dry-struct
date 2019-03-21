@@ -17,7 +17,7 @@ class ARUser < ActiveRecord::Base
 end
 
 module Types
-  include Dry::Types.module
+  include Dry.Types
 end
 
 class DryStructUser < Dry::Struct

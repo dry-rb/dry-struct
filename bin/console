@@ -6,14 +6,7 @@ require 'dry/struct'
 require 'irb'
 
 module Types
-  include Dry::Types.module
+  include Dry.Types
 end
-
-        class Book < Dry::Struct
-          attributes(
-            title: Types::String,
-            author: Types::String
-          )
-        end
 
 binding.irb
