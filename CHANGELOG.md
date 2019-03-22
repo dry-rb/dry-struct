@@ -1,4 +1,4 @@
-# to-be-released
+# 0.7.0 2019-03-22
 
 ## Changed
 
@@ -22,7 +22,10 @@
     transform_types(&:omittable)
   end
   ```
-* [BREAKING] Minimal supported Ruby version is 2.4
+* `Dry::Stuct#new` is now more efficient for partial updates (flash-gordon)
+* Ruby 2.3 is EOL and not officially supported. It may work but we don't test it.
+
+[Compare v0.6.0...v0.7.0](https://github.com/dry-rb/dry-struct/compare/v0.6.0...v0.7.0)
 
 # v0.6.0 2018-10-24
 
