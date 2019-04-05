@@ -1,10 +1,10 @@
 [gem]: https://rubygems.org/gems/dry-struct
 [travis]: https://travis-ci.org/dry-rb/dry-struct
 [codeclimate]: https://codeclimate.com/github/dry-rb/dry-struct
-[coveralls]: https://coveralls.io/r/dry-rb/dry-struct
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-struct
+[chat]: https://dry-rb.zulipchat.com
 
-# dry-struct [![Join the chat at https://gitter.im/dry-rb/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dry-rb/chat)
+# dry-struct [![Join the chat at https://dry-rb.zulipchat.com](https://img.shields.io/badge/dry--rb-join%20chat-%23346b7a.svg)][chat]
 
 [![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][gem]
 [![Build Status](https://travis-ci.org/dry-rb/dry-struct.svg?branch=master)][travis]
