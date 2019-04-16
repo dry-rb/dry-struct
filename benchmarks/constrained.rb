@@ -21,9 +21,9 @@ module Types
 end
 
 class DryStructUser < Dry::Struct
-  attribute :id, Types::Form::Int
+  attribute :id, Types::Params::Integer
   attribute :name, Types::Strict::String.constrained(size: 3..64)
-  attribute :age, Types::Form::Int.constrained(gt: 18)
+  attribute :age, Types::Params::Integer.constrained(gt: 18)
 end
 
 puts ARUser.new(id: 1, name: 'Jane', age: '21').inspect
