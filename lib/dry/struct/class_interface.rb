@@ -225,11 +225,18 @@ module Dry
       def new(attributes = default_attributes)
         if attributes.instance_of?(self)
           attributes
+        elsif block_given?
+          result = schema.(attributes) do |output = attributes|
+            return yield output
+          end
+          super(result)
         else
-          super(schema[attributes])
+          begin
+            super(schema[attributes])
+          rescue Types::CoercionError => error
+            raise Struct::Error, "[#{self}.new] #{error}"
+          end
         end
-      rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
-        raise Struct::Error, "[#{self}.new] #{error}"
       end
 
       # @api private
@@ -244,9 +251,12 @@ module Dry
       #
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @return [Dry::Struct]
-      def call(attributes = default_attributes)
-        return attributes if attributes.is_a?(self)
-        new(attributes)
+      def call(attributes = default_attributes, &block)
+        if attributes.is_a?(self)
+          attributes
+        else
+          new(attributes, &block)
+        end
       end
       alias_method :[], :call
 
@@ -274,7 +284,7 @@ module Dry
       # @private
       def try_struct(input)
         if input.is_a?(self)
-          Types::Result::Success.new(input)
+          input
         else
           yield
         end

@@ -8,7 +8,7 @@ RSpec.describe Dry::Struct do
   end
 
   shared_examples_for 'typical constructor' do
-    it 'raises StructError when attribute constructor failed' do
+    xit 'raises StructError when attribute constructor failed' do
       expect {
         construct_user(name: :Jane, age: '21', address: nil)
       }.to raise_error(
