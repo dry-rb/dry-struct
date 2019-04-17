@@ -8,12 +8,12 @@ RSpec.describe Dry::Struct do
   end
 
   shared_examples_for 'typical constructor' do
-    xit 'raises StructError when attribute constructor failed' do
+    it 'raises StructError when attribute constructor failed' do
       expect {
         construct_user(name: :Jane, age: '21', address: nil)
       }.to raise_error(
         Dry::Struct::Error,
-        /\[Test::User.new\] nil \(NilClass\) has invalid type for :address/
+        /\[Test::Address.new\] :city is missing in Hash input/
       )
     end
 
