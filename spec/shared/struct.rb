@@ -156,7 +156,7 @@ RSpec.shared_examples_for Dry::Struct do
       end
 
       it 'rejects invalid input' do
-        expect { optional_type[foo: :bar] }.to raise_error(Dry::Types::ConstraintError)
+        expect { optional_type[foo: :bar] }.to raise_error(Dry::Struct::Error)
       end
     end
 

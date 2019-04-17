@@ -223,12 +223,30 @@ module Dry
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
       def new(attributes = default_attributes)
-        if attributes.instance_of?(self)
+        if equal?(attributes.class)
           attributes
         else
-          super(schema[attributes])
+          load(schema.call_unsafe(attributes))
         end
-      rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
+      rescue Types::CoercionError => error
+        raise Struct::Error, "[#{self}.new] #{error}"
+      end
+
+      def call_safe(input)
+        if input.is_a?(self)
+          input
+        else
+          load(schema.call_safe(input) { |output = input| return yield output })
+        end
+      end
+
+      def call_unsafe(input)
+        if input.is_a?(self)
+          input
+        else
+          load(schema.call_unsafe(input))
+        end
+      rescue Types::CoercionError => error
         raise Struct::Error, "[#{self}.new] #{error}"
       end
 
@@ -244,9 +262,8 @@ module Dry
       #
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @return [Dry::Struct]
-      def call(attributes = default_attributes)
-        return attributes if attributes.is_a?(self)
-        new(attributes)
+      def call(attributes = default_attributes, &block)
+        super
       end
       alias_method :[], :call
 
@@ -274,7 +291,7 @@ module Dry
       # @private
       def try_struct(input)
         if input.is_a?(self)
-          Types::Result::Success.new(input)
+          input
         else
           yield
         end

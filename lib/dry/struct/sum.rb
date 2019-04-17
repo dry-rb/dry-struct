@@ -6,6 +6,11 @@ module Dry
     # As opposed to Dry::Types::Sum::Constrained
     # this type tries no to coerce data first.
     class Sum < Dry::Types::Sum::Constrained
+      def call(input)
+        left.try_struct(input) do
+          right.try_struct(input) { super }
+        end
+      end
       # @param [Hash{Symbol => Object},Dry::Struct] input
       # @yieldparam [Dry::Types::Result::Failure] failure
       # @yieldreturn [Dry::Types::ResultResult]
@@ -23,11 +28,22 @@ module Dry
       # @return [Dry::Types::Sum]
       def |(type)
         if type.is_a?(Class) && type <= Struct || type.is_a?(Sum)
-          self.class.new(self, type)
+          Sum.new(self, type)
         else
           super
         end
       end
+
+      def inspect
+        if left.is_a?(Sum) && right.is_a?(Sum)
+          "#{left.inspect} | #{right.inspect}"
+        elsif left.is_a?(Sum)
+          "#{left.inspect} | #{right.inspect}]"
+        else
+          "#<Dry::Struct::Sum[#{left.inspect} | #{right.inspect}"
+        end
+      end
+      alias_method :to_s, :inspect
 
       protected
 

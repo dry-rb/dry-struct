@@ -13,7 +13,7 @@ RSpec.describe Dry::Struct do
         construct_user(name: :Jane, age: '21', address: nil)
       }.to raise_error(
         Dry::Struct::Error,
-        /\[Test::User.new\] nil \(NilClass\) has invalid type for :address/
+        /\[Test::Address.new\] :city is missing in Hash input/
       )
     end
 
