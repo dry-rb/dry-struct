@@ -22,4 +22,5 @@ group :benchmarks do
   gem 'virtus'
   gem 'fast_attributes'
   gem 'attrio'
+  gem 'hotch'
 end
