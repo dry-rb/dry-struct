@@ -223,20 +223,31 @@ module Dry
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
       def new(attributes = default_attributes)
-        if attributes.instance_of?(self)
+        if equal?(attributes.class)
           attributes
-        elsif block_given?
-          result = schema.(attributes) do |output = attributes|
-            return yield output
-          end
-          super(result)
         else
-          begin
-            super(schema[attributes])
-          rescue Types::CoercionError => error
-            raise Struct::Error, "[#{self}.new] #{error}"
-          end
+          load(schema.call_unsafe(attributes))
         end
+      rescue Types::CoercionError => error
+        raise Struct::Error, "[#{self}.new] #{error}"
+      end
+
+      def call_safe(input)
+        if input.is_a?(self)
+          input
+        else
+          load(schema.call_safe(input) { |output = input| return yield output })
+        end
+      end
+
+      def call_unsafe(input)
+        if input.is_a?(self)
+          input
+        else
+          load(schema.call_unsafe(input))
+        end
+      rescue Types::CoercionError => error
+        raise Struct::Error, "[#{self}.new] #{error}"
       end
 
       # @api private
@@ -252,11 +263,7 @@ module Dry
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @return [Dry::Struct]
       def call(attributes = default_attributes, &block)
-        if attributes.is_a?(self)
-          attributes
-        else
-          new(attributes, &block)
-        end
+        super
       end
       alias_method :[], :call
 
