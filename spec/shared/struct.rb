@@ -239,6 +239,22 @@ RSpec.shared_examples_for Dry::Struct do
         expect(Dry::Struct::Value).not_to be_a(Dry::Core::DescendantsTracker)
       end
     end
+
+    describe '.primitive?' do
+      it 'is an alias for is_a?' do
+        expect(Dry::Struct.primitive?(nil)).to be(false)
+        expect(Dry::Struct.primitive?({})).to be(false)
+        expect(Dry::Struct.primitive?(Dry::Struct.new)).to be(true)
+      end
+    end
+
+    describe '.optional?' do
+      specify do
+        expect(Dry::Struct).not_to be_optional
+        expect(Dry::Struct.optional).to be_optional
+        expect(Dry::Struct | Dry::Struct).not_to be_optional
+      end
+    end
   end
 
   it 'registered without wrapping' do

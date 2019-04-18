@@ -257,6 +257,10 @@ module Dry
         struct
       end
 
+      def primitive?(value)
+        value.is_a?(self)
+      end
+
       # Calls type constructor. The behavior is identical to `.new` but returns
       # the input back if it's a subclass of the struct.
       #

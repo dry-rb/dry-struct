@@ -45,4 +45,10 @@ RSpec.describe Dry::Struct::Sum do
       expect(sum.(highway)).to be(highway)
     end
   end
+
+  describe '#optional?' do
+    specify do
+      expect(sum).not_to be_optional
+    end
+  end
 end
