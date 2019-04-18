@@ -276,6 +276,14 @@ RSpec.shared_examples_for Dry::Struct do
         expect(struct.(street: 'Baker')).to eql(struct.new(city: 'London', street: 'Baker'))
       end
     end
+
+    describe '.===' do
+      it 'acts in the same way as Class#===' do
+        expect(Dry::Struct).not_to be === nil
+        expect(Dry::Struct).to be === Dry::Struct.new
+        expect(Dry::Struct).to be === Class.new(Dry::Struct).new
+      end
+    end
   end
 
   it 'registered without wrapping' do

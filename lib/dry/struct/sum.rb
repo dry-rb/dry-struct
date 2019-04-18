@@ -45,6 +45,10 @@ module Dry
       end
       alias_method :to_s, :inspect
 
+      def ===(value)
+        left === value || right === value
+      end
+
       protected
 
       # @private

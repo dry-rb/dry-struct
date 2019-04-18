@@ -234,7 +234,6 @@ module Dry
         raise Struct::Error, "[#{self}.new] #{error}"
       end
 
-      def call_safe(input)
       def call_safe(input, &block)
         if input.is_a?(self)
           input
@@ -317,9 +316,10 @@ module Dry
 
       # @param [Object, Dry::Struct] value
       # @return [Boolean]
-      def valid?(value)
-        self === value
+      def ===(other)
+        other.is_a?(self)
       end
+      alias_method :valid?, :===
 
       # @return [true]
       def constrained?
