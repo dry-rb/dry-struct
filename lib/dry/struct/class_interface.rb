@@ -157,8 +157,8 @@ module Dry
         keys.each do |key|
           next if instance_methods.include?(key)
           class_eval(<<-RUBY)
-            def #{ key }
-              @attributes[#{ key.inspect }]
+            def #{key}
+              @attributes[#{key.inspect}]
             end
           RUBY
         end
@@ -222,9 +222,11 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = default_attributes)
+      def new(attributes = default_attributes, safe = false)
         if equal?(attributes.class)
           attributes
+        elsif safe
+          load(schema.call_safe(attributes) { |output = attributes| return yield output })
         else
           load(schema.call_unsafe(attributes))
         end
@@ -233,10 +235,11 @@ module Dry
       end
 
       def call_safe(input)
+      def call_safe(input, &block)
         if input.is_a?(self)
           input
         else
-          load(schema.call_safe(input) { |output = input| return yield output })
+          new(input, true, &block)
         end
       end
 
@@ -244,10 +247,8 @@ module Dry
         if input.is_a?(self)
           input
         else
-          load(schema.call_unsafe(input))
+          new(input)
         end
-      rescue Types::CoercionError => error
-        raise Struct::Error, "[#{self}.new] #{error}"
       end
 
       # @api private
@@ -260,16 +261,6 @@ module Dry
       def primitive?(value)
         value.is_a?(self)
       end
-
-      # Calls type constructor. The behavior is identical to `.new` but returns
-      # the input back if it's a subclass of the struct.
-      #
-      # @param [Hash{Symbol => Object},Dry::Struct] attributes
-      # @return [Dry::Struct]
-      def call(attributes = default_attributes, &block)
-        super
-      end
-      alias_method :[], :call
 
       # @param [#call,nil] constructor
       # @param [Hash] _options

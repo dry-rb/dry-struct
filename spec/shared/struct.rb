@@ -255,6 +255,27 @@ RSpec.shared_examples_for Dry::Struct do
         expect(Dry::Struct | Dry::Struct).not_to be_optional
       end
     end
+
+    describe '.call' do
+      subject(:struct) do
+        Class.new(Dry::Struct) do
+          def self.new(attributes)
+            if attributes.key?(:city)
+              super
+            else
+              super({ **attributes, city: 'London' })
+            end
+          end
+
+          attribute :street, 'string'
+          attribute :city, 'string'
+        end
+      end
+
+      it 'call .new so it is possible to override it' do
+        expect(struct.(street: 'Baker')).to eql(struct.new(city: 'London', street: 'Baker'))
+      end
+    end
   end
 
   it 'registered without wrapping' do
