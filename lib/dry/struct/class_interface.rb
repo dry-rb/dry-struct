@@ -319,7 +319,6 @@ module Dry
       def ===(other)
         other.is_a?(self)
       end
-      alias_method :valid?, :===
 
       # @return [true]
       def constrained?

@@ -284,6 +284,20 @@ RSpec.shared_examples_for Dry::Struct do
         expect(Dry::Struct).to be === Class.new(Dry::Struct).new
       end
     end
+
+    describe '.valid?' do
+      let(:struct_a) do
+        Class.new(Dry::Struct) { attribute :name, 'string' }
+      end
+
+      let(:struct_b) do
+        Class.new(Dry::Struct) { attribute :name, 'string' }
+      end
+
+      it 'tries to coerce input' do
+        expect(struct_b.valid?(struct_a.(name: 'John'))).to be(true)
+      end
+    end
   end
 
   it 'registered without wrapping' do
