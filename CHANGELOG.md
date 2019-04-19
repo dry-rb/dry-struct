@@ -1,3 +1,20 @@
+# 1.0.0 to-be-released
+
+## Changed
+
+* `valid?` and `===` behave differently, `===` works the same way `Class#===` does and `valid?` checks if the value _can be_ coerced to the struct (flash-gordon)
+
+## Added
+
+* `Struct.call` now accepts an optional block that will be called on failed coercion. This behavior is consistent with dry-types 1.0. Note that `.new` doesn't take a block (flash-gordon)
+  ```ruby
+  User = Dry::Struct(name: 'string')
+  User.(1) { :oh_no }
+  # => :oh_no
+  ```
+
+[Compare v0.7.0...v1.0.0](https://github.com/dry-rb/dry-struct/compare/v0.7.0...v1.0.0)
+
 # 0.7.0 2019-03-22
 
 ## Changed
