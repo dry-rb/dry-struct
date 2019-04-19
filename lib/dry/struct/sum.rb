@@ -1,4 +1,5 @@
 require 'dry/types/sum'
+require 'dry/types/printer'
 
 module Dry
   class Struct
@@ -34,17 +35,7 @@ module Dry
         end
       end
 
-      def inspect
-        if left.is_a?(Sum) && right.is_a?(Sum)
-          "#{left.inspect} | #{right.inspect}"
-        elsif left.is_a?(Sum)
-          "#{left.inspect} | #{right.inspect}]"
-        else
-          "#<Dry::Struct::Sum[#{left.inspect} | #{right.inspect}"
-        end
-      end
-      alias_method :to_s, :inspect
-
+      # @return [boolean]
       def ===(value)
         left === value || right === value
       end
