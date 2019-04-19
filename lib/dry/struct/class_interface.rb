@@ -234,6 +234,7 @@ module Dry
         raise Struct::Error, "[#{self}.new] #{error}"
       end
 
+      # @api private
       def call_safe(input, &block)
         if input.is_a?(self)
           input
@@ -242,6 +243,7 @@ module Dry
         end
       end
 
+      # @api private
       def call_unsafe(input)
         if input.is_a?(self)
           input
@@ -255,10 +257,6 @@ module Dry
         struct = allocate
         struct.send(:initialize, attributes)
         struct
-      end
-
-      def primitive?(value)
-        value.is_a?(self)
       end
 
       # @param [#call,nil] constructor
@@ -319,6 +317,7 @@ module Dry
       def ===(other)
         other.is_a?(self)
       end
+      alias_method :primitive?, :===
 
       # @return [true]
       def constrained?
