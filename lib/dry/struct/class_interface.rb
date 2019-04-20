@@ -63,8 +63,8 @@ module Dry
       # @example with a nested array of structs
       #   class Language < Dry::Struct
       #     attribute :name, Types::String
-      #     array :versions, Types::String
-      #     array :celebrities, Types::Array.of(Dry::Struct) do
+      #     attribute :versions, Types::Array.of(Types::String)
+      #     attribute :celebrities, Types::Array.of(Dry::Struct) do
       #       attribute :name, Types::String
       #       attribute :pseudonym, Types::String
       #     end
