@@ -272,10 +272,10 @@ module Dry
       # @yieldreturn [Dry::Types::ResultResult]
       # @return [Dry::Types::Result]
       def try(input)
-        Types::Result::Success.new(self[input])
+        success(self[input])
       rescue Struct::Error => e
-        failure = Types::Result::Failure.new(input, e.message)
-        block_given? ? yield(failure) : failure
+        failure_result = failure(input, e.message)
+        block_given? ? yield(failure_result) : failure_result
       end
 
       # @param [Hash{Symbol => Object},Dry::Struct] input
