@@ -9,4 +9,26 @@ module Types
   include Dry.Types
 end
 
+class CreatedUser < Dry::Struct
+  attribute :name, 'string'
+  attribute :status, Types::String.constrained(eql: 'created')
+end
+
+class InvitedUser < Dry::Struct
+  attribute :name, 'string'
+  attribute :status, Types::String.constrained(eql: 'invited')
+end
+
+User = CreatedUser | InvitedUser
+
+created_user = User.(name: 'John', status: 'created')
+invited_user = User.(name: 'Jade', status: 'invited')
+
+def show_user(user)
+  case user
+  in CreatedUser({name: 'Someone else'}) then "created user: #{name}"
+  in InvitedUser({name:}) then "invited user: #{name}"
+  end
+end
+
 binding.irb
