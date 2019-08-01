@@ -15,8 +15,12 @@ RSpec.describe Dry do
           Library = Dry.Struct do
             schema schema.strict
 
-            attribute :library, 'strict.string'
-            attribute :language, 'strict.string'
+            attribute :library, 'string'
+            attribute :language, 'string'
+
+            def qualified
+              "#{language}/#{library}"
+            end
           end
         end
       end
@@ -33,6 +37,11 @@ RSpec.describe Dry do
       it 'sets the correct attributes' do
         attributes = { library: 'dry-struct', language: 'Ruby' }
         expect(Test::Library.new(attributes).to_h).to eql(attributes)
+      end
+
+      it 'can define methods within block' do
+        attributes = { library: 'dry-struct', language: 'Ruby' }
+        expect(Test::Library.new(attributes).qualified).to eql('Ruby/dry-struct')
       end
     end
   end
