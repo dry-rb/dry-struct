@@ -30,7 +30,7 @@ module Dry
   def self.Struct(attributes = Dry::Core::Constants::EMPTY_HASH, &block)
     Class.new(Dry::Struct) do
       attributes.each { |a, type| attribute a, type }
-      instance_eval(&block) if block
+      module_eval(&block) if block
     end
   end
 
