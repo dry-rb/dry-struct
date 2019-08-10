@@ -7,11 +7,7 @@ module Dry
       # @return [Hash, Array]
       def self.[](value)
         if value.respond_to?(:to_hash)
-          if RUBY_VERSION >= '2.4'
-            value.to_hash.transform_values { |v| self[v] }
-          else
-            value.to_hash.each_with_object({}) { |(k, v), h| h[k] = self[v] }
-          end
+          value.to_hash.transform_values { |current| self[current] }
         elsif value.respond_to?(:to_ary)
           value.to_ary.map { |item| self[item] }
         else
