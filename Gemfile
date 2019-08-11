@@ -6,6 +6,7 @@ gemspec
 
 group :test do
   gem 'codeclimate-test-reporter', platform: :mri, require: false
+  gem 'dry-monads'
   gem 'simplecov', require: false
   gem 'warning'
 end

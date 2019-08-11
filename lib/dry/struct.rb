@@ -183,6 +183,13 @@ module Dry
       attrs = klass.attribute_names.map { |key| " #{key}=#{@attributes[key].inspect}" }.join
       "#<#{ klass.name || klass.inspect }#{ attrs }>"
     end
+
+    # Pattern matching support
+    #
+    # @api private
+    def deconstruct
+      [attributes]
+    end
   end
 end
 
