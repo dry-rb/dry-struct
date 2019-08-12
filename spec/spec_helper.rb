@@ -12,14 +12,11 @@ if RUBY_ENGINE == 'ruby' && ENV['COVERAGE'] == 'true'
 end
 
 require 'pathname'
-
-begin
-  require 'warning'
-  Warning.ignore(/regexp_parser/)
-  Warning.ignore(/parser/)
-  Warning.ignore(/slice\.rb/)
-rescue LoadError
-end
+require 'warning'
+Warning.ignore(/regexp_parser/)
+Warning.ignore(/parser/)
+Warning.ignore(/slice\.rb/)
+Warning.ignore(/Pattern matching/)
 
 module DryStructSpec
   ROOT = Pathname.new(__dir__).parent.expand_path.freeze

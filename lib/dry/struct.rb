@@ -183,6 +183,15 @@ module Dry
       attrs = klass.attribute_names.map { |key| " #{key}=#{@attributes[key].inspect}" }.join
       "#<#{ klass.name || klass.inspect }#{ attrs }>"
     end
+
+    if RUBY_VERSION >= '2.7'
+      # Pattern matching support
+      #
+      # @api private
+      def deconstruct
+        [attributes]
+      end
+    end
   end
 end
 
