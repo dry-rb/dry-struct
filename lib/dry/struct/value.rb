@@ -7,8 +7,8 @@ module Dry
     #
     # @example
     #   class Location < Dry::Struct::Value
-    #     attribute :lat, Types::Strict::Float
-    #     attribute :lng, Types::Strict::Float
+    #     attribute :lat, Types::Float
+    #     attribute :lng, Types::Float
     #   end
     #
     #   loc1 = Location.new(lat: 1.23, lng: 4.56)

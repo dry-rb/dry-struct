@@ -30,7 +30,7 @@ Structs ignore extra keys by default. This can be changed by replacing the const
 ```ruby
 class User < Dry::Struct
   # This does the trick
-  input input.strict
+  schema schema.strict
 
   attribute :name, Types::String
 end
@@ -95,7 +95,6 @@ User.new(name: 'Jane')
 # => #<User name="Jane" age=18>
 User.new(name: 'Jane', age: nil)
 # => #<User name="Jane" age=18>
-
 ```
 
 ### Creating a custom struct class
@@ -105,7 +104,7 @@ You can combine examples from this page to create a custom-purposed base struct 
 ```ruby
 class MyStruct < Dry::Struct
   # throw an error when unknown keys provided
-  input input.strict
+  schema schema.strict
 
   # convert string keys to symbols
   transform_keys(&:to_sym)

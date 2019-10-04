@@ -16,15 +16,15 @@ module Dry
   #   require 'dry-struct'
   #
   #   module Types
-  #     include Dry.Types
+  #     include Dry.Types()
   #   end
   #
-  #   Person = Dry.Struct(name: Types::Strict::String, age: Types::Strict::Int)
+  #   Person = Dry.Struct(name: Types::String, age: Types::Integer)
   #   matz = Person.new(name: "Matz", age: 52)
   #   matz.name #=> "Matz"
   #   matz.age #=> 52
   #
-  #   Test = Dry.Struct(expected: Types::Strict::String) { input(input.strict) }
+  #   Test = Dry.Struct(expected: Types::String) { schema(schema.strict) }
   #   Test[expected: "foo", unexpected: "bar"]
   #   #=> Dry::Struct::Error: [Test.new] unexpected keys [:unexpected] in Hash input
   def self.Struct(attributes = Dry::Core::Constants::EMPTY_HASH, &block)
@@ -60,7 +60,7 @@ module Dry
   #   require 'dry-struct'
   #
   #   module Types
-  #     include Dry.Types
+  #     include Dry.Types()
   #   end
   #
   #   class Book < Dry::Struct
@@ -111,8 +111,8 @@ module Dry
     #
     # @example
     #   class Book < Dry::Struct
-    #     attribute :title, Types::Strict::String
-    #     attribute :subtitle, Types::Strict::String.optional
+    #     attribute :title, Types::String
+    #     attribute :subtitle, Types::String.optional
     #   end
     #
     #   rom_n_roda = Book.new(
@@ -132,8 +132,8 @@ module Dry
     #
     # @example
     #   class Book < Dry::Struct
-    #     attribute :title, Types::Strict::String
-    #     attribute :subtitle, Types::Strict::String.optional
+    #     attribute :title, Types::String
+    #     attribute :subtitle, Types::String.optional
     #   end
     #
     #   rom_n_roda = Book.new(
@@ -157,8 +157,8 @@ module Dry
     #
     # @example
     #   class Book < Dry::Struct
-    #     attribute :title, Types::Strict::String
-    #     attribute :subtitle, Types::Strict::String.optional
+    #     attribute :title, Types::String
+    #     attribute :subtitle, Types::String.optional
     #   end
     #
     #   rom_n_roda = Book.new(

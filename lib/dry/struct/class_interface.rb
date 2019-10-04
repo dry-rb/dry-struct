@@ -53,7 +53,7 @@ module Dry
       #   end
       #
       #   Language.schema
-      #   # => #<Dry::Types[Constructor<Schema<keys={name: Nominal<String> details: Language::Details}> fn=Kernel.Hash>]>
+      #   # => #<Dry::Types[Constructor<Schema<keys={name: Constrained<Nominal<String> rule=[type?(String)]> details: Language::Details}> fn=Kernel.Hash>]>
       #
       #   ruby = Language.new(name: 'Ruby', details: { type: 'OO' })
       #   ruby.name #=> 'Ruby'
@@ -72,9 +72,9 @@ module Dry
       #
       #   Language.schema
       #   => #<Dry::Types[Constructor<Schema<keys={
-      #         name: Nominal<String>
-      #         versions: Array<Nominal<String>>
-      #         celebrities: Array<Language::Celebrity>
+      #         name: Constrained<Nominal<String> rule=[type?(String)]>
+      #         versions: Constrained<Array<Constrained<Nominal<String> rule=[type?(String)]>> rule=[type?(Array)]>
+      #         celebrities: Constrained<Array<Language::Celebrity> rule=[type?(Array)]>
       #      }> fn=Kernel.Hash>]>
       #
       #   ruby = Language.new(
@@ -104,11 +104,11 @@ module Dry
       #
       # @example
       #   class User < Dry::Struct
-      #     attribute  :name,  Types::Strict::String
-      #     attribute? :email, Types::Strict::String
+      #     attribute  :name,  Types::String
+      #     attribute? :email, Types::String
       #   end
       #
-      #   User.new(name: 'John') # => #<User name="John">
+      #   User.new(name: 'John') # => #<User name="John" email=nil>
       #
       # @param [Symbol] name name of the defined attribute
       # @param [Dry::Types::Type, nil] type or superclass of nested type
@@ -145,8 +145,8 @@ module Dry
       #
       #   Book.schema
       #   # => #<Dry::Types[Constructor<Schema<keys={
-      #   #      title: Nominal<String>
-      #   #      author: Nominal<String>
+      #   #      title: Constrained<Nominal<String> rule=[type?(String)]>
+      #   #      author: Constrained<Nominal<String> rule=[type?(String)]>
       #   #    }> fn=Kernel.Hash>]>
       def attributes(new_schema)
         keys = new_schema.keys.map { |k| k.to_s.chomp('?').to_sym }
@@ -182,7 +182,7 @@ module Dry
       #   class Book < Dry::Struct
       #     transform_types { |t| t.meta(struct: :Book) }
       #
-      #     attribute :title, Types::Strict::String
+      #     attribute :title, Types::String
       #   end
       #
       #   Book.schema.key(:title).meta # => { struct: :Book }
@@ -199,7 +199,7 @@ module Dry
       #   class Book < Dry::Struct
       #     transform_keys(&:to_sym)
       #
-      #     attribute :title, Types::Strict::String
+      #     attribute :title, Types::String
       #   end
       #
       #   Book.new('title' => "The Old Man and the Sea")
