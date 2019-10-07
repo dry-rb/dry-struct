@@ -7,18 +7,17 @@ script:
 after_success:
   - "[ -d coverage ] && bundle exec codeclimate-test-reporter"
 rvm:
-  - 2.4.5
-  - 2.5.5
-  - 2.6.3
-  - jruby-9.2.7.0
+  - 2.4.9
+  - 2.5.7
+  - 2.6.5
+  - 2.7
+  - jruby-9.2.8.0
   - truffleruby
 env:
   global:
     - COVERAGE=true
     - JRUBY_OPTS='--dev -J-Xmx1024M'
 matrix:
-  include:
-    - rvm: 2.7
   allow_failures:
     - rvm: truffleruby
 notifications:
