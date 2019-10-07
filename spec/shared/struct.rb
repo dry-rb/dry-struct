@@ -299,8 +299,4 @@ RSpec.shared_examples_for Dry::Struct do
       end
     end
   end
-
-  it 'registered without wrapping' do
-    expect(Dry::Types[type]).to be type
-  end
 end
