@@ -6,7 +6,7 @@ name: dry-struct
 
 ### Constructor types were removed in v0.5.0. Use `transform_types` and `transform_keys` as a replacement.
 
-Your struct class can specify a constructor type, which uses [hash schemas](/gems/dry-types/hash-schemas-obsolete) to handle attributes in `.new` method. By default `:permissive` constructor is used.
+Your struct class can specify a constructor type, which uses [hash schemas](/gems/dry-types/0.15/hash-schemas-obsolete) to handle attributes in `.new` method. By default `:permissive` constructor is used.
 
 To set a different constructor type simply use `constructor_type` setting:
 
