@@ -43,15 +43,15 @@ RSpec.describe 'pattern matching' do
   context 'pattern matching' do
     def match(user)
       case user
-      in User({ first_name: 'Jack' })
+      in User(first_name: 'Jack')
         "It's Jack"
-      in User({ first_name: 'Alice' | 'Carol' })
+      in User(first_name: 'Alice' | 'Carol')
         'Alice or Carol'
-      in User({ first_name:, last_name: 'Doe' })
+      in User(first_name:, last_name: 'Doe')
         "DOE, #{first_name.upcase}"
-      in User({ first_name:, last_name: 'Doe' })
+      in User(first_name:, last_name: 'Doe')
         "DOE, #{first_name.upcase}"
-      in User({ first_name:, address: Address({ street: 'Downing street' }) })
+      in User(first_name:, address: Address(street: 'Downing street'))
         "PM is #{first_name}"
       end
     end
@@ -66,14 +66,14 @@ RSpec.describe 'pattern matching' do
 
     example 'collecting name' do
       case john
-      in User({ address: _, **name })
+      in User(address: _, **name)
         expect(name).to eql(first_name: 'John', last_name: 'Doe')
       end
     end
 
     example 'multiple structs' do
       case john
-      in User({ first_name: 'John' } | { first_name: 'Jack' })
+      in User(first_name: 'John' | 'Jack')
       end
     end
   end
@@ -88,7 +88,7 @@ RSpec.describe 'pattern matching' do
 
           def call(result)
             case result
-            in Success(User({ first_name: }))
+            in Success(User(first_name:))
               "Name is #{first_name}"
             in Failure[:not_found]
               "Wasn't found"
