@@ -1,8 +1,8 @@
-# 1.1.0 2019-10-07
+# 1.1.1 2019-10-13
 
-## Added
+## Changed
 
-- Experimental support for pattern matching :tada: (flash-gordon)
+- Pattern matching syntax is simplified with `deconstruct_keys` (k-tsj)
 
   ```ruby
   User = Dry.Struct(name: 'string', email: 'string')
@@ -10,14 +10,22 @@
   user = User.new(name: 'John Doe', email: 'john@acme.org')
 
   case user
-  in User({ name: 'John Doe', email: })
+  in User(name: 'John Doe', email:)
     puts email
   else
     puts 'Not John'
   end
   ```
 
-  See more examples in the [specs](https://github.com/dry-rb/dry-struct/blob/956fff208296731c40f1fea04b36106ea01b56d0/spec/dry/struct/pattern_matching_spec.rb).
+  See more examples in the [specs](https://github.com/dry-rb/dry-struct/blob/8112772eb08d22ff2cd3e6997514d79a9b124968/spec/dry/struct/pattern_matching_spec.rb).
+
+[Compare v1.1.0...v1.1.1](https://github.com/dry-rb/dry-struct/compare/v1.1.0...v1.1.1)
+
+# 1.1.0 2019-10-07
+
+## Added
+
+- Experimental support for pattern matching :tada: (flash-gordon)
 
 [Compare v1.0.0...v1.1.0](https://github.com/dry-rb/dry-struct/compare/v1.0.0...v1.1.0)
 
