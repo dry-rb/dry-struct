@@ -59,7 +59,7 @@ loc1 == loc2
 
 ### Hash Schemas
 
-`Dry::Struct` out of the box uses [hash schemas](/gems/dry-types/hash-schemas) from `dry-types` for processing input hashes. `with_type_transform` and `with_key_transform` are exposed as `transform_types` and `transform_keys`:
+`Dry::Struct` out of the box uses [hash schemas](/gems/dry-types/1.0/hash-schemas) from `dry-types` for processing input hashes. `with_type_transform` and `with_key_transform` are exposed as `transform_types` and `transform_keys`:
 
 ```ruby
 class User < Dry::Struct
