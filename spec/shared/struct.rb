@@ -186,6 +186,12 @@ RSpec.shared_examples_for Dry::Struct do
       end
     end
 
+    describe '.to_ast' do
+      it 'delegates to schema' do
+        expect(type.to_ast).to eql(type.schema.to_ast)
+      end
+    end
+
     describe '.meta' do
       it 'builds a new class with meta' do
         struct_with_meta = type.meta(foo: :bar)

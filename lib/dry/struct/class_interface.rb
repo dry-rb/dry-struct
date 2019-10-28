@@ -376,6 +376,12 @@ module Dry
         end
       end
 
+      # @param meta [Boolean] Whether to dump the meta to the AST
+      # @return [Array] An AST representation
+      def to_ast(meta: true)
+        schema.to_ast(meta: meta)
+      end
+
       # Stores an object for building nested struct classes
       # @return [StructBuilder]
       def struct_builder
