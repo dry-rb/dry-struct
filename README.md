@@ -1,5 +1,5 @@
 [gem]: https://rubygems.org/gems/dry-struct
-[travis]: https://travis-ci.org/dry-rb/dry-struct
+[ci]: https://github.com/dry-rb/dry-struct/actions?query=workflow%3Aci
 [codeclimate]: https://codeclimate.com/github/dry-rb/dry-struct
 [inchpages]: http://inch-ci.org/github/dry-rb/dry-struct
 [chat]: https://dry-rb.zulipchat.com
@@ -7,7 +7,7 @@
 # dry-struct [![Join the chat at https://dry-rb.zulipchat.com](https://img.shields.io/badge/dry--rb-join%20chat-%23346b7a.svg)][chat]
 
 [![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][gem]
-[![Build Status](https://travis-ci.org/dry-rb/dry-struct.svg?branch=master)][travis]
+[![Build Status](https://github.com/dry-rb/dry-monads/workflows/ci/badge.svg)][ci]
 [![Code Climate](https://codeclimate.com/github/dry-rb/dry-struct/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/dry-rb/dry-struct/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-struct.svg?branch=master)][inchpages]
