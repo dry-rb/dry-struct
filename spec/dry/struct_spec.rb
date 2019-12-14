@@ -139,7 +139,9 @@ RSpec.describe Dry::Struct do
     expect(described_class.method(:[])).to eq described_class.method(:call)
   end
 
-  describe '.inherited' do
+  describe '.inherited', :suppress_deprecations do
+    before { require 'dry/struct/value' }
+
     it 'does not register Value' do
       expect { Dry::Struct.inherited(Dry::Struct::Value) }
         .to_not change(Dry::Types, :type_keys)
@@ -280,13 +282,20 @@ RSpec.describe Dry::Struct do
       end
     end
 
-    context 'on an Dry::Types::Hash.map with nested types' do
-      NestedType = Class.new(Dry::Struct::Value) do
-        attribute :age, Dry::Types['strict.integer']
+    context 'on an Dry::Types::Hash.map with nested types', :suppress_deprecations do
+      before { require 'dry/struct/value' }
+
+      let(:nested_type) do
+        Class.new(Dry::Struct::Value) do
+          attribute :age, Dry::Types['strict.integer']
+        end
       end
 
-      type = Class.new(Dry::Struct) do
-        attribute :people, Dry::Types['hash'].map(Dry::Types['strict.string'], NestedType)
+      let(:type) do
+        nested_type = self.nested_type
+        Class.new(Dry::Struct) do
+          attribute :people, Dry::Types['hash'].map(Dry::Types['strict.string'], nested_type)
+        end
       end
 
       it 'hashifies the values within the hash map' do

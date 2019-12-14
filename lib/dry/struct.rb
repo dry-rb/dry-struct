@@ -195,6 +195,5 @@ module Dry
   end
 end
 
-require 'dry/struct/value'
 require 'dry/struct/extensions'
 require 'dry/struct/printer'

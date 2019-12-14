@@ -24,7 +24,7 @@ module Dry
         klass.class_eval do
           @meta = base.meta
 
-          unless equal?(Value)
+          unless name.eql?('Dry::Struct::Value')
             extend Core::DescendantsTracker
           end
         end

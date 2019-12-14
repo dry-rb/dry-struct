@@ -1,7 +1,10 @@
 require 'ice_nine'
+require 'dry/core/deprecations'
 
 module Dry
   class Struct
+    extend Core::Deprecations[:'dry-struct']
+
     # {Value} objects behave like {Struct}s but *deeply frozen*
     # using [`ice_nine`](https://github.com/dkubb/ice_nine)
     #
@@ -24,8 +27,10 @@ module Dry
       # @return [Value]
       # @see https://github.com/dkubb/ice_nine
       def self.new(*)
-        IceNine.deep_freeze(super)
+        ::IceNine.deep_freeze(super)
       end
     end
+
+    deprecate_constant :Value
   end
 end
