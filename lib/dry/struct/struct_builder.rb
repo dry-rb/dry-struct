@@ -3,11 +3,11 @@ require 'dry/types/compiler'
 module Dry
   class Struct
     # @private
-    class StructBuilder < Dry::Types::Compiler
+    class StructBuilder < Types::Compiler
       attr_reader :struct
 
       def initialize(struct)
-        super(Dry::Types)
+        super(Types)
         @struct = struct
       end
 
@@ -18,7 +18,7 @@ module Dry
         const_name = const_name(type, attr_name)
         check_name(const_name)
 
-        new_type = Class.new(parent(type), &block)
+        new_type = ::Class.new(parent(type), &block)
         struct.const_set(const_name, new_type)
 
         if array?(type)
@@ -31,7 +31,7 @@ module Dry
       private
 
       def array?(type)
-        type.is_a?(Types::Type) && type.primitive.equal?(Array)
+        type.is_a?(Types::Type) && type.primitive.equal?(::Array)
       end
 
       def parent(type)
@@ -43,22 +43,27 @@ module Dry
       end
 
       def default_superclass
-        struct < Value ? Value : Struct
+        if defined? ::Dry::Struct::Value
+          struct < Value ? Value : Struct
+        else
+          Struct
+        end
       end
 
       def const_name(type, attr_name)
-        snake_name = if array?(type)
-                       Dry::Core::Inflector.singularize(attr_name)
-                     else
-                       attr_name
-                     end
+        snake_name =
+          if array?(type)
+            Core::Inflector.singularize(attr_name)
+          else
+            attr_name
+          end
 
-        Dry::Core::Inflector.camelize(snake_name)
+        Core::Inflector.camelize(snake_name)
       end
 
       def check_name(name)
         raise(
-          Struct::Error,
+          Error,
           "Can't create nested attribute - `#{struct}::#{name}` already defined"
         ) if struct.const_defined?(name, false)
       end

@@ -237,7 +237,9 @@ RSpec.shared_examples_for Dry::Struct do
       end
     end
 
-    describe '.inherited' do
+    describe '.inherited', :suppress_deprecations do
+      before { require 'dry/struct/value' }
+
       it "doesn't track Struct/Value descendats" do
         expect(Dry::Struct).not_to be_a(Dry::Core::DescendantsTracker)
         expect(Dry::Struct::Value).not_to be_a(Dry::Core::DescendantsTracker)
