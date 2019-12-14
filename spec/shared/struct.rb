@@ -302,5 +302,14 @@ RSpec.shared_examples_for Dry::Struct do
         expect(struct_b.valid?(struct_a.(name: 'John'))).to be(true)
       end
     end
+
+    describe '.try' do
+      let(:struct) { Dry::Struct(name: 'string') }
+
+      it 'returns a result object' do
+        expect(struct.try(name: 'John')).to be_a(Dry::Types::Result::Success)
+        expect(struct.try(name: 42)).to be_a(Dry::Types::Result::Failure)
+      end
+    end
   end
 end
