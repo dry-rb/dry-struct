@@ -79,6 +79,10 @@ RSpec.shared_examples_for Dry::Struct do
       expect(updated.name).to eql(:'Jane Doe')
     end
 
+    it 'raises a Struct::Error on invalid input' do
+      expect { original.new(age: 'aabb') }.to raise_error(Dry::Struct::Error)
+    end
+
     context 'default values' do
       subject(:struct) do
         Class.new(Dry::Struct) {
