@@ -79,6 +79,10 @@ RSpec.shared_examples_for Dry::Struct do
       expect(updated.name).to eql(:'Jane Doe')
     end
 
+    it 'raises a Struct::Error on invalid input' do
+      expect { original.new(age: 'aabb') }.to raise_error(Dry::Struct::Error)
+    end
+
     context 'default values' do
       subject(:struct) do
         Class.new(Dry::Struct) {
@@ -296,6 +300,15 @@ RSpec.shared_examples_for Dry::Struct do
 
       it 'tries to coerce input' do
         expect(struct_b.valid?(struct_a.(name: 'John'))).to be(true)
+      end
+    end
+
+    describe '.try' do
+      let(:struct) { Dry::Struct(name: 'string') }
+
+      it 'returns a result object' do
+        expect(struct.try(name: 'John')).to be_a(Dry::Types::Result::Success)
+        expect(struct.try(name: 42)).to be_a(Dry::Types::Result::Failure)
       end
     end
   end

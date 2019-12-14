@@ -82,11 +82,11 @@ module Dry
   #   refactoring.title #=> 'Refactoring'
   #   refactoring.subtitle #=> 'Improving the Design of Existing Code'
   class Struct
-    extend Dry::Core::Extensions
-    include Dry::Core::Constants
+    extend Core::Extensions
+    include Core::Constants
     extend ClassInterface
 
-    include Dry::Equalizer(:__attributes__)
+    include ::Dry::Equalizer(:__attributes__, inspect: false, immutable: true)
 
     # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
     # @return [Dry::Types::Hash::Schema]
@@ -173,7 +173,7 @@ module Dry
       new_attributes = self.class.schema.apply(changeset, skip_missing: true, resolve_defaults: false)
       self.class.load(__attributes__.merge(new_attributes))
     rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
-      raise Struct::Error, "[#{self}.new] #{error}"
+      raise Error, "[#{self}.new] #{error}"
     end
     alias_method :__new__, :new
 
@@ -181,7 +181,7 @@ module Dry
     def inspect
       klass = self.class
       attrs = klass.attribute_names.map { |key| " #{key}=#{@attributes[key].inspect}" }.join
-      "#<#{ klass.name || klass.inspect }#{ attrs }>"
+      "#<#{klass.name || klass.inspect}#{attrs}>"
     end
 
     if RUBY_VERSION >= '2.7'

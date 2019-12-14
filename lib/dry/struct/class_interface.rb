@@ -12,8 +12,8 @@ module Dry
     module ClassInterface
       include Core::ClassAttributes
 
-      include Dry::Types::Type
-      include Dry::Types::Builder
+      include Types::Type
+      include Types::Builder
 
       # @param [Class] klass
       def inherited(klass)
@@ -25,7 +25,7 @@ module Dry
           @meta = base.meta
 
           unless equal?(Value)
-            extend Dry::Core::DescendantsTracker
+            extend Core::DescendantsTracker
           end
         end
       end
@@ -116,7 +116,7 @@ module Dry
       #
       def attribute?(*args, &block)
         if args.size == 1 && block.nil?
-          Dry::Core::Deprecations.warn(
+          Core::Deprecations.warn(
             'Dry::Struct.attribute? is deprecated for checking attribute presence, '\
             'use has_attribute? instead',
             tag: :'dry-struct'
@@ -231,7 +231,7 @@ module Dry
           load(schema.call_unsafe(attributes))
         end
       rescue Types::CoercionError => error
-        raise Struct::Error, "[#{self}.new] #{error}"
+        raise Error, "[#{self}.new] #{error}"
       end
 
       # @api private
@@ -264,7 +264,7 @@ module Dry
       # @param [#call,nil] block
       # @return [Dry::Struct::Constructor]
       def constructor(constructor = nil, **_options, &block)
-        Struct::Constructor.new(self, fn: constructor || block)
+        Constructor.new(self, fn: constructor || block)
       end
 
       # @param [Hash{Symbol => Object},Dry::Struct] input
@@ -273,7 +273,7 @@ module Dry
       # @return [Dry::Types::Result]
       def try(input)
         success(self[input])
-      rescue Struct::Error => e
+      rescue Error => e
         failure_result = failure(input, e.message)
         block_given? ? yield(failure_result) : failure_result
       end
@@ -298,7 +298,7 @@ module Dry
       # @param [({Symbol => Object})] args
       # @return [Dry::Types::Result::Failure]
       def failure(*args)
-        result(::Dry::Types::Result::Failure, *args)
+        result(Types::Result::Failure, *args)
       end
 
       # @param [Class] klass
@@ -359,7 +359,7 @@ module Dry
         if meta.equal?(Undefined)
           @meta
         else
-          Class.new(self) do
+          ::Class.new(self) do
             @meta = @meta.merge(meta) unless meta.empty?
           end
         end
@@ -369,8 +369,8 @@ module Dry
       # @param [Dry::Types::Type] type
       # @return [Dry::Types::Sum]
       def |(type)
-        if type.is_a?(Class) && type <= Struct
-          Struct::Sum.new(self, type)
+        if type.is_a?(::Class) && type <= Struct
+          Sum.new(self, type)
         else
           super
         end
@@ -399,7 +399,7 @@ module Dry
       # @param [Dry::Types::Type] type
       # @return [Boolean]
       def struct?(type)
-        type.is_a?(Class) && type <= Struct
+        type.is_a?(::Class) && type <= Struct
       end
       private :struct?
 
@@ -408,11 +408,11 @@ module Dry
       # @return [Dry::Types::Type, Dry::Struct]
       def build_type(name, type, &block)
         type_object =
-          if type.is_a?(String)
-            Dry::Types[type]
+          if type.is_a?(::String)
+            Types[type]
           elsif block.nil? && type.nil?
             raise(
-              ArgumentError,
+              ::ArgumentError,
               'you must supply a type or a block to `Dry::Struct.attribute`'
             )
           else
