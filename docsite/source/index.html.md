@@ -39,6 +39,8 @@ user.age # => 21
 
 ### Value
 
+:warning: `Dry::Struct::Value` is deprecated in 1.2.0. Structs are already meant to be immutable, freezing them doesn't add any value (no pun intended) beyond a bad example of defensive programming.
+
 You can define value objects which will behave like structs but will be *deeply frozen*:
 
 ``` ruby
