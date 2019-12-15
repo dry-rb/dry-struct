@@ -29,6 +29,12 @@ module Dry
       def self.new(*)
         ::IceNine.deep_freeze(super)
       end
+
+      # @api private
+      # @return [Boolean]
+      def self.value?
+        true
+      end
     end
 
     deprecate_constant :Value

@@ -43,11 +43,7 @@ module Dry
       end
 
       def default_superclass
-        if defined? ::Dry::Struct::Value
-          struct < Value ? Value : Struct
-        else
-          Struct
-        end
+        struct.value? ? Value : Struct
       end
 
       def const_name(type, attr_name)

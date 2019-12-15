@@ -426,6 +426,12 @@ module Dry
         end
       end
       private :build_type
+
+      # @api private
+      # @return [Boolean]
+      def value?
+        false
+      end
     end
   end
 end
