@@ -86,6 +86,8 @@ module Dry
     include Core::Constants
     extend ClassInterface
 
+    autoload :Value, 'dry/struct/value'
+
     include ::Dry::Equalizer(:__attributes__, inspect: false, immutable: true)
 
     # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
