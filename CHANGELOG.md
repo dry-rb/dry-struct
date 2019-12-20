@@ -5,7 +5,7 @@
 - `Dry::Struct::Value` is deprecated. `Dry::Struct` instances were never meant to be mutable, we have no support for this. The only difference between `Dry::Struct` and `Dry::Struct::Value` is that the latter is deeply frozen. Freezing objects slows the code down and gives you very little benefit in return. If you have a use case for `Value`, it won't be hard to roll your own solution using [ice_nine](https://github.com/dkubb/ice_nine) (flash-gordon)
 - In the thread of the previous change, structs now use immutable equalizer. This means `Struct#hash` memoizes its value after the first invocation. Depending on the case, this may speed up your code significantly (flash-gordon)
 
-[Compare v1.1.1...v1.2.0](https://github.com/dry-rb/dry-struct/compare/v1.1.1...v.1.2.0)
+[Compare v1.1.1...v1.2.0](https://github.com/dry-rb/dry-struct/compare/v1.1.1...v1.2.0)
 
 # 1.1.1 2019-10-13
 
