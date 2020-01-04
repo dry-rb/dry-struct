@@ -26,20 +26,24 @@ jobs:
       - name: Update configuration files from devtools
         run: |
           if [ -f ".github/workflows/custom_ci.yml" ]; then
-            rsync -arv --exclude '.github/workflows/ci.yml' tmp/devtools/shared/ . ;
+            rsync -arv --delete --exclude '.github/workflows/ci.yml' tmp/devtools/shared/ . ;
           else
-            rsync -arv tmp/devtools/shared/ . ;
+            rsync -arv --delete tmp/devtools/shared/ . ;
           fi
       - name: Compile file templates
+        env:
+          GITHUB_LOGIN: dry-bot
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           if [ -f "project.yml" ]; then
             for t in `ls tmp/devtools/templates`
             do
-              bundle exec bin/ossy t c tmp/devtools/templates/$t $(basename $t .erb) project.yml
+              bin/ossy t c tmp/devtools/templates/$t $(basename $t .erb) project.yml
             done
           fi
       - name: Commit changes
         run: |
+          rm bin/ossy
           git config --local user.email "dry-bot@dry-rb.org"
           git config --local user.name "dry-bot"
           git add -A
