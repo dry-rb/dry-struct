@@ -1,20 +1,17 @@
 source 'https://rubygems.org'
 
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+eval_gemfile 'Gemfile.devtools'
 
 gemspec
 
 group :test do
-  gem 'codeclimate-test-reporter', platform: :mri, require: false
   gem 'dry-monads'
-  gem 'simplecov', require: false
   gem 'warning'
 end
 
 group :tools do
   gem 'pry'
   gem 'pry-byebug', platform: :mri
-  gem 'ossy', git: 'https://github.com/solnic/ossy.git', branch: 'master'
 end
 
 group :benchmarks do
