@@ -1,25 +1,29 @@
 [gem]: https://rubygems.org/gems/dry-struct
-[ci]: https://github.com/dry-rb/dry-struct/actions?query=workflow%3Aci
-[codeclimate]: https://codeclimate.com/github/dry-rb/dry-struct
-[inchpages]: http://inch-ci.org/github/dry-rb/dry-struct
+[actions]: https://github.com/dry-rb/dry-struct/actions
+[codacy]: https://www.codacy.com/gh/dry-rb/dry-struct
 [chat]: https://dry-rb.zulipchat.com
+[inchpages]: http://inch-ci.org/github/dry-rb/dry-struct
 
 # dry-struct [![Join the chat at https://dry-rb.zulipchat.com](https://img.shields.io/badge/dry--rb-join%20chat-%23346b7a.svg)][chat]
 
 [![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][gem]
-[![Build Status](https://github.com/dry-rb/dry-struct/workflows/ci/badge.svg)][ci]
-[![Code Climate](https://codeclimate.com/github/dry-rb/dry-struct/badges/gpa.svg)][codeclimate]
-[![Test Coverage](https://codeclimate.com/github/dry-rb/dry-struct/badges/coverage.svg)][codeclimate]
+[![CI Status](https://github.com/dry-rb/dry-struct/workflows/ci/badge.svg)][actions]
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/22edf59617be4aef97cfbe4e1c99f1ce)][codacy]
 [![Inline docs](http://inch-ci.org/github/dry-rb/dry-struct.svg?branch=master)][inchpages]
 
-Typed structs and value objects
+## Links
 
-## Development
+* [User documentation](http://dry-rb.org/gems/dry-struct)
+* [API documentation](http://rubydoc.info/gems/dry-struct)
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Supported Ruby versions
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+This library officially supports the following Ruby versions:
 
-## Contributing
+* MRI >= `2.4`
+* jruby >= `9.2`
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/dry-rb/dry-struct.
+## License
+
+See `LICENSE` file.
