@@ -1,12 +1,9 @@
-if ENV['COVERAGE'] == 'true'
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter '/spec/'
-  end
-end
+require_relative 'support/coverage'
 
 require 'pathname'
 require 'warning'
+
+Warning.ignore(/codacy/)
 Warning.ignore(/regexp_parser/)
 Warning.ignore(/parser/)
 Warning.ignore(/slice\.rb/)
