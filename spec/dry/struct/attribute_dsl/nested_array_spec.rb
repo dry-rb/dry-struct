@@ -46,7 +46,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
 
       context 'with a superclass type' do
         %w(array strict.array coercible.array).each do |array_type|
-          context "using #{ array_type }" do
+          context "using #{array_type}" do
             before do
               module Test
                 class BasePermission < Dry::Struct
@@ -60,8 +60,8 @@ RSpec.describe Dry::Struct, method: '.attribute' do
             end
 
             it 'uses the given array type' do
-              expect(user_type.schema.key(:permissions).type).
-                to eql(Dry::Types[array_type].of(Test::User::Permission))
+              expect(user_type.schema.key(:permissions).type)
+                .to eql(Dry::Types[array_type].of(Test::User::Permission))
             end
 
             it 'defines attributes for the constructor' do
@@ -94,8 +94,8 @@ RSpec.describe Dry::Struct, method: '.attribute' do
         end
 
         it 'uses the given array type' do
-          expect(user_type.schema.key(:permissions).type).
-            to eql(Dry::Types['strict.array'].of(Test::User::Permission))
+          expect(user_type.schema.key(:permissions).type)
+            .to eql(Dry::Types['strict.array'].of(Test::User::Permission))
         end
       end
     end
@@ -117,7 +117,6 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       end
     end
   end
-
 
   context 'when no nested attribute block given' do
     it 'raises error when type is missing' do

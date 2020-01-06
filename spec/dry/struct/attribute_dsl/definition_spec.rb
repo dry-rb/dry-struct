@@ -145,9 +145,9 @@ RSpec.describe Dry::Struct, method: '.attribute' do
         attribute :bar, 'strict.string'
       end
     }.to raise_error(
-           Dry::Struct::RepeatedAttributeError,
-           'Attribute :bar has already been defined'
-         )
+      Dry::Struct::RepeatedAttributeError,
+      'Attribute :bar has already been defined'
+    )
   end
 
   it 'allows to redefine attributes in a subclass' do
@@ -179,7 +179,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
   it "doesn't define readers if methods are present" do
     class Test::Foo < Dry::Struct
       def age
-        "#{ @attributes[:age] } years old"
+        "#{@attributes[:age]} years old"
       end
     end
 

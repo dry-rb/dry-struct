@@ -156,6 +156,7 @@ module Dry
 
         keys.each do |key|
           next if instance_methods.include?(key)
+
           class_eval(<<-RUBY)
             def #{key}
               @attributes[#{key.inspect}]

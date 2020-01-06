@@ -21,12 +21,12 @@ RSpec.describe Dry::Struct do
         end
 
         it do
-          should eql <<-PRETTY_PRINT
-#<Test::User
- name="Jane",
- age=21,
- address=#<Test::Address city="NYC", zipcode="123">>
-PRETTY_PRINT
+          should eql <<~PRETTY_PRINT
+            #<Test::User
+             name="Jane",
+             age=21,
+             address=#<Test::Address city="NYC", zipcode="123">>
+          PRETTY_PRINT
         end
       end
 
@@ -39,13 +39,13 @@ PRETTY_PRINT
         end
 
         it do
-          should eql <<-PRETTY_PRINT
-#<Test::SuperUser
- name="Mike",
- age=43,
- root=false,
- address=#<Test::Address city="Atlantis", zipcode="456">>
-PRETTY_PRINT
+          should eql <<~PRETTY_PRINT
+            #<Test::SuperUser
+             name="Mike",
+             age=43,
+             root=false,
+             address=#<Test::Address city="Atlantis", zipcode="456">>
+          PRETTY_PRINT
         end
       end
     end

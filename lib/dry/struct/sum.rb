@@ -12,6 +12,7 @@ module Dry
           right.try_struct(input) { super }
         end
       end
+
       # @param [Hash{Symbol => Object},Dry::Struct] input
       # @yieldparam [Dry::Types::Result::Failure] failure
       # @yieldreturn [Dry::Types::ResultResult]

@@ -63,8 +63,8 @@ RSpec.describe Dry::Struct do
           attribute :admin, Dry::Types['strict.bool'].default(true)
         end
 
-        expect(struct.new.to_h).
-          to eql(name: 'Jane', admin: true)
+        expect(struct.new.to_h)
+          .to eql(name: 'Jane', admin: true)
       end
 
       it "doesn't tolerate missing required keys" do
@@ -83,8 +83,8 @@ RSpec.describe Dry::Struct do
           end
         end
 
-        expect(struct.new.to_h).
-          to eql({kid: {age: 16}})
+        expect(struct.new.to_h)
+          .to eql({ kid: { age: 16 } })
       end
 
       it "doesn't tolerate missing required keys for nested attributes" do
@@ -213,9 +213,9 @@ RSpec.describe Dry::Struct do
     end
 
     it 'returns hash with attributes' do
-      attributes  = {
+      attributes = {
         name: 'Jane',
-        age:  29,
+        age: 29,
         address: { city: 'NYC', zipcode: '123' },
         children: [
           { name: 'Joe', age: 3, address: { city: 'NYC', zipcode: '123' } }
@@ -348,9 +348,9 @@ RSpec.describe Dry::Struct do
     it 'raises a missing attribute error when no attribute exists' do
       value = Test::Task[user: 'Jane']
 
-      expect { value[:name] }.
-        to raise_error(Dry::Struct::MissingAttributeError).
-             with_message("Missing attribute: :name")
+      expect { value[:name] }
+        .to raise_error(Dry::Struct::MissingAttributeError)
+        .with_message("Missing attribute: :name")
     end
 
     describe 'protected methods' do
@@ -365,8 +365,8 @@ RSpec.describe Dry::Struct do
         value = Test::Task[user: 'Jane', hash: 'abc', attributes: %w(name)]
 
         expect(value.hash).to be_a(Integer)
-        expect(value.attributes).
-          to eql(user: 'Jane', hash: 'abc', attributes: %w(name))
+        expect(value.attributes)
+          .to eql(user: 'Jane', hash: 'abc', attributes: %w(name))
         expect(value[:hash]).to eql('abc')
         expect(value[:attributes]).to eql(%w(name))
       end

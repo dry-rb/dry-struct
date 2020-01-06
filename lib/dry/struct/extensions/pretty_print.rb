@@ -4,7 +4,7 @@ module Dry
   class Struct
     def pretty_print(pp)
       klass = self.class
-      pp.group(1, "#<#{ klass.name || klass.inspect }", '>') do
+      pp.group(1, "#<#{klass.name || klass.inspect}", '>') do
         pp.seplist(@attributes.keys, proc { pp.text ',' }) do |column_name|
           column_value = @attributes[column_name]
           pp.breakable ' '
