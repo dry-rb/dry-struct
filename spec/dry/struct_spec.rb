@@ -76,7 +76,7 @@ RSpec.describe Dry::Struct do
         expect { struct.new }.to raise_error(Dry::Struct::Error, /:age is missing in Hash input/)
       end
 
-      it "resolves missing values for nested attributes" do
+      it 'resolves missing values for nested attributes' do
         struct = Class.new(Dry::Struct) do
           attribute :kid do
             attribute :age, Dry::Types['strict.integer'].default(16)
@@ -241,8 +241,8 @@ RSpec.describe Dry::Struct do
       expect(value.to_h).to eql(mappable: mappable)
     end
 
-    context "with omittable keys" do
-      it "returns hash with attributes but will not try fetching omittable keys if not set" do
+    context 'with omittable keys' do
+      it 'returns hash with attributes but will not try fetching omittable keys if not set' do
         type = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['string']
           attribute :last_name, Dry::Types['string'].meta(required: false)
@@ -252,7 +252,7 @@ RSpec.describe Dry::Struct do
         expect(type.new(attributes).to_hash).to eq (attributes)
       end
 
-      it "returns hash with attributes but will fetch omittable keys if set" do
+      it 'returns hash with attributes but will fetch omittable keys if set' do
         type = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['string']
           attribute :last_name, Dry::Types['string'].meta(required: false)
@@ -262,7 +262,7 @@ RSpec.describe Dry::Struct do
         expect(type.new(attributes).to_hash).to eq (attributes)
       end
 
-      it "returns empty hash if all attributes are ommitable and no value is set" do
+      it 'returns empty hash if all attributes are ommitable and no value is set' do
         type = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['string'].meta(required: false)
         end
@@ -271,8 +271,8 @@ RSpec.describe Dry::Struct do
       end
     end
 
-    context "with default value" do
-      it "returns hash with attributes" do
+    context 'with default value' do
+      it 'returns hash with attributes' do
         type = Class.new(Dry::Struct) do
           attribute :name, Dry::Types['string'].default('John')
         end
@@ -350,7 +350,7 @@ RSpec.describe Dry::Struct do
 
       expect { value[:name] }
         .to raise_error(Dry::Struct::MissingAttributeError)
-        .with_message("Missing attribute: :name")
+        .with_message('Missing attribute: :name')
     end
 
     describe 'protected methods' do

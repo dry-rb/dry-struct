@@ -195,6 +195,6 @@ RSpec.describe Dry::Struct, method: '.attribute' do
       .attribute(:age, 'strict.integer')
 
     struct = Test::Foo.new(age: 18)
-    expect(struct.age).to eql("18 years old")
+    expect(struct.age).to eql('18 years old')
   end
 end

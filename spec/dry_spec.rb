@@ -2,7 +2,7 @@
 
 RSpec.describe Dry do
   describe '.Struct' do
-    it "returns a struct" do
+    it 'returns a struct' do
       struct_klass = Dry.Struct(name: 'strict.string')
 
       struct = struct_klass.new(name: 'Test')
