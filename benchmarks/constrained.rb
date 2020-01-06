@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dry/struct'
 
 require 'active_record'

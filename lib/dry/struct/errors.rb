@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dry
   class Struct
     # Raised when given input doesn't conform schema and constructor type
