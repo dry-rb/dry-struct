@@ -1,2 +1,16 @@
 name: dry-struct
 codacy_id: 961f5c776f1d49218b2cede3745e059c
+gemspec:
+  authors: ["Piotr Solnica"]
+  email: ["piotr.solnica@gmail.com"]
+  summary: "Typed structs and value objects"
+  development_dependencies:
+    - bundler
+    - rake
+    - rspec
+    - yard
+  runtime_dependencies:
+    - [dry-core, "~> 0.4", ">= 0.4.3"]
+    - [dry-equalizer, "~> 0.3"]
+    - [dry-types, "~> 1.0"]
+    - [ice_nine, "~> 0.11"]
