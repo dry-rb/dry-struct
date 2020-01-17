@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Typed structs and value objects"
   spec.description   = spec.summary
   spec.homepage      = 'https://dry-rb.org/gems/dry-struct'
-  spec.files         = Dir['CHANGELOG.md', 'LICENSE', 'README.md', 'dry-struct.gemspec', 'lib/**/*']
+  spec.files         = Dir["CHANGELOG.md", "LICENSE", "README.md", "dry-struct.gemspec", "lib/**/*"]
   spec.require_paths = ['lib']
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
