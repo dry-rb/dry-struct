@@ -339,7 +339,7 @@ module Dry
 
       # @return [Proc]
       def to_proc
-        proc { |input| call(input) }
+        @to_proc ||= proc { |input| call(input) }
       end
 
       # Checks if this {Struct} has the given attribute
