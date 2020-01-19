@@ -34,6 +34,7 @@
     end
   end
   ```
+- `Dry::Struct::Constructor` finally acts like a fully-featured type (flash-gordon)
 
 ### Changed
 
