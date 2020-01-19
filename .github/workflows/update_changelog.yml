@@ -1,6 +1,6 @@
 # this file is managed by dry-rb/devtools project
 
-name: update changelog.yml
+name: update CHANGELOG.md from PR merge commit
 
 on:
   push:
@@ -40,9 +40,11 @@ jobs:
             echo "$changelog"
 
             bundle exec bin/ossy ch u changelog.yml "$changelog"
+            bundle exec bin/ossy ch g changelog.yml CHANGELOG.md .devtools/templates/changelog.erb --data-path project.yml
 
             git add changelog.yml
-            git commit -m "[devtools] update changelog.yml from $GITHUB_SHA"
+            git commit -m "[devtools] update CHANGELOG.md from $GITHUB_SHA"
+            git pull --rebase origin master
           else
             echo "no need to update changelog"
           fi
