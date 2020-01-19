@@ -40,6 +40,7 @@
 - `Dry::Struct#to_hash` is deprecated.
 It leads to undesired behavior when structs passed to methods with keyword arguments.
 `#to_hash` will be removed in dry-struct 2.0, either use `#to_h` or define `#to_hash` in your structs.
+- [internal] metadata is now stored inside schema (flash-gordon)
 
 [Compare v1.2.0...v1.3.0](https://github.com/dry-rb/dry-struct/compare/v1.2.0...v1.3.0)
 
