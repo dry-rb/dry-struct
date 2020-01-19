@@ -11,6 +11,7 @@
     attributes_from Person
   end
   ```
+- `Dry::Struct.abstract` declares a struct class as abstract. An abstract class is used as a default superclass for nested structs (flash-gordon)
 
 ### Fixed
 
