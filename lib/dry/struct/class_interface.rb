@@ -21,14 +21,8 @@ module Dry
       def inherited(klass)
         super
 
-        base = self
-
-        klass.class_eval do
-          @meta = base.meta
-
-          unless name.eql?('Dry::Struct::Value')
-            extend Core::DescendantsTracker
-          end
+        unless klass.name.eql?('Dry::Struct::Value')
+          klass.extend(Core::DescendantsTracker)
         end
       end
 
@@ -397,10 +391,10 @@ module Dry
       # @return [{Symbol => Object}]
       def meta(meta = Undefined)
         if meta.equal?(Undefined)
-          @meta
+          schema.meta
         else
           ::Class.new(self) do
-            @meta = @meta.merge(meta) unless meta.empty?
+            schema schema.meta(meta) unless meta.empty?
           end
         end
       end
