@@ -294,10 +294,9 @@ module Dry
       end
 
       # @param [#call,nil] constructor
-      # @param [Hash] _options
       # @param [#call,nil] block
       # @return [Dry::Struct::Constructor]
-      def constructor(constructor = nil, **_options, &block)
+      def constructor(constructor = nil, **, &block)
         Constructor.new(self, fn: constructor || block)
       end
 

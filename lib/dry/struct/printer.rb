@@ -7,6 +7,7 @@ module Dry
     # @api private
     class Printer
       MAPPING[Struct::Sum] = :visit_struct_sum
+      MAPPING[Struct::Constructor] = :visit_struct_constructor
 
       def visit_struct_sum(sum)
         visit_sum_constructors(sum) do |constructors|
@@ -15,6 +16,8 @@ module Dry
           end
         end
       end
+
+      alias_method :visit_struct_constructor, :visit_constructor
     end
   end
 end

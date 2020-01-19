@@ -6,7 +6,7 @@ module Dry
     Error = Class.new(TypeError)
 
     # Raised when defining duplicate attributes
-    class RepeatedAttributeError < ArgumentError
+    class RepeatedAttributeError < ::ArgumentError
       # @param [Symbol] key
       #   attribute name that is the same as previously defined one
       def initialize(key)
@@ -15,7 +15,7 @@ module Dry
     end
 
     # Raised when a struct doesn't have an attribute
-    class MissingAttributeError < KeyError
+    class MissingAttributeError < ::KeyError
       def initialize(key)
         super("Missing attribute: #{key.inspect}")
       end
