@@ -102,6 +102,34 @@ module Dry
         attributes(name => build_type(name, type, &block))
       end
 
+      # Add atributes from another struct
+      #
+      # @example
+      #   class Address < Dry::Struct
+      #     attribute :city, Types::String
+      #     attribute :country, Types::String
+      #   end
+      #
+      #   class User < Dry::Struct
+      #     attribute :name, Types::String
+      #     attributes_from Address
+      #   end
+      #
+      #   User.new(name: 'Quispe', city: 'La Paz', country: 'Bolivia')
+      #
+      # @example with nested structs
+      #   class User < Dry::Struct
+      #     attribute :name, Types::String
+      #     attribute :address do
+      #       attributes_from Address
+      #     end
+      #   end
+      #
+      # @param struct [Dry::Struct]
+      def attributes_from(struct)
+        schema schema.merge(struct.schema)
+      end
+
       # Adds an omittable (key is not required on initialization) attribute for this {Struct}
       #
       # @example
