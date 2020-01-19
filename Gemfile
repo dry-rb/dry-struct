@@ -10,7 +10,6 @@ gem 'dry-types', github: 'dry-rb/dry-types'
 
 group :test do
   gem 'dry-monads'
-  gem 'warning'
 end
 
 group :tools do
