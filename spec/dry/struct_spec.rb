@@ -217,7 +217,7 @@ RSpec.describe Dry::Struct do
         ]
       }
 
-      expect(parent_type[attributes].to_hash).to eql(attributes)
+      expect(parent_type[attributes].to_h).to eql(attributes)
     end
 
     it "doesn't unwrap blindly anything mappable" do
@@ -244,7 +244,7 @@ RSpec.describe Dry::Struct do
         end
 
         attributes = { name: 'John' }
-        expect(type.new(attributes).to_hash).to eq (attributes)
+        expect(type.new(attributes).to_h).to eql(attributes)
       end
 
       it 'returns hash with attributes but will fetch omittable keys if set' do
@@ -254,7 +254,7 @@ RSpec.describe Dry::Struct do
         end
 
         attributes = { name: 'John', last_name: 'Doe' }
-        expect(type.new(attributes).to_hash).to eq (attributes)
+        expect(type.new(attributes).to_h).to eql(attributes)
       end
 
       it 'returns empty hash if all attributes are ommitable and no value is set' do
@@ -262,7 +262,7 @@ RSpec.describe Dry::Struct do
           attribute :name, Dry::Types['string'].meta(required: false)
         end
 
-        expect(type.new.to_hash).to eq ({})
+        expect(type.new.to_h).to eql({})
       end
     end
 
@@ -273,7 +273,7 @@ RSpec.describe Dry::Struct do
         end
 
         attributes = { name: 'John' }
-        expect(type.new.to_hash).to eq (attributes)
+        expect(type.new.to_h).to eql(attributes)
       end
     end
 
@@ -295,7 +295,7 @@ RSpec.describe Dry::Struct do
 
       it 'hashifies the values within the hash map' do
         attributes = { people: { 'John' => { age: 35 } } }
-        expect(type.new(attributes).to_hash).to eq(attributes)
+        expect(type.new(attributes).to_h).to eql(attributes)
       end
     end
   end

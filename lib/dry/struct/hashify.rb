@@ -8,7 +8,9 @@ module Dry
       # @param [#to_hash, #map, Object] value
       # @return [Hash, Array]
       def self.[](value)
-        if value.respond_to?(:to_hash)
+        if value.is_a?(Struct)
+          value.to_h.transform_values { |current| self[current] }
+        elsif value.respond_to?(:to_hash)
           value.to_hash.transform_values { |current| self[current] }
         elsif value.respond_to?(:to_ary)
           value.to_ary.map { |item| self[item] }

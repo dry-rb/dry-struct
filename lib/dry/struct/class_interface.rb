@@ -226,15 +226,24 @@ module Dry
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
       def new(attributes = default_attributes, safe = false)
-        if equal?(attributes.class)
-          attributes
+        if attributes.is_a?(Struct)
+          if equal?(attributes.class)
+            attributes
+          else
+            # This implicit coercion is arguable but makes sense overall
+            # in cases there you pass child struct to the base struct constructor
+            # User.new(super_user)
+            #
+            # We may deprecate this behavior in future forcing people to be explicit
+            new(attributes.to_h, safe)
+          end
         elsif safe
           load(schema.call_safe(attributes) { |output = attributes| return yield output })
         else
           load(schema.call_unsafe(attributes))
         end
       rescue Types::CoercionError => error
-        raise Error, "[#{self}.new] #{error}"
+        raise Error, "[#{self}.new] #{error}", error.backtrace
       end
 
       # @api private

@@ -4,6 +4,7 @@ require 'dry-types'
 require 'dry-equalizer'
 require 'dry/core/extensions'
 require 'dry/core/constants'
+require 'dry/core/deprecations'
 
 require 'dry/struct/version'
 require 'dry/struct/errors'
@@ -87,6 +88,7 @@ module Dry
     extend Core::Extensions
     include Core::Constants
     extend ClassInterface
+    extend Core::Deprecations[:'dry-struct']
 
     class << self
       # override `Dry::Types::Builder#prepend`
@@ -151,12 +153,12 @@ module Dry
     #   )
     #   rom_n_roda.to_hash
     #     #=> {title: 'Web Development with ROM and Roda', subtitle: nil}
-    def to_hash
+    def to_h
       self.class.schema.each_with_object({}) do |key, result|
         result[key.name] = Hashify[self[key.name]] if attributes.key?(key.name)
       end
     end
-    alias_method :to_h, :to_hash
+    deprecate :to_hash, :to_h, message: "Implicit convertion structs to hashes is deprecated. Use .to_h"
 
     # Create a copy of {Dry::Struct} with overriden attributes
     #
