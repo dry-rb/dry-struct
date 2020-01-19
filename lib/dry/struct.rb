@@ -88,6 +88,11 @@ module Dry
     include Core::Constants
     extend ClassInterface
 
+    class << self
+      # override `Dry::Types::Builder#prepend`
+      define_method(:prepend, ::Module.method(:prepend))
+    end
+
     autoload :Value, 'dry/struct/value'
 
     include ::Dry::Equalizer(:__attributes__, inspect: false, immutable: true)
