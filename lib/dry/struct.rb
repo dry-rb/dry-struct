@@ -104,6 +104,9 @@ module Dry
     defines :schema
     schema Types['coercible.hash'].schema(EMPTY_HASH)
 
+    defines :abstract_class
+    abstract
+
     @meta = EMPTY_HASH
 
     # @!attribute [Hash{Symbol => Object}] attributes
