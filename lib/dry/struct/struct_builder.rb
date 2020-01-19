@@ -23,7 +23,7 @@ module Dry
         builder = self
         parent = parent(type)
 
-        new_type = ::Class.new(Undefined.default(parent, default_superclass)) do
+        new_type = ::Class.new(Undefined.default(parent, struct.abstract_class)) do
           if Undefined.equal?(parent)
             schema builder.struct.schema.clear
           end
@@ -51,10 +51,6 @@ module Dry
         else
           type
         end
-      end
-
-      def default_superclass
-        struct.value? ? Value : Struct
       end
 
       def const_name(type, attr_name)

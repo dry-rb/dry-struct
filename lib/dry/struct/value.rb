@@ -25,17 +25,13 @@ module Dry
     #
     # @see https://github.com/dkubb/ice_nine
     class Value < self
+      abstract
+
       # @param (see ClassInterface#new)
       # @return [Value]
       # @see https://github.com/dkubb/ice_nine
       def self.new(*)
         ::IceNine.deep_freeze(super)
-      end
-
-      # @api private
-      # @return [Boolean]
-      def self.value?
-        true
       end
     end
 

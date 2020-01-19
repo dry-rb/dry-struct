@@ -416,6 +416,12 @@ module Dry
         end
       end
 
+      # Make the struct abstract. This class will be used as a default
+      # parent class for nested structs
+      def abstract
+        abstract_class self
+      end
+
       # Stores an object for building nested struct classes
       # @return [StructBuilder]
       def struct_builder
@@ -466,12 +472,6 @@ module Dry
         end
       end
       private :build_type
-
-      # @api private
-      # @return [Boolean]
-      def value?
-        false
-      end
     end
   end
 end
