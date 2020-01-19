@@ -34,7 +34,7 @@ jobs:
           msg=`git log --format=%B -n 1`
 
           if [[ "$msg" == *"Merge pull request"* && "$msg" == *"[changelog]"* ]]; then
-            changelog=`echo "$msg" | grep -v 'Merge pull request' | grep -ve '^$' | grep -v "\[changelog\]"`
+            changelog=`echo $msg | ruby -e "puts STDIN.read.split('[changelog]', 2)[1]&.strip"`
 
             echo "Adding the follow entries:"
             echo "$changelog"
