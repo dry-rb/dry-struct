@@ -34,6 +34,7 @@
         end
       end
       ```
+  - "`Dry::Struct::Constructor` finally acts like a fully-featured type (flash-gordon)"
   changed:
   - |-
     `Dry::Struct#to_hash` is deprecated.
