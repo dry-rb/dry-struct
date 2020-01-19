@@ -21,8 +21,10 @@ RSpec.describe Dry::Struct::Constructor do
     end
   end
 
-  describe '.prepend' do
-    let(:type) { super().prepend { |x| x.transform_keys(&:to_sym) } }
+  describe '#prepend' do
+    let(:type) do
+      super().prepend { |x| x.map { |k, v| [k.to_sym, v] }.to_h }
+    end
 
     specify do
       user = type.(
