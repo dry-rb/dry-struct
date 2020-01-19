@@ -155,7 +155,7 @@ end
 
 class User < Dry::Struct
   attribute :name, Types::String
-  compose Address
+  attributes_from Address
 end
 
 User.new(name: 'Quispe', city: 'La Paz', country: 'Bolivia')
@@ -167,7 +167,7 @@ Composition can happen within a nested attribute:
 class User < Dry::Struct
   attribute :name, Types::String
   attribute :address do
-    compose Address
+    attributes_from Address
   end
 end
 ```

@@ -102,7 +102,7 @@ module Dry
         attributes(name => build_type(name, type, &block))
       end
 
-      # Composes given struct attributes as if they had been defined in place.
+      # Add atributes from another struct
       #
       # @example
       #   class Address < Dry::Struct
@@ -112,26 +112,22 @@ module Dry
       #
       #   class User < Dry::Struct
       #     attribute :name, Types::String
-      #     compose Address
+      #     attributes_from Address
       #   end
       #
       #   User.new(name: 'Quispe', city: 'La Paz', country: 'Bolivia')
       #
-      # You can compose within a nested attribute:
-      #
-      # @example
+      # @example with nested structs
       #   class User < Dry::Struct
       #     attribute :name, Types::String
       #     attribute :address do
-      #       compose Address
+      #       attributes_from Address
       #     end
       #   end
       #
       # @param struct [Dry::Struct]
-      def compose(struct)
-        struct.schema.each do |type_def|
-          attribute(type_def.name, type_def.type)
-        end
+      def attributes_from(struct)
+        schema schema.merge(struct.schema)
       end
 
       # Adds an omittable (key is not required on initialization) attribute for this {Struct}

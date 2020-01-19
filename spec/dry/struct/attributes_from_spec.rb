@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Dry::Struct#compose' do
+RSpec.describe 'Dry::Struct.attributes_from' do
   it 'composes attributes at place' do
     module Test
       class Address < Dry::Struct
-        attribute :city, 'strict.string'
+        attribute :city, 'string'
         attribute :zipcode, 'coercible.string'
       end
 
       class User < Dry::Struct
         attribute :name, 'coercible.string'
-        compose Address
+        attributes_from Address
         attribute :age, 'coercible.integer'
       end
     end
@@ -23,13 +23,13 @@ RSpec.describe 'Dry::Struct#compose' do
   it 'composes within a nested attribute' do
     module Test
       class Address < Dry::Struct
-        attribute :city, 'strict.string'
+        attribute :city, 'string'
         attribute :zipcode, 'coercible.string'
       end
 
       class User < Dry::Struct
         attribute :address do
-          compose Address
+          attributes_from Address
         end
       end
     end
@@ -43,13 +43,13 @@ RSpec.describe 'Dry::Struct#compose' do
     module Test
       class Address < Dry::Struct
         attribute :address do
-          attribute :city, 'strict.string'
+          attribute :city, 'string'
           attribute :zipcode, 'coercible.string'
         end
       end
 
       class User < Dry::Struct
-        compose Address
+        attributes_from Address
       end
     end
 
