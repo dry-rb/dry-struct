@@ -107,8 +107,6 @@ module Dry
     defines :abstract_class
     abstract
 
-    @meta = EMPTY_HASH
-
     # @!attribute [Hash{Symbol => Object}] attributes
     attr_reader :attributes
     alias_method :__attributes__, :attributes
