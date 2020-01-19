@@ -102,6 +102,38 @@ module Dry
         attributes(name => build_type(name, type, &block))
       end
 
+      # Composes given struct attributes as if they had been defined in place.
+      #
+      # @example
+      #   class Address < Dry::Struct
+      #     attribute :city, Types::String
+      #     attribute :country, Types::String
+      #   end
+      #
+      #   class User < Dry::Struct
+      #     attribute :name, Types::String
+      #     compose Address
+      #   end
+      #
+      #   User.new(name: 'Quispe', city: 'La Paz', country: 'Bolivia')
+      #
+      # You can compose within a nested attribute:
+      #
+      # @example
+      #   class User < Dry::Struct
+      #     attribute :name, Types::String
+      #     attribute :address do
+      #       compose Address
+      #     end
+      #   end
+      #
+      # @param struct [Dry::Struct]
+      def compose(struct)
+        struct.schema.each do |type_def|
+          attribute(type_def.name, type_def.type)
+        end
+      end
+
       # Adds an omittable (key is not required on initialization) attribute for this {Struct}
       #
       # @example

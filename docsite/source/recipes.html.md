@@ -141,3 +141,33 @@ class Foo < Dry::Struct
   attribute :bar, Bar.default { Bar.new(nested: 1) }
 end
 ```
+
+### Composing structs
+
+You can compose other struct attributes as if they
+had been defined in place.
+
+```ruby
+class Address < Dry::Struct
+  attribute :city, Types::String
+  attribute :country, Types::String
+end
+
+class User < Dry::Struct
+  attribute :name, Types::String
+  compose Address
+end
+
+User.new(name: 'Quispe', city: 'La Paz', country: 'Bolivia')
+```
+
+Composition can happen within a nested attribute:
+
+```ruby
+class User < Dry::Struct
+  attribute :name, Types::String
+  attribute :address do
+    compose Address
+  end
+end
+```
