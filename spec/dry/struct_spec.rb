@@ -142,11 +142,6 @@ RSpec.describe Dry::Struct do
   describe '.inherited', :suppress_deprecations do
     before { require 'dry/struct/value' }
 
-    it 'does not register Value' do
-      expect { Dry::Struct.inherited(Dry::Struct::Value) }
-        .to_not change(Dry::Types, :type_keys)
-    end
-
     it 'adds attributes to all descendants' do
       Test::User.attribute(:signed_on, Dry::Types['strict.time'])
 
@@ -356,8 +351,8 @@ RSpec.describe Dry::Struct do
     describe 'protected methods' do
       before do
         class Test::Task
-          attribute :hash, Dry::Types['strict.string']
-          attribute :attributes, Dry::Types['array'].of(Dry::Types['strict.string'])
+          attribute :hash, Dry::Types['string']
+          attribute :attributes, Dry::Types['array'].of(Dry::Types['string'])
         end
       end
 

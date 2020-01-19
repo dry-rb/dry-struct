@@ -98,7 +98,7 @@ module Dry
       #   ruby.celebrities[0].pseudonym #=> 'Matz'
       #   ruby.celebrities[1].name #=> 'Aaron Patterson'
       #   ruby.celebrities[1].pseudonym #=> 'tenderlove'
-      def attribute(name, type = nil, &block)
+      def attribute(name, type = Undefined, &block)
         attributes(name => build_type(name, type, &block))
       end
 
@@ -126,9 +126,9 @@ module Dry
 
           has_attribute?(args[0])
         else
-          name, type = args
+          name, * = args
 
-          attribute(:"#{ name }?", build_type(name, type, &block))
+          attribute(:"#{name}?", build_type(*args, &block))
         end
       end
 
@@ -409,11 +409,11 @@ module Dry
       # Constructs a type
       #
       # @return [Dry::Types::Type, Dry::Struct]
-      def build_type(name, type, &block)
+      def build_type(name, type = Undefined, &block)
         type_object =
           if type.is_a?(::String)
             Types[type]
-          elsif block.nil? && type.nil?
+          elsif block.nil? && Undefined.equal?(type)
             raise(
               ::ArgumentError,
               'you must supply a type or a block to `Dry::Struct.attribute`'

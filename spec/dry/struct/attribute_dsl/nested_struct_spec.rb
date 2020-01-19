@@ -53,7 +53,7 @@ RSpec.describe Dry::Struct, method: '.attribute' do
             attribute :name, 'coercible.string'
             attribute :age, 'coercible.integer'
             attribute :address, Test::BaseAddress do
-              attribute :city, 'strict.string'
+              attribute :city, 'string'
               attribute :zipcode, 'coercible.string'
             end
           end
@@ -196,5 +196,75 @@ RSpec.describe Dry::Struct, method: '.attribute' do
 
     struct = Test::Foo.new(age: 18)
     expect(struct.age).to eql('18 years old')
+  end
+
+  context 'keeping transformations' do
+    it 'works for simple structs' do
+      class Test::Foo < Dry::Struct
+        transform_types(&:optional)
+        transform_keys(&:to_sym)
+
+        attribute :address do
+          attribute :city, 'string'
+        end
+      end
+
+      struct = Test::Foo.new('address' => { 'city' => 'London' })
+
+      expect(struct.to_h).to eql(address: { city: 'London' })
+
+      struct = Test::Foo.new('address' => { 'city' => nil })
+
+      expect(struct.to_h).to eql(address: { city: nil })
+    end
+
+    it 'works for arrays' do
+      class Test::Foo < Dry::Struct
+        transform_types(&:optional)
+        transform_keys(&:to_sym)
+
+        attribute :address, 'array' do
+          attribute :city, 'string'
+        end
+      end
+
+      struct = Test::Foo.new('address' => ['city' => 'London'])
+
+      expect(struct.to_h).to eql(address: [city: 'London'])
+
+      struct = Test::Foo.new('address' => ['city' => nil])
+
+      expect(struct.to_h).to eql(address: [city: nil])
+    end
+
+    example 'explicit structs cancel transformations' do
+      class Test::Foo < Dry::Struct
+        transform_types(&:optional)
+        transform_keys(&:to_sym)
+
+        attribute :address, Dry::Struct do
+          attribute :city, 'string'
+        end
+      end
+
+      expect(Test::Foo.valid?('address' => { 'city' => 'London' })).to be(false)
+      expect(Test::Foo.valid?('address' => { city: nil })).to be(false)
+      expect(Test::Foo.valid?('address' => { city: 'London' })).to be(true)
+    end
+
+    example 'non-polymorphic array types cancel transformations' do
+      class Test::Foo < Dry::Struct
+        transform_types(&:optional)
+        transform_keys(&:to_sym)
+
+        attribute :address, Dry::Types['array'].of(Dry::Struct) do
+          attribute :city, 'string'
+        end
+      end
+
+      expect(Test::Foo.valid?('address' => ['city' => 'London'])).to be(false)
+      expect(Test::Foo.valid?('address' => [city: nil])).to be(false)
+      expect(Test::Foo.valid?('address' => [city: 'London'])).to be(true)
+    end
   end
 end

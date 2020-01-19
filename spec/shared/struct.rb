@@ -71,7 +71,7 @@ RSpec.shared_examples_for Dry::Struct do
     it 'uses attribute values, not accessors result' do
       decorator = Module.new do
         def name
-          :"#{ super } Doe"
+          :"#{super} Doe"
         end
       end
 

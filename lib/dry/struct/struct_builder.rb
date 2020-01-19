@@ -14,13 +14,22 @@ module Dry
       end
 
       # @param [Symbol|String] attr_name the name of the nested type
-      # @param [Dry::Struct,Dry::Types::Type::Array] type the superclass of the nested struct
+      # @param [Dry::Struct,Dry::Types::Type::Array,Undefined] type the superclass of the nested struct
       # @yield the body of the nested struct
       def call(attr_name, type, &block)
         const_name = const_name(type, attr_name)
         check_name(const_name)
 
-        new_type = ::Class.new(parent(type), &block)
+        builder = self
+        parent = parent(type)
+
+        new_type = ::Class.new(Undefined.default(parent, default_superclass)) do
+          if Undefined.equal?(parent)
+            schema builder.struct.schema.clear
+          end
+
+          class_exec(&block)
+        end
         struct.const_set(const_name, new_type)
 
         if array?(type)
@@ -40,7 +49,7 @@ module Dry
         if array?(type)
           visit(type.to_ast)
         else
-          type || default_superclass
+          type
         end
       end
 
@@ -77,7 +86,7 @@ module Dry
       end
 
       def visit_nominal(*)
-        default_superclass
+        Undefined
       end
 
       def visit_constructor(node)

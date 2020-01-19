@@ -208,9 +208,9 @@ RSpec.describe Dry::Struct, method: '.attribute' do
 
     it 'defines omittable structs' do
       class Test::Foo < Dry::Struct
-        attribute  :foo, 'strict.string'
+        attribute  :foo, 'string'
         attribute? :nested do
-          attribute :bar, 'strict.string'
+          attribute :bar, 'string'
         end
       end
 

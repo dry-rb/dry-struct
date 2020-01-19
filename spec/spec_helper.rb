@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'support/coverage'
+require_relative 'support/warnings'
 
 require 'pathname'
-require 'warning'
 
-Warning.ignore(/codacy/)
 Warning.ignore(/regexp_parser/)
 Warning.ignore(/parser/)
 Warning.ignore(/slice\.rb/)
-Warning.ignore(/Pattern matching/)
 
 module DryStructSpec
   ROOT = Pathname.new(__dir__).parent.expand_path.freeze
