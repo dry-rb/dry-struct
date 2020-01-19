@@ -7,11 +7,11 @@ RSpec.shared_context 'user type' do
   before do
     module Test
       class BaseAddress < Dry::Struct
-        attribute :street, 'strict.string'
+        attribute :street, 'string'
       end
 
       class Address < Dry::Struct
-        attribute :city, 'strict.string'
+        attribute :city, 'string'
         attribute :zipcode, 'coercible.string'
       end
 
@@ -26,7 +26,7 @@ RSpec.shared_context 'user type' do
       end
 
       class SuperUser < User
-        attributes(root: 'strict.bool')
+        attributes(root: 'bool')
       end
     end
   end
