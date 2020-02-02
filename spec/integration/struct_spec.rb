@@ -56,6 +56,15 @@ RSpec.describe Dry::Struct do
       expect(construct_user(user)).to be_instance_of(user_type)
     end
 
+    it 'supports safe call when a struct is given' do
+      subtype = Class.new(root_type) { attribute :age, 'string' }
+      user = subtype[
+        name: :Jane, age: 'twenty-one', root: true, address: { city: 'NYC', zipcode: 123 }
+      ]
+
+      expect(root_type.new(user, true) { :fallback }).to be(:fallback)
+    end
+
     context 'with default' do
       it 'resolves missing values with defaults' do
         struct = Class.new(Dry::Struct) do
