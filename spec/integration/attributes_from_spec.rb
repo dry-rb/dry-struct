@@ -15,7 +15,7 @@ RSpec.describe 'Dry::Struct.attributes_from' do
       end
     end
 
-    expect(Test::User.attribute_names).to eq(
+    expect(Test::User.attribute_names).to eql(
       [:name, :city, :zipcode, :age]
     )
   end
@@ -34,7 +34,7 @@ RSpec.describe 'Dry::Struct.attributes_from' do
       end
     end
 
-    expect(Test::User.schema.key(:address).attribute_names).to eq(
+    expect(Test::User.schema.key(:address).attribute_names).to eql(
       [:city, :zipcode]
     )
   end
@@ -53,8 +53,84 @@ RSpec.describe 'Dry::Struct.attributes_from' do
       end
     end
 
-    expect(Test::User.schema.key(:address).attribute_names).to eq(
+    expect(Test::User.schema.key(:address).attribute_names).to eql(
       [:city, :zipcode]
     )
+  end
+
+  context 'behavior' do
+    before do
+      module Test
+        class Address < Dry::Struct
+          attribute :address do
+            attribute :city, 'string'
+            attribute :zipcode, 'coercible.string'
+          end
+        end
+
+        class User < Dry::Struct
+          attributes_from Address
+        end
+      end
+    end
+
+    let(:user) { Test::User.new(address: { city: 'NYC', zipcode: 123 }) }
+
+    it 'adds accessors' do
+      expect(user.address.city).to eql('NYC')
+    end
+
+    it 'resets attribute names' do
+      expect(Test::User.attribute_names).to eql(%i[address])
+    end
+
+    context 'inheritance' do
+      before do
+        class Test::Person < Dry::Struct
+        end
+
+        class Test::Citizen < Test::Person
+        end
+
+        Test::Person.attributes_from(Test::Address)
+      end
+
+      let(:citizen) { Test::Citizen.new(user.to_h) }
+
+      it 'adds attributes to subclasses' do
+        expect(citizen.address.city).to eql('NYC')
+      end
+    end
+
+    context 'omittable keys' do
+      before do
+        module Test
+          class Address
+            attribute? :country, 'string'
+          end
+
+          class Person < Dry::Struct
+            attributes_from Address
+          end
+        end
+      end
+
+      let(:person_without_country) { Test::Person.new(user.to_h) }
+
+      let(:person_with_country) do
+        Test::Person.new(
+          country: 'uk',
+          address: {
+            city: 'London',
+            zipcode: 234
+          }
+        )
+      end
+
+      it 'adds omittable keys' do
+        expect(person_without_country.country).to be_nil
+        expect(person_with_country.country).to eql('uk')
+      end
+    end
   end
 end

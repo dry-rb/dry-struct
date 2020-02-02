@@ -121,7 +121,14 @@ module Dry
       #
       # @param struct [Dry::Struct]
       def attributes_from(struct)
-        schema schema.merge(struct.schema)
+        extracted_schema = struct.schema.keys.map { |key|
+          if key.required?
+            [key.name, key.type]
+          else
+            [:"#{key.name}?", key.type]
+          end
+        }.to_h
+        attributes(extracted_schema)
       end
 
       # Adds an omittable (key is not required on initialization) attribute for this {Struct}
@@ -178,15 +185,7 @@ module Dry
 
         schema schema.schema(new_schema)
 
-        keys.each do |key|
-          next if instance_methods.include?(key)
-
-          class_eval(<<-RUBY)
-            def #{key}
-              @attributes[#{key.inspect}]
-            end
-          RUBY
-        end
+        define_accessors(keys)
 
         @attribute_names = nil
 
@@ -476,6 +475,19 @@ module Dry
         end
       end
       private :build_type
+
+      def define_accessors(keys)
+        keys.each do |key|
+          next if instance_methods.include?(key)
+
+          class_eval(<<-RUBY)
+            def #{key}
+              @attributes[#{key.inspect}]
+            end
+          RUBY
+        end
+      end
+      private :define_accessors
     end
   end
 end

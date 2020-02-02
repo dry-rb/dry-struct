@@ -180,13 +180,13 @@ RSpec.shared_examples_for Dry::Struct do
 
     describe '.attribute_names' do
       it 'returns the list of schema keys' do
-        expect(type.attribute_names).to eql(%i(name age address root))
+        expect(type.attribute_names).to eql(%i[name age address root])
       end
 
       it 'invalidates the cache on adding a new attribute' do
-        expect(type.attribute_names).to eql(%i(name age address root))
+        expect(type.attribute_names).to eql(%i[name age address root])
         type.attribute(:something_else, Dry::Types['any'])
-        expect(type.attribute_names).to eql(%i(name age address root something_else))
+        expect(type.attribute_names).to eql(%i[name age address root something_else])
       end
     end
 
