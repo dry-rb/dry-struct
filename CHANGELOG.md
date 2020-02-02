@@ -12,6 +12,55 @@
   end
   ```
 - `Dry::Struct.abstract` declares a struct class as abstract. An abstract class is used as a default superclass for nested structs (flash-gordon)
+- `Struct.to_ast` and struct compiler (@flash-gordon)
+
+### Fixed
+
+- Nested structures will reuse type and key transformations from of the enclosing struct (flash-gordon)
+
+  ```ruby
+  class User < Dry::Struct
+    transform_keys(&:to_sym)
+
+    attribute :name, Types::String
+    attribute :address do
+      # this struct will inherit transform_keys(&:to_sym)
+      attribute :city, Types::String
+    end
+
+    # nested struct will _not_ transform keys because a parent
+    # struct is given
+    attribute :contacts, Dry::Struct do
+      attribute :email, Types::String
+    end
+  end
+  ```
+- `Dry::Struct::Constructor` finally acts like a fully-featured type (flash-gordon)
+
+### Changed
+
+- `Dry::Struct#to_hash` is deprecated.
+It leads to undesired behavior when structs passed to methods with keyword arguments.
+`#to_hash` will be removed in dry-struct 2.0, either use `#to_h` or define `#to_hash` in your structs.
+- [internal] metadata is now stored inside schema (flash-gordon)
+
+[Compare v1.3.0...v1.3.0](https://github.com/dry-rb/dry-struct/compare/v1.3.0...v1.3.0)
+
+## 1.3.0 unreleased
+
+
+### Added
+
+- `Dry::Struct.attributes_from` adds attributes from another struct class (wating-for-dev)
+
+  ```ruby
+  class User < Dry::Struct
+    # adds attributes from Person
+    attributes_from Person
+  end
+  ```
+- `Dry::Struct.abstract` declares a struct class as abstract. An abstract class is used as a default superclass for nested structs (flash-gordon)
+- `Struct.to_ast` and struct compiler (@flash-gordon)
 
 ### Fixed
 
