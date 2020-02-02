@@ -1,19 +1,8 @@
 ---
 - version: 1.3.0
+  summary: 
   date: unreleased
-  added:
-  - |-
-    `Dry::Struct.attributes_from` adds attributes from another struct class (wating-for-dev)
-
-      ```ruby
-      class User < Dry::Struct
-        # adds attributes from Person
-        attributes_from Person
-      end
-      ```
-  - "`Dry::Struct.abstract` declares a struct class as abstract. An abstract class
-    is used as a default superclass for nested structs (flash-gordon)"
-  fixed:
+  fixed: &2
   - |-
     Nested structures will reuse type and key transformations from of the enclosing struct (flash-gordon)
 
@@ -35,12 +24,30 @@
       end
       ```
   - "`Dry::Struct::Constructor` finally acts like a fully-featured type (flash-gordon)"
-  changed:
+  added: &1
+  - |-
+    `Dry::Struct.attributes_from` adds attributes from another struct class (wating-for-dev)
+
+      ```ruby
+      class User < Dry::Struct
+        # adds attributes from Person
+        attributes_from Person
+      end
+      ```
+  - "`Dry::Struct.abstract` declares a struct class as abstract. An abstract class
+    is used as a default superclass for nested structs (flash-gordon)"
+  - "`Struct.to_ast` and struct compiler (@flash-gordon)"
+  changed: &3
   - |-
     `Dry::Struct#to_hash` is deprecated.
     It leads to undesired behavior when structs passed to methods with keyword arguments.
     `#to_hash` will be removed in dry-struct 2.0, either use `#to_h` or define `#to_hash` in your structs.
   - "[internal] metadata is now stored inside schema (flash-gordon)"
+- version: 1.3.0
+  date: unreleased
+  added: *1
+  fixed: *2
+  changed: *3
 - version: 1.2.0
   date: '2019-12-20'
   changed:
