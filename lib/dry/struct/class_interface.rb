@@ -247,7 +247,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = default_attributes, safe = false)
+      def new(attributes = default_attributes, safe = false, &block)
         if attributes.is_a?(Struct)
           if equal?(attributes.class)
             attributes
@@ -257,7 +257,7 @@ module Dry
             # User.new(super_user)
             #
             # We may deprecate this behavior in future forcing people to be explicit
-            new(attributes.to_h, safe)
+            new(attributes.to_h, safe, &block)
           end
         elsif safe
           load(schema.call_safe(attributes) { |output = attributes| return yield output })
