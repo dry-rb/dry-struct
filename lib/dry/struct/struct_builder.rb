@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'dry/types/compiler'
+require 'dry/struct/compiler'
 
 module Dry
   class Struct
     # @private
-    class StructBuilder < Types::Compiler
+    class StructBuilder < Compiler
       attr_reader :struct
 
       def initialize(struct)
@@ -78,7 +78,7 @@ module Dry
 
       def visit_array(node)
         member, * = node
-        member
+        visit(member)
       end
 
       def visit_nominal(*)
