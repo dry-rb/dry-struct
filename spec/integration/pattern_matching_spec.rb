@@ -8,8 +8,8 @@ RSpec.describe 'pattern matching' do
       address: Dry.Struct(
         city: 'string',
         street: 'string'
-      ).tap { |s| stub_const('Address', s) }
-    ).tap { |s| stub_const('User', s) }
+      ).tap { stub_const('Address', _1) }
+    ).tap { stub_const('User', _1) }
   end
 
   let(:john) do

@@ -31,24 +31,7 @@ RSpec.configure do |config|
   config.exclude_pattern = '**/pattern_matching_spec.rb' \
     unless RUBY_VERSION >= '2.7'
 
-  config.before do
-    @types = Dry::Types.container._container.keys
-
-    module Test
-      def self.remove_constants
-        constants.each { |const| remove_const(const) }
-        self
-      end
-    end
-  end
-
-  config.after do
-    container = Dry::Types.container._container
-    (container.keys - @types).each { |key| container.delete(key) }
-    Dry::Types.instance_variable_set('@type_map', Concurrent::Map.new)
-
-    Object.send(:remove_const, Test.remove_constants.name)
-  end
+  config.before { stub_const('Test', Module.new) }
 
   config.order = :random
   config.filter_run_when_matching :focus
