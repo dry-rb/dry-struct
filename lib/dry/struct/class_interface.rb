@@ -391,6 +391,8 @@ module Dry
       def meta(meta = Undefined)
         if meta.equal?(Undefined)
           schema.meta
+        elsif meta.empty?
+          self
         else
           ::Class.new(self) do
             schema schema.meta(meta) unless meta.empty?
@@ -413,6 +415,15 @@ module Dry
       # parent class for nested structs
       def abstract
         abstract_class self
+      end
+
+      # Dump to the AST
+      #
+      # @return [Array]
+      #
+      # @api public
+      def to_ast(meta: true)
+        [:struct, [self, schema.to_ast(meta: meta)]]
       end
 
       # Stores an object for building nested struct classes
