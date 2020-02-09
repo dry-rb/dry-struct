@@ -13,6 +13,12 @@ RSpec.describe Dry::Struct::Compiler do
     expect(compiler.(address.to_ast)).to be(address)
   end
 
+  it 'raises an error when the original struct was reclaimed' do
+    ast = Dry.Struct(street: 'string', city?: 'optional.string').to_ast
+    GC.start
+    expect { compiler.(ast) }.to raise_error(Dry::Struct::RecycledStructError)
+  end
+
   context 'struct constructor' do
     let(:address) { super().constructor(:itself.to_proc) }
 

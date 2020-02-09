@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'weakref'
 require 'dry/core/class_attributes'
 require 'dry/core/inflector'
 require 'dry/core/descendants_tracker'
@@ -422,7 +423,7 @@ module Dry
       #
       # @api public
       def to_ast(meta: true)
-        [:struct, [self, schema.to_ast(meta: meta)]]
+        [:struct, [::WeakRef.new(self), schema.to_ast(meta: meta)]]
       end
 
       # Stores an object for building nested struct classes

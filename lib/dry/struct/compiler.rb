@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'weakref'
 require 'dry/types/compiler'
 
 module Dry
@@ -8,7 +9,13 @@ module Dry
       def visit_struct(node)
         struct, _ = node
 
-        struct
+        struct.__getobj__
+      rescue ::WeakRef::RefError
+        if struct.weakref_alive?
+          raise
+        else
+          raise RecycledStructError
+        end
       end
     end
   end
