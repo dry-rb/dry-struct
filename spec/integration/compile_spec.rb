@@ -14,14 +14,17 @@ RSpec.describe Dry::Struct::Compiler do
   end
 
   it 'raises an error when the original struct was reclaimed' do
-    asts = Array.new(1000) { Dry.Struct(street: 'string').to_ast }
     collected = nil
 
-    100.times do
-      GC.start
-      GC.start
-      break if collected = asts.find { |ast| !ast[1][0].weakref_alive? }
-      sleep 0.05
+    (1..100).each do |pow|
+      asts = Array.new(10**pow) { Dry.Struct(street: 'string').to_ast }
+
+      10.times do
+        GC.start
+        GC.start
+        break if collected = asts.find { |ast| !ast[1][0].weakref_alive? }
+      end
+      break unless collected.nil?
     end
 
     expect(collected).not_to be_nil
