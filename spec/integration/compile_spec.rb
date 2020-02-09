@@ -14,9 +14,18 @@ RSpec.describe Dry::Struct::Compiler do
   end
 
   it 'raises an error when the original struct was reclaimed' do
-    ast = Dry.Struct(street: 'string', city?: 'optional.string').to_ast
-    GC.start
-    expect { compiler.(ast) }.to raise_error(Dry::Struct::RecycledStructError)
+    asts = Array.new(1000) { Dry.Struct(street: 'string').to_ast }
+    collected = nil
+
+    100.times do
+      GC.start
+      GC.start
+      break if collected = asts.find { |ast| !ast[1][0].weakref_alive? }
+      sleep 0.05
+    end
+
+    expect(collected).not_to be_nil
+    expect { compiler.(collected) }.to raise_error(Dry::Struct::RecycledStructError)
   end
 
   context 'struct constructor' do
