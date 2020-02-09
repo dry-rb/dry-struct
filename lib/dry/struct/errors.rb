@@ -20,5 +20,13 @@ module Dry
         super("Missing attribute: #{key.inspect}")
       end
     end
+
+    # When struct class stored in ast was garbage collected because no alive objects exists
+    # This shouldn't happen in a working application
+    class RecycledStructError < ::RuntimeError
+      def initialize
+        super('Reference to struct class was garbage collected')
+      end
+    end
   end
 end
