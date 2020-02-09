@@ -22,7 +22,7 @@ RSpec.describe Dry::Struct::Compiler do
       10.times do
         GC.start
         GC.start
-        break if collected = asts.find { |ast| !ast[1][0].weakref_alive? }
+        break if (collected = asts.find { |ast| !ast[1][0].weakref_alive? })
       end
       break unless collected.nil?
     end
