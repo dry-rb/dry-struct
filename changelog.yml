@@ -3,7 +3,7 @@
   date: '2020-02-10'
   added:
   - |-
-    Nested structures will reuse type and key transformations from of the enclosing struct (flash-gordon)
+    Nested structures will reuse type and key transformations from the enclosing struct (@flash-gordon)
 
       ```ruby
       class User < Dry::Struct
@@ -22,12 +22,12 @@
         end
       end
       ```
-  - "`Dry::Struct::Constructor` finally acts like a fully-featured type (flash-gordon)"
+  - "`Dry::Struct::Constructor` finally acts like a fully-featured type (@flash-gordon)"
   - "`Dry::Struct.abstract` declares a struct class as abstract. An abstract class
-    is used as a default superclass for nested structs (flash-gordon)"
+    is used as a default superclass for nested structs (@flash-gordon)"
   - "`Struct.to_ast` and struct compiler (@flash-gordon)"
   changed:
-  - "[internal] metadata is now stored inside schema (flash-gordon)"
+  - "[internal] metadata is now stored inside schema (@flash-gordon)"
 - version: 1.2.0
   date: '2019-12-20'
   changed:
