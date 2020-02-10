@@ -27,7 +27,6 @@
     is used as a default superclass for nested structs (flash-gordon)"
   - "`Struct.to_ast` and struct compiler (@flash-gordon)"
   changed:
-  - |-
   - "[internal] metadata is now stored inside schema (flash-gordon)"
 - version: 1.2.0
   date: '2019-12-20'
