@@ -25,7 +25,27 @@
   - "`Dry::Struct::Constructor` finally acts like a fully-featured type (@flash-gordon)"
   - "`Dry::Struct.abstract` declares a struct class as abstract. An abstract class
     is used as a default superclass for nested structs (@flash-gordon)"
-  - "`Struct.to_ast` and struct compiler (@flash-gordon)"
+  - "`Dry::Struct.to_ast` and struct compiler (@flash-gordon)"
+  - |-
+    Struct composition with `Dry::Struct.attributes_from`. It's more flexible than inheritance (@waiting-for-dev + @flash-gordon)
+
+      ```ruby
+      class Address < Dry::Struct
+        attribute :city, Types::String
+        attribute :zipcode, Types::String
+      end
+
+      class Buyer < Dry::Struct
+        attribute :name, Types::String
+        attributes_from Address
+      end
+
+      class Seller < Dry::Struct
+        attribute :name, Types::String
+        attribute :email, Types::String
+        attributes_from Address
+      end
+      ```
   changed:
   - "[internal] metadata is now stored inside schema (@flash-gordon)"
 - version: 1.2.0
