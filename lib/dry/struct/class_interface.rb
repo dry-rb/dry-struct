@@ -233,7 +233,7 @@ module Dry
         schema schema.with_key_transform(proc || block)
       end
 
-      # @param [Hash{Symbol => Dry::Types::Type, Dry::Struct}] new_schema
+      # @param [Hash{Symbol => Dry::Types::Type, Dry::Struct}] new_keys
       # @raise [RepeatedAttributeError] when trying to define attribute with the
       #   same name as previously defined one
       def check_schema_duplication(new_keys)
@@ -345,7 +345,7 @@ module Dry
         false
       end
 
-      # @param [Object, Dry::Struct] value
+      # @param [Object, Dry::Struct] other
       # @return [Boolean]
       def ===(other)
         other.is_a?(self)
