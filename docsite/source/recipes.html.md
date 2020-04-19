@@ -141,3 +141,22 @@ class Foo < Dry::Struct
   attribute :bar, Bar.default { Bar.new(nested: 1) }
 end
 ```
+
+### Hiding or removing attribute readers
+```ruby
+class Product < Dry::Struct
+  attribute :price, Types::Price
+  attribute :is_x, Types::Bool
+  attribute :is_y, Types::Bool
+
+  private :is_x, :is_y
+  # or
+  # undef :is_x, :is_y
+
+  def special_price
+   @attributes[:is_x] && @attributes[:is_y] ? price * 2 : price
+  end
+end
+
+Product.new(price: 1, is_x: true, is_y: true).respond_to?(:is_x) # => false
+```
