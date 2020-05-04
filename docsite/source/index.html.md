@@ -37,6 +37,8 @@ user.name # => "Jane"
 user.age # => 21
 ```
 
+<sub>Note: An `optional` type means that the value can be nil, not the key in the hash can be skipped.</sub>
+
 ### Value
 
 :warning: `Dry::Struct::Value` is deprecated in 1.2.0. Structs are already meant to be immutable, freezing them doesn't add any value (no pun intended) beyond a bad example of defensive programming.
