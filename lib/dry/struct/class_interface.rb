@@ -289,7 +289,7 @@ module Dry
       # @api private
       def load(attributes)
         struct = allocate
-        struct.send(:initialize, attributes)
+        struct.__send__(:initialize, attributes)
         struct
       end
 
