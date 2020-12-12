@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-RSpec.describe 'Dry::Struct.attributes_from' do
-  it 'composes attributes at place' do
+RSpec.describe "Dry::Struct.attributes_from" do
+  it "composes attributes at place" do
     module Test
       class Address < Dry::Struct
-        attribute :city, 'string'
-        attribute :zipcode, 'coercible.string'
+        attribute :city, "string"
+        attribute :zipcode, "coercible.string"
       end
 
       class User < Dry::Struct
-        attribute :name, 'coercible.string'
+        attribute :name, "coercible.string"
         attributes_from Address
-        attribute :age, 'coercible.integer'
+        attribute :age, "coercible.integer"
       end
     end
 
@@ -20,11 +20,11 @@ RSpec.describe 'Dry::Struct.attributes_from' do
     )
   end
 
-  it 'composes within a nested attribute' do
+  it "composes within a nested attribute" do
     module Test
       class Address < Dry::Struct
-        attribute :city, 'string'
-        attribute :zipcode, 'coercible.string'
+        attribute :city, "string"
+        attribute :zipcode, "coercible.string"
       end
 
       class User < Dry::Struct
@@ -39,12 +39,12 @@ RSpec.describe 'Dry::Struct.attributes_from' do
     )
   end
 
-  it 'composes a nested attribute' do
+  it "composes a nested attribute" do
     module Test
       class Address < Dry::Struct
         attribute :address do
-          attribute :city, 'string'
-          attribute :zipcode, 'coercible.string'
+          attribute :city, "string"
+          attribute :zipcode, "coercible.string"
         end
       end
 
@@ -58,13 +58,13 @@ RSpec.describe 'Dry::Struct.attributes_from' do
     )
   end
 
-  context 'behavior' do
+  context "behavior" do
     before do
       module Test
         class Address < Dry::Struct
           attribute :address do
-            attribute :city, 'string'
-            attribute :zipcode, 'coercible.string'
+            attribute :city, "string"
+            attribute :zipcode, "coercible.string"
           end
         end
 
@@ -74,17 +74,17 @@ RSpec.describe 'Dry::Struct.attributes_from' do
       end
     end
 
-    let(:user) { Test::User.new(address: { city: 'NYC', zipcode: 123 }) }
+    let(:user) { Test::User.new(address: { city: "NYC", zipcode: 123 }) }
 
-    it 'adds accessors' do
-      expect(user.address.city).to eql('NYC')
+    it "adds accessors" do
+      expect(user.address.city).to eql("NYC")
     end
 
-    it 'resets attribute names' do
+    it "resets attribute names" do
       expect(Test::User.attribute_names).to eql(%i[address])
     end
 
-    context 'inheritance' do
+    context "inheritance" do
       before do
         class Test::Person < Dry::Struct
         end
@@ -97,16 +97,16 @@ RSpec.describe 'Dry::Struct.attributes_from' do
 
       let(:citizen) { Test::Citizen.new(user.to_h) }
 
-      it 'adds attributes to subclasses' do
-        expect(citizen.address.city).to eql('NYC')
+      it "adds attributes to subclasses" do
+        expect(citizen.address.city).to eql("NYC")
       end
     end
 
-    context 'omittable keys' do
+    context "omittable keys" do
       before do
         module Test
           class Address
-            attribute? :country, 'string'
+            attribute? :country, "string"
           end
 
           class Person < Dry::Struct
@@ -119,17 +119,17 @@ RSpec.describe 'Dry::Struct.attributes_from' do
 
       let(:person_with_country) do
         Test::Person.new(
-          country: 'uk',
+          country: "uk",
           address: {
-            city: 'London',
+            city: "London",
             zipcode: 234
           }
         )
       end
 
-      it 'adds omittable keys' do
+      it "adds omittable keys" do
         expect(person_without_country.country).to be_nil
-        expect(person_with_country.country).to eql('uk')
+        expect(person_with_country.country).to eql("uk")
       end
     end
   end

@@ -1,22 +1,22 @@
 RSpec.describe Dry::Struct do
-  describe '#pretty_print' do
-    include_context 'user type'
+  describe "#pretty_print" do
+    include_context "user type"
 
     before { Dry::Struct.load_extensions(:pretty_print) }
 
-    let(:string_io) { StringIO.new('') }
+    let(:string_io) { StringIO.new("") }
     subject(:actual) do
       string_io.rewind
       string_io.read
     end
     before { PP.pp(user, string_io) }
 
-    describe '#pretty_print' do
-      context 'with Test::User' do
+    describe "#pretty_print" do
+      context "with Test::User" do
         let(:user) do
           user_type[
-            name: 'Jane', age: 21,
-            address: { city: 'NYC', zipcode: '123' }
+            name: "Jane", age: 21,
+            address: { city: "NYC", zipcode: "123" }
           ]
         end
 
@@ -30,11 +30,11 @@ RSpec.describe Dry::Struct do
         end
       end
 
-      context 'with Test::SuperUSer' do
+      context "with Test::SuperUSer" do
         let(:user) do
           root_type[
             name: :Mike, age: 43, root: false,
-            address: { city: 'Atlantis', zipcode: 456 }
+            address: { city: "Atlantis", zipcode: 456 }
           ]
         end
 
