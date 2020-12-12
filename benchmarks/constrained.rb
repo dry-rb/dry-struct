@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'dry/struct'
+require "dry/struct"
 
-require 'active_record'
-require 'benchmark/ips'
+require "active_record"
+require "benchmark/ips"
 
-ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
 
 ActiveRecord::Schema.define do
   create_table :users do |table|
@@ -28,12 +28,12 @@ class DryStructUser < Dry::Struct
   attribute :age, Types::Params::Integer.constrained(gt: 18)
 end
 
-puts ARUser.new(id: 1, name: 'Jane', age: '21').inspect
-puts DryStructUser.new(id: 1, name: 'Jane', age: '21').inspect
+puts ARUser.new(id: 1, name: "Jane", age: "21").inspect
+puts DryStructUser.new(id: 1, name: "Jane", age: "21").inspect
 
 Benchmark.ips do |x|
-  x.report('active record') { ARUser.new(id: 1, name: 'Jane', age: '21') }
-  x.report('dry-struct') { DryStructUser.new(id: 1, name: 'Jane', age: '21') }
+  x.report("active record") { ARUser.new(id: 1, name: "Jane", age: "21") }
+  x.report("dry-struct") { DryStructUser.new(id: 1, name: "Jane", age: "21") }
 
   x.compare!
 end

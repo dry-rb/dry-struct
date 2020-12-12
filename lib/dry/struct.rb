@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'dry-types'
-require 'dry-equalizer'
-require 'dry/core/extensions'
-require 'dry/core/constants'
-require 'dry/core/deprecations'
+require "dry-types"
+require "dry-equalizer"
+require "dry/core/extensions"
+require "dry/core/constants"
+require "dry/core/deprecations"
 
-require 'dry/struct/version'
-require 'dry/struct/errors'
-require 'dry/struct/class_interface'
-require 'dry/struct/hashify'
-require 'dry/struct/struct_builder'
+require "dry/struct/version"
+require "dry/struct/errors"
+require "dry/struct/class_interface"
+require "dry/struct/hashify"
+require "dry/struct/struct_builder"
 
 module Dry
   # Constructor method for easily creating a {Dry::Struct}.
@@ -95,14 +95,14 @@ module Dry
       define_method(:prepend, ::Module.method(:prepend))
     end
 
-    autoload :Value, 'dry/struct/value'
+    autoload :Value, "dry/struct/value"
 
     include ::Dry::Equalizer(:__attributes__, inspect: false, immutable: true)
 
     # {Dry::Types::Hash::Schema} subclass with specific behaviour defined for
     # @return [Dry::Types::Hash::Schema]
     defines :schema
-    schema Types['coercible.hash'].schema(EMPTY_HASH)
+    schema Types["coercible.hash"].schema(EMPTY_HASH)
 
     defines :abstract_class
     abstract
@@ -197,7 +197,7 @@ module Dry
       "#<#{klass.name || klass.inspect}#{attrs}>"
     end
 
-    if RUBY_VERSION >= '2.7'
+    if RUBY_VERSION >= "2.7"
       # Pattern matching support
       #
       # @api private
@@ -208,5 +208,5 @@ module Dry
   end
 end
 
-require 'dry/struct/extensions'
-require 'dry/struct/printer'
+require "dry/struct/extensions"
+require "dry/struct/printer"

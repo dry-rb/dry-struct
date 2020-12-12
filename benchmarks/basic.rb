@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'dry/struct'
-require 'virtus'
-require 'fast_attributes'
-require 'attrio'
-require 'ostruct'
+require "dry/struct"
+require "virtus"
+require "fast_attributes"
+require "attrio"
+require "ostruct"
 
-require 'benchmark/ips'
+require "benchmark/ips"
 
 class VirtusUser
   include Virtus.model
@@ -44,16 +44,16 @@ class AttrioUser
 end
 
 class DryStructUser < Dry::Struct
-  attributes(name: 'strict.string', age: 'params.integer')
+  attributes(name: "strict.string", age: "params.integer")
 end
 
-puts DryStructUser.new(name: 'Jane', age: '21').inspect
+puts DryStructUser.new(name: "Jane", age: "21").inspect
 
 Benchmark.ips do |x|
-  x.report('virtus') { VirtusUser.new(name: 'Jane', age: '21') }
-  x.report('fast_attributes') { FastUser.new(name: 'Jane', age: '21') }
-  x.report('attrio') { AttrioUser.new(name: 'Jane', age: '21') }
-  x.report('dry-struct') { DryStructUser.new(name: 'Jane', age: '21') }
+  x.report("virtus") { VirtusUser.new(name: "Jane", age: "21") }
+  x.report("fast_attributes") { FastUser.new(name: "Jane", age: "21") }
+  x.report("attrio") { AttrioUser.new(name: "Jane", age: "21") }
+  x.report("dry-struct") { DryStructUser.new(name: "Jane", age: "21") }
 
   x.compare!
 end
