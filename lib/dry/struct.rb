@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "dry-types"
-require "dry-equalizer"
+require "dry/types"
+require "dry/core/equalizer"
 require "dry/core/extensions"
 require "dry/core/constants"
 require "dry/core/deprecations"
