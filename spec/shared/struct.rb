@@ -285,9 +285,9 @@ RSpec.shared_examples_for Dry::Struct do
 
     describe ".===" do
       it "acts in the same way as Class#===" do
-        expect(Dry::Struct).not_to be.nil?
-        expect(Dry::Struct).to be === Dry::Struct.new
-        expect(Dry::Struct).to be === Class.new(Dry::Struct).new
+        expect(Dry::Struct === nil).to be(false)
+        expect(Dry::Struct === Dry::Struct.new).to be(true)
+        expect(Dry::Struct === Class.new(Dry::Struct).new).to be(true)
       end
     end
 

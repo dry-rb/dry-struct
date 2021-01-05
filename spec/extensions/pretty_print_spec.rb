@@ -6,7 +6,7 @@ RSpec.describe Dry::Struct do
 
     before { Dry::Struct.load_extensions(:pretty_print) }
 
-    let(:string_io) { StringIO.new("") }
+    let(:string_io) { StringIO.new(String.new) }
     subject(:actual) do
       string_io.rewind
       string_io.read
