@@ -3,6 +3,6 @@
 module Dry
   class Struct
     # @private
-    VERSION = '1.3.0'.freeze
+    VERSION = '1.4.0'
   end
 end
