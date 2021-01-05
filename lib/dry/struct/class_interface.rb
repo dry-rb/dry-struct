@@ -297,7 +297,7 @@ module Dry
       # @param [#call,nil] block
       # @return [Dry::Struct::Constructor]
       def constructor(constructor = nil, **, &block)
-        Constructor.new(self, fn: constructor || block)
+        Constructor[self, fn: constructor || block]
       end
 
       # @param [Hash{Symbol => Object},Dry::Struct] input

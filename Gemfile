@@ -6,6 +6,8 @@ eval_gemfile "Gemfile.devtools"
 
 gemspec
 
+gem "dry-types", github: "dry-rb/dry-types"
+
 group :test do
   gem "dry-monads"
 end
