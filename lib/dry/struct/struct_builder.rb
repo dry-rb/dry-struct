@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/struct/compiler'
+require "dry/struct/compiler"
 
 module Dry
   class Struct
@@ -65,10 +65,12 @@ module Dry
       end
 
       def check_name(name)
-        raise(
-          Error,
-          "Can't create nested attribute - `#{struct}::#{name}` already defined"
-        ) if struct.const_defined?(name, false)
+        if struct.const_defined?(name, false)
+          raise(
+            Error,
+            "Can't create nested attribute - `#{struct}::#{name}` already defined"
+          )
+        end
       end
 
       def visit_constrained(node)

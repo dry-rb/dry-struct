@@ -37,8 +37,8 @@ class AttrioUser
   end
 
   def attributes=(attributes = {})
-    attributes.each do |attr,value|
-      self.send("#{attr}=", value) if self.respond_to?("#{attr}=")
+    attributes.each do |attr, value|
+      send("#{attr}=", value) if respond_to?("#{attr}=")
     end
   end
 end

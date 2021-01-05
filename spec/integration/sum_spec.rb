@@ -54,8 +54,8 @@ RSpec.describe Dry::Struct::Sum do
 
   describe "#===" do
     it "recursively checks types without coercion" do
-      expect(sum).not_to be === nil
-      expect(Dry::Struct | Dry::Struct).not_to be === nil
+      expect(sum).not_to be.nil?
+      expect(Dry::Struct | Dry::Struct).not_to be.nil?
     end
   end
 end

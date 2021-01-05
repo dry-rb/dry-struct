@@ -35,12 +35,12 @@ RSpec.describe Dry do
       end
 
       it "sets the correct attributes" do
-        attributes = { library: "dry-struct", language: "Ruby" }
+        attributes = {library: "dry-struct", language: "Ruby"}
         expect(Test::Library.new(attributes).to_h).to eql(attributes)
       end
 
       it "can define methods within block" do
-        attributes = { library: "dry-struct", language: "Ruby" }
+        attributes = {library: "dry-struct", language: "Ruby"}
         expect(Test::Library.new(attributes).qualified).to eql("Ruby/dry-struct")
       end
     end

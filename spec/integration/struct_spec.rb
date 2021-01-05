@@ -26,7 +26,7 @@ RSpec.describe Dry::Struct do
 
     it "returns itself when an argument is an instance of given class" do
       user = user_type[
-        name: :Jane, age: "21", address: { city: "NYC", zipcode: 123 }
+        name: :Jane, age: "21", address: {city: "NYC", zipcode: 123}
       ]
 
       expect(construct_user(user)).to be_equal(user)
@@ -50,7 +50,7 @@ RSpec.describe Dry::Struct do
 
     it "returns new object when an argument is an instance of subclass" do
       user = root_type[
-        name: :Jane, age: "21", root: true, address: { city: "NYC", zipcode: 123 }
+        name: :Jane, age: "21", root: true, address: {city: "NYC", zipcode: 123}
       ]
 
       expect(construct_user(user)).to be_instance_of(user_type)
@@ -59,7 +59,7 @@ RSpec.describe Dry::Struct do
     it "supports safe call when a struct is given" do
       subtype = Class.new(root_type) { attribute :age, "string" }
       user = subtype[
-        name: :Jane, age: "twenty-one", root: true, address: { city: "NYC", zipcode: 123 }
+        name: :Jane, age: "twenty-one", root: true, address: {city: "NYC", zipcode: 123}
       ]
 
       expect(root_type.new(user, true) { :fallback }).to be(:fallback)
@@ -93,7 +93,7 @@ RSpec.describe Dry::Struct do
         end
 
         expect(struct.new.to_h)
-          .to eql({ kid: { age: 16 } })
+          .to eql({kid: {age: 16}})
       end
 
       it "doesn't tolerate missing required keys for nested attributes" do
@@ -118,7 +118,7 @@ RSpec.describe Dry::Struct do
         attribute :properties, properties
       end
 
-      original = struct.new(name: "Jane", properties: { age: 20 })
+      original = struct.new(name: "Jane", properties: {age: 20})
 
       expect(original.properties.age).to eql(21)
 
@@ -137,7 +137,7 @@ RSpec.describe Dry::Struct do
 
     it "returns itself when an argument is an instance of subclass" do
       user = root_type[
-        name: :Jane, age: "21", root: true, address: { city: "NYC", zipcode: 123 }
+        name: :Jane, age: "21", root: true, address: {city: "NYC", zipcode: 123}
       ]
 
       expect(construct_user(user)).to be_equal(user)
@@ -192,7 +192,7 @@ RSpec.describe Dry::Struct do
     end
 
     it "sets missing values using default-value types" do
-      attrs = { name: "Jane", age: 21, admin: true }
+      attrs = {name: "Jane", age: 21, admin: true}
 
       expect(struct.new(name: "Jane", age: 21).to_h).to eql(attrs)
       expect(struct.new(age: 21).to_h).to eql(attrs)
@@ -200,7 +200,7 @@ RSpec.describe Dry::Struct do
 
     it "raises error when values have incorrect types" do
       expect { struct.new(name: "Jane", age: 21, admin: "true") }.to raise_error(
-        Dry::Struct::Error, %r["true" \(String\) has invalid type for :admin]
+        Dry::Struct::Error, /"true" \(String\) has invalid type for :admin/
       )
     end
   end
@@ -220,9 +220,9 @@ RSpec.describe Dry::Struct do
       attributes = {
         name: "Jane",
         age: 29,
-        address: { city: "NYC", zipcode: "123" },
+        address: {city: "NYC", zipcode: "123"},
         children: [
-          { name: "Joe", age: 3, address: { city: "NYC", zipcode: "123" } }
+          {name: "Joe", age: 3, address: {city: "NYC", zipcode: "123"}}
         ]
       }
 
@@ -236,7 +236,7 @@ RSpec.describe Dry::Struct do
 
       mappable = Object.new.tap do |obj|
         def obj.map
-          fail
+          raise
         end
       end
 
@@ -252,7 +252,7 @@ RSpec.describe Dry::Struct do
           attribute :last_name, Dry::Types["string"].meta(required: false)
         end
 
-        attributes = { name: "John" }
+        attributes = {name: "John"}
         expect(type.new(attributes).to_h).to eql(attributes)
       end
 
@@ -262,7 +262,7 @@ RSpec.describe Dry::Struct do
           attribute :last_name, Dry::Types["string"].meta(required: false)
         end
 
-        attributes = { name: "John", last_name: "Doe" }
+        attributes = {name: "John", last_name: "Doe"}
         expect(type.new(attributes).to_h).to eql(attributes)
       end
 
@@ -281,7 +281,7 @@ RSpec.describe Dry::Struct do
           attribute :name, Dry::Types["string"].default("John")
         end
 
-        attributes = { name: "John" }
+        attributes = {name: "John"}
         expect(type.new.to_h).to eql(attributes)
       end
     end
@@ -303,7 +303,7 @@ RSpec.describe Dry::Struct do
       end
 
       it "hashifies the values within the hash map" do
-        attributes = { people: { "John" => { age: 35 } } }
+        attributes = {people: {"John" => {age: 35}}}
         expect(type.new(attributes).to_h).to eql(attributes)
       end
     end
@@ -330,7 +330,7 @@ RSpec.describe Dry::Struct do
 
     it "works fine" do
       expect(struct.new(name: "Jane")).to be_an_instance_of(struct)
-      expect(Test::Person.new(name: { name: "Jane" })).to be_an_instance_of(Test::Person)
+      expect(Test::Person.new(name: {name: "Jane"})).to be_an_instance_of(Test::Person)
     end
   end
 
@@ -366,13 +366,13 @@ RSpec.describe Dry::Struct do
       end
 
       it "allows having attributes with reserved names" do
-        value = Test::Task[user: "Jane", hash: "abc", attributes: %w(name)]
+        value = Test::Task[user: "Jane", hash: "abc", attributes: %w[name]]
 
         expect(value.hash).to be_a(Integer)
         expect(value.attributes)
-          .to eql(user: "Jane", hash: "abc", attributes: %w(name))
+          .to eql(user: "Jane", hash: "abc", attributes: %w[name])
         expect(value[:hash]).to eql("abc")
-        expect(value[:attributes]).to eql(%w(name))
+        expect(value[:attributes]).to eql(%w[name])
       end
     end
   end

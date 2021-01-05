@@ -74,7 +74,7 @@ RSpec.describe "Dry::Struct.attributes_from" do
       end
     end
 
-    let(:user) { Test::User.new(address: { city: "NYC", zipcode: 123 }) }
+    let(:user) { Test::User.new(address: {city: "NYC", zipcode: 123}) }
 
     it "adds accessors" do
       expect(user.address.city).to eql("NYC")

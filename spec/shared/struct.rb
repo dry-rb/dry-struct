@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples_for Dry::Struct do
-  let(:jane) { { name: :Jane, age: "21", root: true, address: { city: "NYC", zipcode: 123 } } }
-  let(:mike) { { name: :Mike, age: "43", root: false, address: { city: "Atlantis", zipcode: 456 } } }
-  let(:john) { { name: :John, age: "36", root: false, address: { city: "San Francisco", zipcode: 789 } } }
+  let(:jane) { {name: :Jane, age: "21", root: true, address: {city: "NYC", zipcode: 123}} }
+  let(:mike) { {name: :Mike, age: "43", root: false, address: {city: "Atlantis", zipcode: 456}} }
+  let(:john) { {name: :John, age: "36", root: false, address: {city: "San Francisco", zipcode: 789}} }
 
   describe "#eql" do
     context "when struct values are equal" do
@@ -60,7 +60,7 @@ RSpec.shared_examples_for Dry::Struct do
     end
 
     it "does not do deep merge" do
-      expect { original.new(address: { city: "LA" }) }
+      expect { original.new(address: {city: "LA"}) }
         .to raise_error(Dry::Struct::Error)
     end
 
@@ -102,7 +102,7 @@ RSpec.shared_examples_for Dry::Struct do
 
     it "lists attributes" do
       expect(user_1.inspect).to eql(
-        %Q(#<#{type} name="Jane" age=21 address=#<Test::Address city="NYC" zipcode="123"> root=true>)
+        %(#<#{type} name="Jane" age=21 address=#<Test::Address city="NYC" zipcode="123"> root=true>)
       )
     end
   end
@@ -222,7 +222,7 @@ RSpec.shared_examples_for Dry::Struct do
           "name" => :Jane,
           "age" => "21",
           "root" => true,
-          "address" => { city: "NYC", zipcode: 123 }
+          "address" => {city: "NYC", zipcode: 123}
         }
       end
 
@@ -269,7 +269,7 @@ RSpec.shared_examples_for Dry::Struct do
             if attributes.key?(:city)
               super
             else
-              super({ **attributes, city: "London" })
+              super({**attributes, city: "London"})
             end
           end
 
@@ -285,7 +285,7 @@ RSpec.shared_examples_for Dry::Struct do
 
     describe ".===" do
       it "acts in the same way as Class#===" do
-        expect(Dry::Struct).not_to be === nil
+        expect(Dry::Struct).not_to be.nil?
         expect(Dry::Struct).to be === Dry::Struct.new
         expect(Dry::Struct).to be === Class.new(Dry::Struct).new
       end

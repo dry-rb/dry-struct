@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "dry/monads"
 
 RSpec.describe "pattern matching" do
@@ -113,7 +115,7 @@ RSpec.describe "pattern matching" do
       expect(match(Failure([:not_found]))).to eql("Wasn't found")
       expect(match(Failure([:not_valid]))).to eql("Error: :not_valid, no meta given")
       expect(match(Failure([:not_valid, name: "Too short"]))).to eql(
-        %q[Error: :not_valid, meta: {:name=>"Too short"}]
+        'Error: :not_valid, meta: {:name=>"Too short"}'
       )
     end
   end

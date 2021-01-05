@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'weakref'
-require 'dry/core/class_attributes'
-require 'dry/core/inflector'
-require 'dry/core/descendants_tracker'
+require "weakref"
+require "dry/core/class_attributes"
+require "dry/core/inflector"
+require "dry/core/descendants_tracker"
 
-require 'dry/struct/errors'
-require 'dry/struct/constructor'
-require 'dry/struct/sum'
+require "dry/struct/errors"
+require "dry/struct/constructor"
+require "dry/struct/sum"
 
 module Dry
   class Struct
@@ -22,7 +22,7 @@ module Dry
       def inherited(klass)
         super
 
-        unless klass.name.eql?('Dry::Struct::Value')
+        unless klass.name.eql?("Dry::Struct::Value")
           klass.extend(Core::DescendantsTracker)
         end
       end
@@ -149,8 +149,8 @@ module Dry
       def attribute?(*args, &block)
         if args.size == 1 && block.nil?
           Core::Deprecations.warn(
-            'Dry::Struct.attribute? is deprecated for checking attribute presence, '\
-            'use has_attribute? instead',
+            "Dry::Struct.attribute? is deprecated for checking attribute presence, "\
+            "use has_attribute? instead",
             tag: :'dry-struct'
           )
 
@@ -181,7 +181,7 @@ module Dry
       #   #      author: Constrained<Nominal<String> rule=[type?(String)]>
       #   #    }> fn=Kernel.Hash>]>
       def attributes(new_schema)
-        keys = new_schema.keys.map { |k| k.to_s.chomp('?').to_sym }
+        keys = new_schema.keys.map { |k| k.to_s.chomp("?").to_sym }
         check_schema_duplication(keys)
 
         schema schema.schema(new_schema)
@@ -192,7 +192,7 @@ module Dry
 
         direct_descendants = descendants.select { |d| d.superclass == self }
         direct_descendants.each do |d|
-          inherited_attrs = new_schema.reject { |k, _| d.has_attribute?(k.to_s.chomp('?').to_sym) }
+          inherited_attrs = new_schema.reject { |k, _| d.has_attribute?(k.to_s.chomp("?").to_sym) }
           d.attributes(inherited_attrs)
         end
 
@@ -264,8 +264,8 @@ module Dry
         else
           load(schema.call_unsafe(attributes))
         end
-      rescue Types::CoercionError => error
-        raise Error, "[#{self}.new] #{error}", error.backtrace
+      rescue Types::CoercionError => e
+        raise Error, "[#{self}.new] #{e}", e.backtrace
       end
 
       # @api private
@@ -463,7 +463,7 @@ module Dry
           elsif block.nil? && Undefined.equal?(type)
             raise(
               ::ArgumentError,
-              'you must supply a type or a block to `Dry::Struct.attribute`'
+              "you must supply a type or a block to `Dry::Struct.attribute`"
             )
           else
             type

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'dry/types/sum'
-require 'dry/types/printer'
+require "dry/types/sum"
+require "dry/types/printer"
 
 module Dry
   class Struct

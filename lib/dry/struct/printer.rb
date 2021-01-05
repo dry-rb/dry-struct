@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dry/types/printer'
+require "dry/types/printer"
 
 module Dry
   module Types

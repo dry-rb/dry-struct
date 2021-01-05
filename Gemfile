@@ -18,11 +18,11 @@ group :tools do
 end
 
 group :benchmarks do
-  gem "sqlite3"
   gem "activerecord"
-  gem "benchmark-ips"
-  gem "virtus"
-  gem "fast_attributes"
   gem "attrio"
+  gem "benchmark-ips"
+  gem "fast_attributes"
   gem "hotch"
+  gem "sqlite3"
+  gem "virtus"
 end

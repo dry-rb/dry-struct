@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Dry::Struct do
   describe "#pretty_print" do
     include_context "user type"
@@ -16,7 +18,7 @@ RSpec.describe Dry::Struct do
         let(:user) do
           user_type[
             name: "Jane", age: 21,
-            address: { city: "NYC", zipcode: "123" }
+            address: {city: "NYC", zipcode: "123"}
           ]
         end
 
@@ -34,7 +36,7 @@ RSpec.describe Dry::Struct do
         let(:user) do
           root_type[
             name: :Mike, age: 43, root: false,
-            address: { city: "Atlantis", zipcode: 456 }
+            address: {city: "Atlantis", zipcode: 456}
           ]
         end
 

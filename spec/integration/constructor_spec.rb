@@ -34,7 +34,7 @@ RSpec.describe Dry::Struct::Constructor do
       user = type.(
         "name" => "John",
         "age" => 20,
-        "address" => { city: "London", zipcode: 123123 }
+        "address" => {city: "London", zipcode: 123_123}
       )
       expect(user).to be_a(Test::User)
     end
@@ -53,7 +53,7 @@ RSpec.describe Dry::Struct::Constructor do
     end
 
     it "makes a seconds try with default values added" do
-      expect(type.(address: { city: "London", zipcode: 123123 })).to be_a(Test::User)
+      expect(type.(address: {city: "London", zipcode: 123_123})).to be_a(Test::User)
     end
 
     it "has .type equal to .primitive" do

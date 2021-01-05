@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'bundler/setup'
-require 'dry/struct'
+require "bundler/setup"
+require "dry/struct"
 
-require 'irb'
+require "irb"
 
 module Types
   include Dry.Types()

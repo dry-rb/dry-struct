@@ -134,7 +134,7 @@ module Dry
     #   rom_n_roda[:title] #=> 'Web Development with ROM and Roda'
     #   rom_n_roda[:subtitle] #=> nil
     def [](name)
-      @attributes.fetch(name) { raise MissingAttributeError.new(name) }
+      @attributes.fetch(name) { raise MissingAttributeError, name }
     end
 
     # Converts the {Dry::Struct} to a hash with keys representing
@@ -185,8 +185,8 @@ module Dry
     def new(changeset)
       new_attributes = self.class.schema.apply(changeset, skip_missing: true, resolve_defaults: false)
       self.class.load(__attributes__.merge(new_attributes))
-    rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => error
-      raise Error, "[#{self}.new] #{error}"
+    rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => e
+      raise Error, "[#{self}.new] #{e}"
     end
     alias_method :__new__, :new
 
@@ -201,7 +201,7 @@ module Dry
       # Pattern matching support
       #
       # @api private
-      def deconstruct_keys(keys)
+      def deconstruct_keys(_keys)
         attributes
       end
     end
