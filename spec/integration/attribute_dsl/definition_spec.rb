@@ -61,7 +61,9 @@ RSpec.describe Dry::Struct, method: ".attribute" do
 
         it "defines attributes for the constructor" do
           user = user_type[
-            name: :Jane, age: "21", address: {
+            name: :Jane,
+            age: "21",
+            address: {
               street: "123 Fake Street",
               city: "NYC",
               zipcode: 123
@@ -74,6 +76,21 @@ RSpec.describe Dry::Struct, method: ".attribute" do
 
         it "defines a nested type" do
           expect { user_type.const_get("Address") }.to_not raise_error
+        end
+
+        context "optional struct" do
+          let(:user_type) do
+            Class.new(Dry::Struct) do
+              attribute :name, "coercible.string"
+              attribute :address, Dry::Struct.optional do
+                attribute :city, "string"
+              end
+            end
+          end
+
+          it "accepts nil as input" do
+            expect { user_type[name: :Jane, address: nil] }.to_not raise_error
+          end
         end
       end
     end
