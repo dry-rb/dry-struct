@@ -30,10 +30,13 @@ module Dry
 
           class_exec(&block)
         end
+
         struct.const_set(const_name, new_type)
 
         if array?(type)
           type.of(new_type)
+        elsif optional?(type)
+          new_type.optional
         else
           new_type
         end
@@ -41,13 +44,23 @@ module Dry
 
       private
 
+      def type?(type)
+        type.is_a?(Types::Type)
+      end
+
       def array?(type)
-        type.is_a?(Types::Type) && type.primitive.equal?(::Array)
+        type?(type) && !type.optional? && type.primitive.equal?(::Array)
+      end
+
+      def optional?(type)
+        type?(type) && type.optional?
       end
 
       def parent(type)
         if array?(type)
           visit(type.to_ast)
+        elsif optional?(type)
+          type.right
         else
           type
         end
