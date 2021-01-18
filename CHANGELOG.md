@@ -6,6 +6,17 @@
 ### Added
 
 - Support for wrapping constructors and fallbacks, see release notes for dry-types 1.5.0 (@flash-gordon)
+- Improvements of the attribute DSL, now it's possible to use optional structs as a base class (@flash-gordon)
+  ```ruby
+  class User < Dry::Struct
+    attribute :name, Types::String
+    attribute :address, Dry::Struct.optional do
+      attribute :city, Types::String
+    end
+  end
+
+  User.new(name: "John", address: nil) # => #<User name="John" address=nil>
+  ```
 
 
 [Compare v1.3.0...master](https://github.com/dry-rb/dry-struct/compare/v1.3.0...master)
