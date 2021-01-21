@@ -1,6 +1,6 @@
 ---
 - version: 1.4.0
-  date:
+  date: '2021-01-21'
   added:
   - Support for wrapping constructors and fallbacks, see release notes for dry-types 1.5.0 (@flash-gordon)
   - |-
