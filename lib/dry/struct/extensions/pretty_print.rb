@@ -11,7 +11,7 @@ module Dry
           column_value = @attributes[column_name]
           pp.breakable " "
           pp.group(1) do
-            pp.text column_name
+            pp.text column_name.to_s
             pp.text "="
             pp.pp column_value
           end

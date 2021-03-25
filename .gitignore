@@ -11,3 +11,5 @@
 
 .DS_Store
 .vscode
+.ruby-version
+.ruby-gemset
