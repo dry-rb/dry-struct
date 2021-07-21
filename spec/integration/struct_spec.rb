@@ -170,6 +170,7 @@ RSpec.describe Dry::Struct do
   describe "when inheriting a struct from another struct" do
     it "also inherits the schema" do
       class Test::Parent < Dry::Struct; schema schema.strict; end
+
       class Test::Child < Test::Parent; end
       expect(Test::Child.schema).to be_strict
     end

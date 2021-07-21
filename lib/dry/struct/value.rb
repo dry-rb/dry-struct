@@ -5,7 +5,7 @@ require "dry/core/deprecations"
 
 module Dry
   class Struct
-    extend Core::Deprecations[:'dry-struct']
+    extend Core::Deprecations[:"dry-struct"]
 
     # {Value} objects behave like {Struct}s but *deeply frozen*
     # using [`ice_nine`](https://github.com/dkubb/ice_nine)

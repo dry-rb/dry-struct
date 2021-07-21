@@ -151,7 +151,7 @@ module Dry
           Core::Deprecations.warn(
             "Dry::Struct.attribute? is deprecated for checking attribute presence, "\
             "use has_attribute? instead",
-            tag: :'dry-struct'
+            tag: :"dry-struct"
           )
 
           has_attribute?(args[0])
@@ -481,7 +481,7 @@ module Dry
         keys.each do |key|
           next if instance_methods.include?(key)
 
-          class_eval(<<-RUBY)
+          class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
             def #{key}
               @attributes[#{key.inspect}]
             end

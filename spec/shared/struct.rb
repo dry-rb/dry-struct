@@ -76,7 +76,7 @@ RSpec.shared_examples_for Dry::Struct do
       end
 
       original.class.prepend(decorator)
-      expect(updated.name).to eql(:'Jane Doe')
+      expect(updated.name).to eql(:"Jane Doe")
     end
 
     it "raises a Struct::Error on invalid input" do
@@ -285,7 +285,7 @@ RSpec.shared_examples_for Dry::Struct do
 
     describe ".===" do
       it "acts in the same way as Class#===" do
-        expect(Dry::Struct === nil).to be(false)
+        expect(Dry::Struct === nil).to be(false) # rubocop:disable Style/NilComparison
         expect(Dry::Struct === Dry::Struct.new).to be(true)
         expect(Dry::Struct === Class.new(Dry::Struct).new).to be(true)
       end

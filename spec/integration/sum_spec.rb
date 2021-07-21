@@ -54,8 +54,10 @@ RSpec.describe Dry::Struct::Sum do
 
   describe "#===" do
     it "recursively checks types without coercion" do
+      # rubocop:disable Style/NilComparison
       expect(sum === nil).to be(false)
       expect((Dry::Struct | Dry::Struct) === nil).to be(false)
+      # rubocop:enable Style/NilComparison
     end
   end
 end
