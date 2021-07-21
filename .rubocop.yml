@@ -7,7 +7,6 @@ AllCops:
     - spec/support/coverage.rb
     - spec/support/warnings.rb
     - spec/support/rspec_options.rb
-    - spec/integrations/pattern_matching_spec.rb
     - Gemfile.devtools
     - "*.gemspec"
 
@@ -180,6 +179,10 @@ Style/EmptyLiteral:
   Enabled: false
 
 Style/Semicolon:
+  Exclude:
+    - "spec/**/*.rb"
+
+Style/HashAsLastArrayItem:
   Exclude:
     - "spec/**/*.rb"
 
