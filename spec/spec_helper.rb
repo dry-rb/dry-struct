@@ -24,7 +24,7 @@ begin
 rescue LoadError
 end
 
-Dir[Pathname(__dir__).join("shared/*.rb")].each(&method(:require))
+Dir[Pathname(__dir__).join("shared/*.rb")].sort.each(&method(:require))
 require "dry/types/spec/types"
 
 RSpec.configure do |config|

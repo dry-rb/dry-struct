@@ -12,7 +12,7 @@ require "dry/struct/sum"
 module Dry
   class Struct
     # Class-level interface of {Struct} and {Value}
-    module ClassInterface
+    module ClassInterface # rubocop:disable Metrics/ModuleLength
       include Core::ClassAttributes
 
       include Types::Type
@@ -49,8 +49,12 @@ module Dry
       #     end
       #   end
       #
-      #   Language.schema
-      #   # => #<Dry::Types[Constructor<Schema<keys={name: Constrained<Nominal<String> rule=[type?(String)]> details: Language::Details}> fn=Kernel.Hash>]>
+      #   Language.schema # new lines for readability
+      #   # => #<Dry::Types[
+      #           Constructor<Schema<keys={
+      #             name: Constrained<Nominal<String> rule=[type?(String)]>
+      #             details: Language::Details
+      #           }> fn=Kernel.Hash>]>
       #
       #   ruby = Language.new(name: 'Ruby', details: { type: 'OO' })
       #   ruby.name #=> 'Ruby'
@@ -67,10 +71,12 @@ module Dry
       #     end
       #   end
       #
-      #   Language.schema
+      #   Language.schema # new lines for readability
       #   => #<Dry::Types[Constructor<Schema<keys={
       #         name: Constrained<Nominal<String> rule=[type?(String)]>
-      #         versions: Constrained<Array<Constrained<Nominal<String> rule=[type?(String)]>> rule=[type?(Array)]>
+      #         versions: Constrained<
+      #                     Array<Constrained<Nominal<String> rule=[type?(String)]>
+      #                   > rule=[type?(Array)]>
       #         celebrities: Constrained<Array<Language::Celebrity> rule=[type?(Array)]>
       #      }> fn=Kernel.Hash>]>
       #
@@ -247,7 +253,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = default_attributes, safe = false, &block)
+      def new(attributes = default_attributes, safe = false, &block) # rubocop:disable Style/OptionalBooleanParameter
         if attributes.is_a?(Struct)
           if equal?(attributes.class)
             attributes
@@ -482,9 +488,9 @@ module Dry
           next if instance_methods.include?(key)
 
           class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-            def #{key}
-              @attributes[#{key.inspect}]
-            end
+            def #{key}                      # def email
+              @attributes[#{key.inspect}]   #   @attributes[:email]
+            end                             # end
           RUBY
         end
       end

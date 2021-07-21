@@ -159,8 +159,8 @@ module Dry
         result[key.name] = Hashify[self[key.name]] if attributes.key?(key.name)
       end
     end
+    # TODO: remove in 2.0
     alias_method :to_hash, :to_h
-    # deprecate :to_hash, :to_h, message: "Implicit convertion structs to hashes is deprecated. Use .to_h"
 
     # Create a copy of {Dry::Struct} with overriden attributes
     #

@@ -14,7 +14,8 @@ module Dry
       end
 
       # @param [Symbol|String] attr_name the name of the nested type
-      # @param [Dry::Struct,Dry::Types::Type::Array,Undefined] type the superclass of the nested struct
+      # @param [Dry::Struct,Dry::Types::Type::Array,Undefined] type the superclass
+      #                                                        of the nested struct
       # @yield the body of the nested struct
       def call(attr_name, type, &block)
         const_name = const_name(type, attr_name)
