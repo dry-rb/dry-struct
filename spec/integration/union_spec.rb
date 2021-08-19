@@ -81,8 +81,6 @@ RSpec.describe Dry::Struct::Union do
   end
 
   describe "edge cases" do
-    subject { self.class::Type }
-
     describe ".call" do
       context "given an empty type union" do
         subject do
@@ -95,16 +93,19 @@ RSpec.describe Dry::Struct::Union do
       end
 
       context "given a type module with nothing excluded" do
-        module self::Type
-          include Dry::Struct::Union
-
-          class A < Dry::Struct
-            # NOP
+        subject(:scope) do
+          Module.new do
+            include Dry::Struct::Union
           end
         end
 
-        subject { self.class::Type }
-        it { is_expected.to have_attributes(__types__: [self.class::Type::A]) }
+        let(:struct) { Class.new(Dry::Struct) }
+
+        before do
+          scope.const_set("Struct", struct)
+        end
+
+        it { is_expected.to have_attributes(__types__: [struct]) }
       end
     end
   end
