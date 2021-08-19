@@ -22,43 +22,17 @@ describe Dry::Struct::Union do
   end
 
   describe "reopened module type" do
-    let(:type) { self.class::Type }
+    let(:type) { Union::Reopen::Type }
 
     context "given [include ::Union] is added later" do
-      module self::Type
-        # NOP
-      end
-
-      module self::Type
-        include Dry::Struct::Union
-
-        class Inner < Dry::Struct
-          # NOP
-        end
-      end
-
       context "given .call({})" do
         it "returns type" do
-          expect(type.call({})).to be_a(type::Inner)
+          expect(type.call({id: 2000})).to be_a(type::InnerA)
         end
       end
     end
 
     context "given a later struct" do
-      module self::Type
-        include Dry::Struct::Union
-
-        class InnerA < Dry::Struct
-          attribute :id, "integer"
-        end
-      end
-
-      module self::Type
-        class InnerB < Dry::Struct
-          attribute :id, "string"
-        end
-      end
-
       context "given .call matching [A]" do
         it "returns A" do
           expect(type.call({id: 1000})).to be_a(type::InnerA)
