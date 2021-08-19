@@ -96,6 +96,7 @@ module Dry
     end
 
     autoload :Value, "dry/struct/value"
+    autoload :Union, "dry/struct/union"
 
     include ::Dry::Equalizer(:__attributes__, inspect: false, immutable: true)
 
