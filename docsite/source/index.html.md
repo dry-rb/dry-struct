@@ -97,5 +97,5 @@ Please don't. Structs are meant to work with valid input, it cannot generate err
 * Structs don't provide attribute writers and are meant to be used as "data objects" exclusively
 * Handling of attribute values is provided by standalone type objects from `dry-types`, which gives you way more powerful features
 * Handling of attribute hashes is provided by standalone hash schemas from `dry-types`, which means there are different types of constructors in `dry-struct`
-* Structs are not designed as swiss-army knifes, specific constructor types are used depending on the use case
+* Structs are not designed as swiss-army knives, specific constructor types are used depending on the use case
 * Struct classes quack like `dry-types`, which means you can use them in hash schemas, as array members or sum them
