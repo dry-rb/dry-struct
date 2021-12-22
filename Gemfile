@@ -23,6 +23,6 @@ group :benchmarks do
   gem "benchmark-ips"
   gem "fast_attributes"
   gem "hotch", platform: :mri
-  gem "sqlite3"
+  gem "sqlite3", platform: :mri
   gem "virtus"
 end
