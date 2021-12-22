@@ -22,7 +22,7 @@ group :benchmarks do
   gem "attrio"
   gem "benchmark-ips"
   gem "fast_attributes"
-  gem "hotch"
+  gem "hotch", platform: :mri
   gem "sqlite3"
   gem "virtus"
 end
