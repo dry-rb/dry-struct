@@ -13,22 +13,24 @@ RSpec.describe Dry::Struct::Compiler do
     expect(compiler.(address.to_ast)).to be(address)
   end
 
-  it "raises an error when the original struct was reclaimed" do
-    collected = nil
+  unless defined?(JRUBY_VERSION)
+    it "raises an error when the original struct was reclaimed" do
+      collected = nil
 
-    (1..100).each do |pow|
-      asts = Array.new(10**pow) { Dry.Struct(street: "string").to_ast }
+      (1..100).each do |pow|
+        asts = Array.new(10**pow) { Dry.Struct(street: "string").to_ast }
 
-      10.times do
-        GC.start
-        GC.start
-        break if (collected = asts.find { |ast| !ast[1][0].weakref_alive? })
+        10.times do
+          GC.start
+          GC.start
+          break if (collected = asts.find { |ast| !ast[1][0].weakref_alive? })
+        end
+        break unless collected.nil?
       end
-      break unless collected.nil?
-    end
 
-    expect(collected).not_to be_nil
-    expect { compiler.(collected) }.to raise_error(Dry::Struct::RecycledStructError)
+      expect(collected).not_to be_nil
+      expect { compiler.(collected) }.to raise_error(Dry::Struct::RecycledStructError)
+    end
   end
 
   context "struct constructor" do
