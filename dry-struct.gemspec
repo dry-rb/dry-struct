@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "dry-core", ">= 0.9"
   spec.add_runtime_dependency "dry-types", "~> 1.5"
   spec.add_runtime_dependency "ice_nine", "~> 0.11"
+  spec.add_runtime_dependency "zeitwerk", "~> 2.6"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
