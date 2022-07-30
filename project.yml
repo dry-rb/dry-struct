@@ -10,6 +10,6 @@ gemspec:
     - rspec
     - yard
   runtime_dependencies:
-    - [dry-core, "~> 0.5", ">= 0.5"]
+    - [dry-core, ">= 0.9"]
     - [dry-types, "~> 1.5"]
     - [ice_nine, "~> 0.11"]

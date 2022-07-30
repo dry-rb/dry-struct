@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require "weakref"
-require "dry/core/class_attributes"
-require "dry/core/inflector"
-require "dry/core/descendants_tracker"
 
 require "dry/struct/errors"
 require "dry/struct/constructor"

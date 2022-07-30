@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
+require "dry/core"
 require "dry/types"
-require "dry/core/equalizer"
-require "dry/core/extensions"
-require "dry/core/constants"
-require "dry/core/deprecations"
 
 require "dry/struct/version"
 require "dry/struct/errors"
