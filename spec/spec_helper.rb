@@ -28,9 +28,6 @@ Dir[Pathname(__dir__).join("shared/*.rb")].sort.each(&method(:require))
 require "dry/types/spec/types"
 
 RSpec.configure do |config|
-  config.exclude_pattern = "**/pattern_matching_spec.rb" \
-    unless RUBY_VERSION >= "2.7"
-
   config.before { stub_const("Test", Module.new) }
 
   config.order = :random

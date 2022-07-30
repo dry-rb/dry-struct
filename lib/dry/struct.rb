@@ -198,13 +198,11 @@ module Dry
       "#<#{klass.name || klass.inspect}#{attrs}>"
     end
 
-    if RUBY_VERSION >= "2.7"
-      # Pattern matching support
-      #
-      # @api private
-      def deconstruct_keys(_keys)
-        attributes
-      end
+    # Pattern matching support
+    #
+    # @api private
+    def deconstruct_keys(_keys)
+      attributes
     end
   end
 end
