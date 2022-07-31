@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/struct/compiler"
-
 RSpec.describe Dry::Struct::Compiler do
   subject(:compiler) { described_class.new(Dry::Types) }
 

@@ -149,8 +149,6 @@ RSpec.describe Dry::Struct do
   end
 
   describe ".inherited", :suppress_deprecations do
-    before { require "dry/struct/value" }
-
     it "adds attributes to all descendants" do
       Test::User.attribute(:signed_on, Dry::Types["strict.time"])
 

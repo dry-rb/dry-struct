@@ -2,8 +2,6 @@
 
 RSpec.describe "Dry::Struct::Value", :suppress_deprecations do
   before do
-    require "dry/struct/value"
-
     module Test
       class Address < Dry::Struct::Value
         attribute :city, "strict.string"

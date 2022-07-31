@@ -2,10 +2,6 @@
 
 require "weakref"
 
-require "dry/struct/errors"
-require "dry/struct/constructor"
-require "dry/struct/sum"
-
 module Dry
   class Struct
     # Class-level interface of {Struct} and {Value}
