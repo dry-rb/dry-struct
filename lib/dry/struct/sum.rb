@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/types/sum"
-require "dry/types/printer"
-
 module Dry
   class Struct
     # A sum type of two or more structs

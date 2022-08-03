@@ -12,5 +12,5 @@ gemspec:
   runtime_dependencies:
     - [zeitwerk, "~> 2.6"]
     - [dry-core, ">= 0.9"]
-    - [dry-types, "~> 1.5"]
+    - [dry-types, "~> 1.6"]
     - [ice_nine, "~> 0.11"]
