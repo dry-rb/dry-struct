@@ -267,4 +267,24 @@ RSpec.describe Dry::Struct, method: ".attribute" do
       expect(Test::Foo.valid?("address" => [city: "London"])).to be(true)
     end
   end
+
+  context "when given a class as nested type with a mapped attribute" do
+    module DryTypes
+      include Dry.Types()
+    end
+
+    class NestedStruct < Dry::Struct
+      attribute :something, DryTypes::String
+    end
+
+    class TestStruct < Dry::Struct
+      attribute :hash, DryTypes::Hash.map(DryTypes::Coercible::Symbol, NestedStruct)
+    end
+
+    it "throws a dry error if a nested attribute is missing" do
+      expect do
+        TestStruct.new({hash: {first: {}}})
+      end.to raise_exception(Dry::Struct::Error)
+    end
+  end
 end
