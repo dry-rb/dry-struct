@@ -1,4 +1,9 @@
 ---
+- version: 1.5.0
+  date: '2022-10-15'
+  added:
+  changed:
+    - "Use zeitwerk for auto-loading (@flash-gordon)"
 - version: 1.4.0
   date: '2021-01-21'
   added:
