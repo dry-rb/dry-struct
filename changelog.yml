@@ -1,4 +1,8 @@
 ---
+- version: 1.5.1
+  date: '2022-10-17'
+  fixed:
+    - "Fixed issues with auto-loading `Extensions` module (issue #183 fixed via #184) (@solnic)"
 - version: 1.5.0
   date: '2022-10-15'
   added:
