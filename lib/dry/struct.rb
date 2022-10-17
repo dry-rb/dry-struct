@@ -99,7 +99,8 @@ module Dry
           loader.push_dir(root)
           loader.ignore(
             "#{root}/dry-struct.rb",
-            "#{root}/dry/struct/{class_interface,errors,extensions,printer,value,version}.rb"
+            "#{root}/dry/struct/{class_interface,errors,extensions,printer,value,version}.rb",
+            "#{root}/dry/struct/extensions"
           )
         end
       end
