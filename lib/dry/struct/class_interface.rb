@@ -306,7 +306,7 @@ module Dry
       def try(input)
         success(self[input])
       rescue Error => e
-        failure_result = failure(input, e.message)
+        failure_result = failure(input, e)
         block_given? ? yield(failure_result) : failure_result
       end
 

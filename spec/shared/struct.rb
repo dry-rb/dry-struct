@@ -310,6 +310,10 @@ RSpec.shared_examples_for Dry::Struct do
         expect(struct.try(name: "John")).to be_a(Dry::Types::Result::Success)
         expect(struct.try(name: 42)).to be_a(Dry::Types::Result::Failure)
       end
+
+      it "keeps an error instance" do
+        expect(struct.try(name: 42).error).to be_a(Dry::Struct::Error)
+      end
     end
   end
 end
