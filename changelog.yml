@@ -1,4 +1,8 @@
 ---
+- version: 1.5.2
+  date: '2022-10-19'
+  fixed:
+    - "Coercion failures keep the original error instead of just having a string (@flash-gordon)"
 - version: 1.5.1
   date: '2022-10-17'
   fixed:
