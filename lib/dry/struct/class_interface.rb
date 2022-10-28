@@ -301,7 +301,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] input
       # @yieldparam [Dry::Types::Result::Failure] failure
-      # @yieldreturn [Dry::Types::ResultResult]
+      # @yieldreturn [Dry::Types::Result]
       # @return [Dry::Types::Result]
       def try(input)
         success(self[input])
