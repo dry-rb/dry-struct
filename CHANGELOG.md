@@ -5,7 +5,7 @@
 
 ### Fixed
 
-- Coercion failures keep the original error instead of just having a string (@flash-gordon)
+- Coercion failures keep the original error instead of just having a string (@flash-gordon + @newx)
 
 
 [Compare v1.5.1...v1.5.2](https://github.com/dry-rb/dry-struct/compare/v1.5.1...v1.5.2)
