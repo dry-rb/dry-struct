@@ -1,19 +1,14 @@
 <!--- this file is synced from dry-rb/template-gem project -->
 [gem]: https://rubygems.org/gems/dry-struct
 [actions]: https://github.com/dry-rb/dry-struct/actions
-[codacy]: https://www.codacy.com/gh/dry-rb/dry-struct
-[chat]: https://dry-rb.zulipchat.com
-[inchpages]: http://inch-ci.org/github/dry-rb/dry-struct
 
-# dry-struct [![Join the chat at https://dry-rb.zulipchat.com](https://img.shields.io/badge/dry--rb-join%20chat-%23346b7a.svg)][chat]
-
-[![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][gem]
-[![CI Status](https://github.com/dry-rb/dry-struct/workflows/ci/badge.svg)][actions]
+# dry-struct [![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][gem] [![CI Status](https://github.com/dry-rb/dry-struct/workflows/ci/badge.svg)][actions]
 
 ## Links
 
 * [User documentation](https://dry-rb.org/gems/dry-struct)
 * [API documentation](http://rubydoc.info/gems/dry-struct)
+* [Forum](https://discourse.dry-rb.org)
 
 ## Supported Ruby versions
 
