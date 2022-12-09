@@ -10,11 +10,6 @@ group :test do
   gem "dry-monads", github: "dry-rb/dry-monads", branch: "main"
 end
 
-group :tools do
-  gem "pry"
-  gem "pry-byebug", platform: :mri
-end
-
 group :benchmarks do
   gem "activerecord"
   gem "attrio"
