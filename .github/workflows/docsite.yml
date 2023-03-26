@@ -1,4 +1,4 @@
-# this file is managed by dry-rb/devtools project
+# This file is synced from dry-rb/template-gem repo
 
 name: docsite
 
@@ -8,7 +8,7 @@ on:
       - docsite/**
       - .github/workflows/docsite.yml
     branches:
-      - master
+      - main
       - release-**
     tags:
 
@@ -22,9 +22,9 @@ jobs:
       - run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
       - name: Set up Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.6.x"
+          ruby-version: "3.0.5"
       - name: Set up git user
         run: |
           git config --local user.email "dry-bot@dry-rb.org"
@@ -51,7 +51,7 @@ jobs:
 
             git push --all "https://dry-bot:${{secrets.GH_PAT}}@github.com/$GITHUB_REPOSITORY.git"
 
-            git checkout master
+            git checkout main
           else
             echo "no need to update branches"
           fi

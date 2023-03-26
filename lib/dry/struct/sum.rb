@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/types/sum"
-require "dry/types/printer"
-
 module Dry
   class Struct
     # A sum type of two or more structs
@@ -17,7 +14,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] input
       # @yieldparam [Dry::Types::Result::Failure] failure
-      # @yieldreturn [Dry::Types::ResultResult]
+      # @yieldreturn [Dry::Types::Result]
       # @return [Dry::Types::Result]
       def try(input)
         if input.is_a?(Struct)

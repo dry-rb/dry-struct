@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "weakref"
-require "dry/types/compiler"
-
 module Dry
   class Struct
     class Compiler < Types::Compiler

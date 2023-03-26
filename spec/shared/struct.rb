@@ -238,8 +238,6 @@ RSpec.shared_examples_for Dry::Struct do
     end
 
     describe ".inherited", :suppress_deprecations do
-      before { require "dry/struct/value" }
-
       it "doesn't track Struct/Value descendats" do
         expect(Dry::Struct).not_to be_a(Dry::Core::DescendantsTracker)
         expect(Dry::Struct::Value).not_to be_a(Dry::Core::DescendantsTracker)
@@ -311,6 +309,10 @@ RSpec.shared_examples_for Dry::Struct do
       it "returns a result object" do
         expect(struct.try(name: "John")).to be_a(Dry::Types::Result::Success)
         expect(struct.try(name: 42)).to be_a(Dry::Types::Result::Failure)
+      end
+
+      it "keeps an error instance" do
+        expect(struct.try(name: 42).error).to be_a(Dry::Struct::Error)
       end
     end
   end

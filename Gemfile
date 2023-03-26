@@ -6,15 +6,8 @@ eval_gemfile "Gemfile.devtools"
 
 gemspec
 
-gem "dry-types", github: "dry-rb/dry-types"
-
 group :test do
-  gem "dry-monads"
-end
-
-group :tools do
-  gem "pry"
-  gem "pry-byebug", platform: :mri
+  gem "dry-monads", github: "dry-rb/dry-monads", branch: "main"
 end
 
 group :benchmarks do
@@ -22,7 +15,7 @@ group :benchmarks do
   gem "attrio"
   gem "benchmark-ips"
   gem "fast_attributes"
-  gem "hotch"
-  gem "sqlite3"
+  gem "hotch", platform: :mri
+  gem "sqlite3", platform: :mri
   gem "virtus"
 end

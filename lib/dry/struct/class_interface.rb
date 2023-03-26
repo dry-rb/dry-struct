@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 require "weakref"
-require "dry/core/class_attributes"
-require "dry/core/inflector"
-require "dry/core/descendants_tracker"
-
-require "dry/struct/errors"
-require "dry/struct/constructor"
-require "dry/struct/sum"
 
 module Dry
   class Struct
@@ -308,12 +301,12 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] input
       # @yieldparam [Dry::Types::Result::Failure] failure
-      # @yieldreturn [Dry::Types::ResultResult]
+      # @yieldreturn [Dry::Types::Result]
       # @return [Dry::Types::Result]
       def try(input)
         success(self[input])
       rescue Error => e
-        failure_result = failure(input, e.message)
+        failure_result = failure(input, e)
         block_given? ? yield(failure_result) : failure_result
       end
 

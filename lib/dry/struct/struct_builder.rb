@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "dry/struct/compiler"
-
 module Dry
   class Struct
     # @private

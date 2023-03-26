@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-require "dry/types"
-require "dry/core/equalizer"
-require "dry/core/extensions"
-require "dry/core/constants"
-require "dry/core/deprecations"
+require "weakref"
 
-require "dry/struct/version"
-require "dry/struct/errors"
+require "dry/core"
+require "dry/types"
+
 require "dry/struct/class_interface"
-require "dry/struct/hashify"
-require "dry/struct/struct_builder"
+require "dry/struct/errors"
+require "dry/struct/version"
 
 module Dry
   # Constructor method for easily creating a {Dry::Struct}.
@@ -93,9 +90,23 @@ module Dry
     class << self
       # override `Dry::Types::Builder#prepend`
       define_method(:prepend, ::Module.method(:prepend))
+
+      def loader
+        @loader ||= ::Zeitwerk::Loader.new.tap do |loader|
+          root = ::File.expand_path("..", __dir__)
+          loader.tag = "dry-struct"
+          loader.inflector = ::Zeitwerk::GemInflector.new("#{root}/dry-struct.rb")
+          loader.push_dir(root)
+          loader.ignore(
+            "#{root}/dry-struct.rb",
+            "#{root}/dry/struct/{class_interface,errors,extensions,printer,value,version}.rb",
+            "#{root}/dry/struct/extensions"
+          )
+        end
+      end
     end
 
-    autoload :Value, "dry/struct/value"
+    loader.setup
 
     include ::Dry::Equalizer(:__attributes__, inspect: false, immutable: true)
 
@@ -205,16 +216,15 @@ module Dry
       "#<#{klass.name || klass.inspect}#{attrs}>"
     end
 
-    if RUBY_VERSION >= "2.7"
-      # Pattern matching support
-      #
-      # @api private
-      def deconstruct_keys(_keys)
-        attributes
-      end
+    # Pattern matching support
+    #
+    # @api private
+    def deconstruct_keys(_keys)
+      attributes
     end
   end
 end
 
 require "dry/struct/extensions"
 require "dry/struct/printer"
+require "dry/struct/value"

@@ -22,16 +22,17 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
-  spec.metadata["changelog_uri"]     = "https://github.com/dry-rb/dry-struct/blob/master/CHANGELOG.md"
+  spec.metadata["changelog_uri"]     = "https://github.com/dry-rb/dry-struct/blob/main/CHANGELOG.md"
   spec.metadata["source_code_uri"]   = "https://github.com/dry-rb/dry-struct"
   spec.metadata["bug_tracker_uri"]   = "https://github.com/dry-rb/dry-struct/issues"
 
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 3.0.0"
 
   # to update dependencies edit project.yml
-  spec.add_runtime_dependency "dry-core", "~> 0.5", ">= 0.5"
-  spec.add_runtime_dependency "dry-types", "~> 1.5"
+  spec.add_runtime_dependency "dry-core", "~> 1.0", "< 2"
+  spec.add_runtime_dependency "dry-types", ">= 1.7", "< 2"
   spec.add_runtime_dependency "ice_nine", "~> 0.11"
+  spec.add_runtime_dependency "zeitwerk", "~> 2.6"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

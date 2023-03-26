@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "ice_nine"
-require "dry/core/deprecations"
 
 module Dry
   class Struct

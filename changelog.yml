@@ -1,4 +1,21 @@
 ---
+- version: 1.6.0
+  date: 2022-11-04
+  changed:
+    - "This version uses dry-core 1.0 (@flash-gordon + @solnic)"
+- version: 1.5.2
+  date: '2022-10-19'
+  fixed:
+    - "Coercion failures keep the original error instead of just having a string (@flash-gordon + @newx)"
+- version: 1.5.1
+  date: '2022-10-17'
+  fixed:
+    - "Fixed issues with auto-loading `Extensions` module (issue #183 fixed via #184) (@solnic)"
+- version: 1.5.0
+  date: '2022-10-15'
+  added:
+  changed:
+    - "Use zeitwerk for auto-loading (@flash-gordon)"
 - version: 1.4.0
   date: '2021-01-21'
   added:
