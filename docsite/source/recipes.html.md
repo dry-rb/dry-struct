@@ -47,6 +47,8 @@ You can mark certain keys as optional by calling `attribute?`.
 class User < Dry::Struct
   attribute :name, Types::String
   attribute? :age, Types::Integer
+  # or
+  # attribute :age?, Types::Integer
 end
 
 user = User.new(name: 'Jane')
