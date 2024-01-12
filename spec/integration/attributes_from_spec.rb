@@ -129,6 +129,7 @@ RSpec.describe "Dry::Struct.attributes_from" do
 
       it "adds omittable keys" do
         expect(person_without_country.country).to be_nil
+        expect(person_without_country[:country]).to be_nil
         expect(person_with_country.country).to eql("uk")
       end
     end
