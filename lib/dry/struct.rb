@@ -145,7 +145,9 @@ module Dry
     #   rom_n_roda[:title] #=> 'Web Development with ROM and Roda'
     #   rom_n_roda[:subtitle] #=> nil
     def [](name)
-      @attributes.fetch(name) { raise MissingAttributeError.new(attribute: name, klass: self.class) }
+      @attributes.fetch(name) do
+        raise MissingAttributeError.new(attribute: name, klass: self.class)
+      end
     end
 
     # Converts the {Dry::Struct} to a hash with keys representing
