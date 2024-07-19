@@ -1,25 +1,36 @@
 ---
+- version: unreleased
+  summary: 
+  date: 
+  fixed: 
+  added: 
+  changed:
+  - 'Missing attribute error now includes the name of the class (issue #170 via #191)
+    (@phillipoertel + @cllns)'
 - version: 1.6.0
   date: 2022-11-04
   changed:
-    - "This version uses dry-core 1.0 (@flash-gordon + @solnic)"
+  - This version uses dry-core 1.0 (@flash-gordon + @solnic)
 - version: 1.5.2
   date: '2022-10-19'
   fixed:
-    - "Coercion failures keep the original error instead of just having a string (@flash-gordon + @newx)"
+  - Coercion failures keep the original error instead of just having a string (@flash-gordon
+    + @newx)
 - version: 1.5.1
   date: '2022-10-17'
   fixed:
-    - "Fixed issues with auto-loading `Extensions` module (issue #183 fixed via #184) (@solnic)"
+  - 'Fixed issues with auto-loading `Extensions` module (issue #183 fixed via #184)
+    (@solnic)'
 - version: 1.5.0
   date: '2022-10-15'
-  added:
+  added: 
   changed:
-    - "Use zeitwerk for auto-loading (@flash-gordon)"
+  - Use zeitwerk for auto-loading (@flash-gordon)
 - version: 1.4.0
   date: '2021-01-21'
   added:
-  - Support for wrapping constructors and fallbacks, see release notes for dry-types 1.5.0 (@flash-gordon)
+  - Support for wrapping constructors and fallbacks, see release notes for dry-types
+    1.5.0 (@flash-gordon)
   - |-
     Improvements of the attribute DSL, now it's possible to use optional structs as a base class (@flash-gordon)
       ```ruby
@@ -32,7 +43,6 @@
 
       User.new(name: "John", address: nil) # => #<User name="John" address=nil>
       ```
-
 - version: 1.3.0
   date: '2020-02-10'
   added:
