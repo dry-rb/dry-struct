@@ -16,8 +16,8 @@ module Dry
 
     # Raised when a struct doesn't have an attribute
     class MissingAttributeError < ::KeyError
-      def initialize(key)
-        super("Missing attribute: #{key.inspect}")
+      def initialize(attribute:, klass:)
+        super("Missing attribute: #{attribute.inspect} on #{klass}")
       end
     end
 

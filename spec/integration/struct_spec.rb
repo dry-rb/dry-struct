@@ -353,7 +353,7 @@ RSpec.describe Dry::Struct do
 
       expect { value[:name] }
         .to raise_error(Dry::Struct::MissingAttributeError)
-        .with_message("Missing attribute: :name")
+        .with_message("Missing attribute: :name on Test::Task")
     end
 
     describe "protected methods" do
