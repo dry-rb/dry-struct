@@ -30,8 +30,8 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.1.0"
 
   # to update dependencies edit project.yml
-  spec.add_dependency "dry-core", "~> 1.0", "< 2"
-  spec.add_dependency "dry-types", ">= 1.7", "< 2"
+  spec.add_dependency "dry-core", "~> 1.1"
+  spec.add_dependency "dry-types", "~> 1.8"
   spec.add_dependency "ice_nine", "~> 0.11"
   spec.add_dependency "zeitwerk", "~> 2.6"
 end
