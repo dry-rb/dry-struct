@@ -113,9 +113,16 @@ RSpec.describe "pattern matching" do
       expect(match(Success(boris))).to eql("Name is Boris")
       expect(match(Failure([:not_found]))).to eql("Wasn't found")
       expect(match(Failure([:not_valid]))).to eql("Error: :not_valid, no meta given")
-      expect(match(Failure([:not_valid, name: "Too short"]))).to eql(
-        'Error: :not_valid, meta: {:name=>"Too short"}'
-      )
+
+      if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+        expect(match(Failure([:not_valid, name: "Too short"]))).to eql(
+          'Error: :not_valid, meta: {name: "Too short"}'
+        )
+      else
+        expect(match(Failure([:not_valid, name: "Too short"]))).to eql(
+          'Error: :not_valid, meta: {:name=>"Too short"}'
+        )
+      end
     end
   end
 end
