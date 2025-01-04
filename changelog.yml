@@ -1,12 +1,11 @@
 ---
-- version: unreleased
-  summary: 
-  date: 
-  fixed: 
-  added: 
+- version: 1.7.0
+  summary:
+  date: 2025-01-04
   changed:
   - 'Missing attribute error now includes the name of the class (issue #170 via #191)
     (@phillipoertel + @cllns)'
+  - '3.1 is now the minimum Ruby version (@flash-gordon)'
 - version: 1.6.0
   date: 2022-11-04
   changed:
@@ -23,7 +22,7 @@
     (@solnic)'
 - version: 1.5.0
   date: '2022-10-15'
-  added: 
+  added:
   changed:
   - Use zeitwerk for auto-loading (@flash-gordon)
 - version: 1.4.0
