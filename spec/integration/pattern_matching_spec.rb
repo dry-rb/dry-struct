@@ -51,8 +51,6 @@ RSpec.describe "pattern matching" do
         "Alice or Carol"
       in User(first_name:, last_name: "Doe")
         "DOE, #{first_name.upcase}"
-      in User(first_name:, last_name: "Doe")
-        "DOE, #{first_name.upcase}"
       in User(first_name:, address: Address(street: "Downing street"))
         "PM is #{first_name}"
       end
@@ -76,6 +74,7 @@ RSpec.describe "pattern matching" do
     example "multiple structs" do
       case john
       in User(first_name: "John" | "Jack")
+        "John or Jack"
       end
     end
   end

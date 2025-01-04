@@ -27,7 +27,7 @@ RSpec.describe Dry::Struct::Constructor do
 
   describe "#prepend" do
     let(:type) do
-      super().prepend { |x| x.map { |k, v| [k.to_sym, v] }.to_h }
+      super().prepend { |x| x.to_h { |k, v| [k.to_sym, v] } }
     end
 
     specify do

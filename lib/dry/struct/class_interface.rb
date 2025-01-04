@@ -92,8 +92,8 @@ module Dry
       #   ruby.celebrities[0].pseudonym #=> 'Matz'
       #   ruby.celebrities[1].name #=> 'Aaron Patterson'
       #   ruby.celebrities[1].pseudonym #=> 'tenderlove'
-      def attribute(name, type = Undefined, &block)
-        attributes(name => build_type(name, type, &block))
+      def attribute(name, type = Undefined, &)
+        attributes(name => build_type(name, type, &))
       end
 
       # Add atributes from another struct
@@ -121,13 +121,13 @@ module Dry
       #
       # @param struct [Dry::Struct]
       def attributes_from(struct)
-        extracted_schema = struct.schema.keys.map { |key|
+        extracted_schema = struct.schema.keys.to_h do |key|
           if key.required?
             [key.name, key.type]
           else
             [:"#{key.name}?", key.type]
           end
-        }.to_h
+        end
         attributes(extracted_schema)
       end
 
@@ -148,7 +148,7 @@ module Dry
       def attribute?(*args, &block)
         if args.size == 1 && block.nil?
           Core::Deprecations.warn(
-            "Dry::Struct.attribute? is deprecated for checking attribute presence, "\
+            "Dry::Struct.attribute? is deprecated for checking attribute presence, " \
             "use has_attribute? instead",
             tag: :"dry-struct"
           )
@@ -246,7 +246,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = default_attributes, safe = false, &block) # rubocop:disable Style/OptionalBooleanParameter
+      def new(attributes = default_attributes, safe = false, &) # rubocop:disable Style/OptionalBooleanParameter
         if attributes.is_a?(Struct)
           if equal?(attributes.class)
             attributes
@@ -256,7 +256,7 @@ module Dry
             # User.new(super_user)
             #
             # We may deprecate this behavior in future forcing people to be explicit
-            new(attributes.to_h, safe, &block)
+            new(attributes.to_h, safe, &)
           end
         elsif safe
           load(schema.call_safe(attributes) { |output = attributes| return yield output })
@@ -268,11 +268,11 @@ module Dry
       end
 
       # @api private
-      def call_safe(input, &block)
+      def call_safe(input, &)
         if input.is_a?(self)
           input
         else
-          new(input, true, &block)
+          new(input, true, &)
         end
       end
 
