@@ -145,8 +145,8 @@ module Dry
       # @param [Dry::Types::Type, nil] type or superclass of nested type
       # @return [Dry::Struct]
       #
-      def attribute?(*args, &block)
-        if args.size == 1 && block.nil?
+      def attribute?(*args, &)
+        if args.size == 1 && !block_given?
           Core::Deprecations.warn(
             "Dry::Struct.attribute? is deprecated for checking attribute presence, " \
             "use has_attribute? instead",
@@ -157,7 +157,7 @@ module Dry
         else
           name, * = args
 
-          attribute(:"#{name}?", build_type(*args, &block))
+          attribute(:"#{name}?", build_type(*args, &))
         end
       end
 
@@ -455,11 +455,11 @@ module Dry
       # Constructs a type
       #
       # @return [Dry::Types::Type, Dry::Struct]
-      def build_type(name, type = Undefined, &block)
+      def build_type(name, type = Undefined, &)
         type_object =
           if type.is_a?(::String)
             Types[type]
-          elsif block.nil? && Undefined.equal?(type)
+          elsif !block_given? && Undefined.equal?(type)
             raise(
               ::ArgumentError,
               "you must supply a type or a block to `Dry::Struct.attribute`"
@@ -468,8 +468,8 @@ module Dry
             type
           end
 
-        if block
-          struct_builder.(name, type_object, &block)
+        if block_given?
+          struct_builder.(name, type_object, &)
         else
           type_object
         end
