@@ -4,13 +4,8 @@ gemspec:
   authors: ["Piotr Solnica"]
   email: ["piotr.solnica@gmail.com"]
   summary: "Typed structs and value objects"
-  development_dependencies:
-    - bundler
-    - rake
-    - rspec
-    - yard
   runtime_dependencies:
     - [zeitwerk, "~> 2.6"]
-    - [dry-core, "~> 1.0", "< 2"]
-    - [dry-types, ">= 1.7", "< 2"]
+    - [dry-core, "~> 1.1"]
+    - [dry-types, "~> 1.8"]
     - [ice_nine, "~> 0.11"]
