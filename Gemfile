@@ -15,7 +15,7 @@ group :benchmarks do
   gem "attrio"
   gem "benchmark-ips"
   gem "fast_attributes"
-  gem "hotch", platform: :mri
+  # gem "hotch", platform: :mri
   gem "sqlite3", platform: :mri
   gem "virtus"
 end
