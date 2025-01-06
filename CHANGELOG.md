@@ -6,6 +6,7 @@
 ### Fixed
 
 - Fixed coercion errors for structs (issue #192 via #193) (@flash-gordon)
+- Invalid method names are now allowed as struct attributes (issue #169 via #195) (@flash-gordon)
 
 ### Changed
 
