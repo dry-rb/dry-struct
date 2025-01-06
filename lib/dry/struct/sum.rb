@@ -36,9 +36,7 @@ module Dry
       end
 
       # @return [boolean]
-      def ===(value)
-        left === value || right === value
-      end
+      def ===(value) = left === value || right === value
 
       protected
 

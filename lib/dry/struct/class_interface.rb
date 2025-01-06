@@ -313,48 +313,32 @@ module Dry
 
       # @param [({Symbol => Object})] args
       # @return [Dry::Types::Result::Success]
-      def success(*args)
-        result(Types::Result::Success, *args)
-      end
+      def success(*args) = result(Types::Result::Success, *args)
 
       # @param [({Symbol => Object})] args
       # @return [Dry::Types::Result::Failure]
-      def failure(*args)
-        result(Types::Result::Failure, *args)
-      end
+      def failure(*args) = result(Types::Result::Failure, *args)
 
       # @param [Class] klass
       # @param [({Symbol => Object})] args
-      def result(klass, *args)
-        klass.new(*args)
-      end
+      def result(klass, *args) = klass.new(*args)
 
       # @return [false]
-      def default?
-        false
-      end
+      def default? = false
 
       # @param [Object, Dry::Struct] other
       # @return [Boolean]
-      def ===(other)
-        other.is_a?(self)
-      end
+      def ===(other) = other.is_a?(self)
       alias_method :primitive?, :===
 
       # @return [true]
-      def constrained?
-        true
-      end
+      def constrained? = true
 
       # @return [self]
-      def primitive
-        self
-      end
+      def primitive = self
 
       # @return [false]
-      def optional?
-        false
-      end
+      def optional? = false
 
       # @return [Proc]
       def to_proc
@@ -365,9 +349,7 @@ module Dry
       #
       # @param [Symbol] key Attribute name
       # @return [Boolean]
-      def has_attribute?(key)
-        schema.key?(key)
-      end
+      def has_attribute?(key) = schema.key?(key)
 
       # Gets the list of attribute names
       #
@@ -483,10 +465,7 @@ module Dry
       private :define_accessors
 
       # @api private
-      def valid_method_name?(key)
-        key.to_s.match?(/\A[a-zA-Z_]\w*\z/)
-      end
-      private :valid_method_name?
+      private def valid_method_name?(key) = key.to_s.match?(/\A[a-zA-Z_]\w*\z/)
     end
   end
 end

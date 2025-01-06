@@ -43,17 +43,13 @@ module Dry
 
       private
 
-      def type?(type)
-        type.is_a?(Types::Type)
-      end
+      def type?(type) = type.is_a?(Types::Type)
 
       def array?(type)
         type?(type) && !type.optional? && type.primitive.equal?(::Array)
       end
 
-      def optional?(type)
-        type?(type) && type.optional?
-      end
+      def optional?(type) = type?(type) && type.optional?
 
       def parent(type)
         if array?(type)
@@ -95,9 +91,7 @@ module Dry
         visit(member)
       end
 
-      def visit_nominal(*)
-        Undefined
-      end
+      def visit_nominal(*) = Undefined
 
       def visit_constructor(node)
         definition, * = node

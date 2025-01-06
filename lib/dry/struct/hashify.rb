@@ -9,11 +9,11 @@ module Dry
       # @return [Hash, Array]
       def self.[](value)
         if value.is_a?(Struct)
-          value.to_h.transform_values { |current| self[current] }
+          value.to_h.transform_values { self[_1] }
         elsif value.respond_to?(:to_hash)
-          value.to_hash.transform_values { |current| self[current] }
+          value.to_hash.transform_values { self[_1] }
         elsif value.respond_to?(:to_ary)
-          value.to_ary.map { |item| self[item] }
+          value.to_ary.map { self[_1] }
         else
           value
         end

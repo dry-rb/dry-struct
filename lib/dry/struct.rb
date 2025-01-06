@@ -221,9 +221,7 @@ module Dry
     # Pattern matching support
     #
     # @api private
-    def deconstruct_keys(_keys)
-      attributes
-    end
+    def deconstruct_keys(_keys) = attributes
   end
 end
 

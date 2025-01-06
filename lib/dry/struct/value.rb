@@ -29,9 +29,7 @@ module Dry
       # @param (see ClassInterface#new)
       # @return [Value]
       # @see https://github.com/dkubb/ice_nine
-      def self.new(*)
-        ::IceNine.deep_freeze(super)
-      end
+      def self.new(*) = ::IceNine.deep_freeze(super)
     end
 
     deprecate_constant :Value
