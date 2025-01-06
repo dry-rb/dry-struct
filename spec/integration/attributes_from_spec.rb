@@ -84,6 +84,32 @@ RSpec.describe "Dry::Struct.attributes_from" do
       expect(Test::User.attribute_names).to eql(%i[address])
     end
 
+    context "when attribute name is not a valid method name" do
+      before do
+        module Test
+          class InvalidName < Dry::Struct
+            attribute :"123", "string"
+            attribute :":", "string"
+            attribute :"with space", "string"
+            attribute :"with-dash", "string"
+          end
+        end
+      end
+
+      it "adds an accessor" do
+        odd_struct = Test::InvalidName.new(
+          "123": "John",
+          ":": "Jane",
+          "with space": "Doe",
+          "with-dash": "Smith"
+        )
+        expect(odd_struct.public_send(:"123")).to eql("John")
+        expect(odd_struct.public_send(:":")).to eql("Jane")
+        expect(odd_struct.public_send("with space")).to eql("Doe")
+        expect(odd_struct.public_send("with-dash")).to eql("Smith")
+      end
+    end
+
     context "inheritance" do
       before do
         class Test::Person < Dry::Struct
