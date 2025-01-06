@@ -12,6 +12,7 @@
 - Missing attribute error now includes the name of the class (issue #170 via #191) (@phillipoertel + @cllns)
 - 3.1 is now the minimum Ruby version (@flash-gordon)
 - `Dry::Struct::Error` is now a subclass of `Dry::Types::CoercionError` (in #193) (@flash-gordon)
+- `Dry::Struct#[]` now returns `nil` if an optional attribute is not set. This is consistent with calling accessor methods for optional attributes. (issue #171 via #194) (@ivleonov + @flash-gordon)
 
 [Compare v1.6.0...v1.7.0](https://github.com/dry-rb/dry-struct/compare/v1.6.0...v1.7.0)
 
