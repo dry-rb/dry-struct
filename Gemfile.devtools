@@ -17,4 +17,8 @@ group :tools do
   gem "rubocop", "~> 1.69.2"
   gem "byebug"
   gem "yard"
+
+  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+    gem "debug"
+  end
 end

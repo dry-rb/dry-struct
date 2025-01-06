@@ -3,7 +3,7 @@
 module Dry
   class Struct
     # Raised when given input doesn't conform schema and constructor type
-    Error = Class.new(TypeError)
+    Error = Class.new(::Dry::Types::CoercionError)
 
     # Raised when defining duplicate attributes
     class RepeatedAttributeError < ::ArgumentError

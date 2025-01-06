@@ -2,10 +2,15 @@
 - version: 1.7.0
   summary:
   date: 2025-01-04
+  fixed:
+  - 'Fixed coercion errors for structs (issue #192 via #193)
+    (@flash-gordon)'
   changed:
   - 'Missing attribute error now includes the name of the class (issue #170 via #191)
     (@phillipoertel + @cllns)'
   - '3.1 is now the minimum Ruby version (@flash-gordon)'
+  - '`Dry::Struct::Error` is now a subclass of `Dry::Types::CoercionError` (in #193)
+    (@flash-gordon)'
 - version: 1.6.0
   date: 2022-11-04
   changed:

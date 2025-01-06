@@ -18,7 +18,7 @@ module Dry
       # @return [Dry::Types::Result]
       def try(input)
         if input.is_a?(Struct)
-          try_struct(input) { super }
+          ::Dry::Types::Result::Success.new(try_struct(input) { return super })
         else
           super
         end
