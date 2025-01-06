@@ -466,18 +466,27 @@ module Dry
       end
       private :build_type
 
+      # @api private
       def define_accessors(keys)
-        keys.each do |key|
-          next if instance_methods.include?(key)
-
-          class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-            def #{key}                      # def email
-              @attributes[#{key.inspect}]   #   @attributes[:email]
-            end                             # end
-          RUBY
+        (keys - instance_methods).each do |key|
+          if valid_method_name?(key)
+            class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+              def #{key}                      # def email
+                @attributes[#{key.inspect}]   #   @attributes[:email]
+              end                             # end
+            RUBY
+          else
+            define_method(key) { @attributes[key] }
+          end
         end
       end
       private :define_accessors
+
+      # @api private
+      def valid_method_name?(key)
+        key.to_s.match?(/\A[a-zA-Z_]\w*\z/)
+      end
+      private :valid_method_name?
     end
   end
 end
