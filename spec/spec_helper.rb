@@ -18,10 +18,12 @@ $VERBOSE = true
 
 require "dry-struct"
 
-begin
-  require "pry"
-  require "pry-byebug"
+%w[debug pry-byebug pry byebug].each do |gem|
+  require gem
 rescue LoadError
+  nil
+else
+  break
 end
 
 Dir[Pathname(__dir__).join("shared/*.rb")].each(&method(:require))
