@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "pp"
+require "pp" # rubocop:disable Lint/RedundantRequireStatement
 
 module Dry
   class Struct
