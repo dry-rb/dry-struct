@@ -356,6 +356,19 @@ RSpec.describe Dry::Struct do
         .with_message("Missing attribute: :name on Test::Task")
     end
 
+    describe "optional attributes" do
+      before do
+        class Test::Task
+          attribute :name?, "string"
+        end
+      end
+
+      it "returns nil if the attribute is not set" do
+        value = Test::Task[user: "Jane"]
+        expect(value[:name]).to be_nil
+      end
+    end
+
     describe "protected methods" do
       before do
         class Test::Task

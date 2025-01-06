@@ -146,7 +146,11 @@ module Dry
     #   rom_n_roda[:subtitle] #=> nil
     def [](name)
       @attributes.fetch(name) do
-        raise MissingAttributeError.new(attribute: name, klass: self.class)
+        if self.class.attribute_names.include?(name)
+          nil
+        else
+          raise MissingAttributeError.new(attribute: name, klass: self.class)
+        end
       end
     end
 
