@@ -11,15 +11,6 @@ module Dry
       include Types::Type
       include Types::Builder
 
-      # @param [Class] klass
-      def inherited(klass)
-        super
-
-        unless klass.name.eql?("Dry::Struct::Value")
-          klass.extend(Core::DescendantsTracker)
-        end
-      end
-
       # Adds an attribute for this {Struct} with given `name` and `type`
       # and modifies {.schema} accordingly.
       #
@@ -189,8 +180,7 @@ module Dry
 
         @attribute_names = nil
 
-        direct_descendants = descendants.select { |d| d.superclass == self }
-        direct_descendants.each do |d|
+        subclasses.each do |d|
           inherited_attrs = new_schema.reject { |k, _| d.has_attribute?(k.to_s.chomp("?").to_sym) }
           d.attributes(inherited_attrs)
         end
