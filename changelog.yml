@@ -1,4 +1,8 @@
 ---
+- version: 1.7.1
+  date: 2025-01-31
+  fixed:
+  - "Syntax errors on 3.3.0 (@flash-gordon, see https://github.com/dry-rb/dry-types/issues/478)"
 - version: 1.7.0
   summary:
   date: 2025-01-06
