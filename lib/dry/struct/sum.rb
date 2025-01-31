@@ -41,9 +41,9 @@ module Dry
       protected
 
       # @private
-      def try_struct(input, &)
+      def try_struct(input, &block)
         left.try_struct(input) do
-          right.try_struct(input, &)
+          right.try_struct(input, &block)
         end
       end
     end

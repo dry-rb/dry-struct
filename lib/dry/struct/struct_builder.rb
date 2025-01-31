@@ -15,7 +15,7 @@ module Dry
       # @param [Dry::Struct,Dry::Types::Type::Array,Undefined] type the superclass
       #                                                        of the nested struct
       # @yield the body of the nested struct
-      def call(attr_name, type, &)
+      def call(attr_name, type, &block)
         const_name = const_name(type, attr_name)
         check_name(const_name)
 
@@ -27,7 +27,7 @@ module Dry
             schema builder.struct.schema.clear
           end
 
-          class_exec(&)
+          class_exec(&block)
         end
 
         struct.const_set(const_name, new_type)

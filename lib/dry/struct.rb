@@ -27,10 +27,10 @@ module Dry
   #   Test = Dry.Struct(expected: Types::String) { schema(schema.strict) }
   #   Test[expected: "foo", unexpected: "bar"]
   #   #=> Dry::Struct::Error: [Test.new] unexpected keys [:unexpected] in Hash input
-  def self.Struct(attributes = Dry::Core::Constants::EMPTY_HASH, &)
+  def self.Struct(attributes = Dry::Core::Constants::EMPTY_HASH, &block)
     Class.new(Dry::Struct) do
       attributes.each { |a, type| attribute a, type }
-      module_eval(&) if block_given?
+      module_eval(&block) if block_given?
     end
   end
 
