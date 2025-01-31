@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   # to update dependencies edit project.yml
   spec.add_dependency "dry-core", "~> 1.1"
-  spec.add_dependency "dry-types", "~> 1.8"
+  spec.add_dependency "dry-types", "~> 1.8", ">= 1.8.2"
   spec.add_dependency "ice_nine", "~> 0.11"
   spec.add_dependency "zeitwerk", "~> 2.6"
 end
