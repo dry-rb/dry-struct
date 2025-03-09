@@ -7,7 +7,8 @@ eval_gemfile "Gemfile.devtools"
 gemspec
 
 group :test do
-  gem "dry-monads"
+  gem "dry-monads", github: "dry-rb/dry-monads"
+  gem "super_diff"
 end
 
 group :benchmarks do
