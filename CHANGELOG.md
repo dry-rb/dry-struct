@@ -7,44 +7,44 @@
 
 - Added super_diff extension for improved struct diffing in RSpec tests (@flash-gordon in #197)
 
-Add this to your Gemfile:
-```ruby
-gem 'super_diff', group: :test
-```
+  Add this to your Gemfile:
+  ```ruby
+  gem 'super_diff', group: :test
+  ```
 
-Then activate the extension in your spec_helper:
-```ruby
-Dry::Struct.load_extensions(:super_diff)
-```
+  Then activate the extension in your spec_helper:
+  ```ruby
+  Dry::Struct.load_extensions(:super_diff)
+  ```
 
-Now this
+  Now this
 
-```ruby
-   expected: #<Test::User name="Jane" age=22>
-        got: #<Test::User name="Jane" age=21>
+  ```ruby
+    expected: #<Test::User name="Jane" age=22>
+          got: #<Test::User name="Jane" age=21>
 
-   (compared using eql?)
+    (compared using eql?)
 
-   Diff:
-   @@ -1 +1 @@
-   -#<Test::User name="Jane" age=22>
-   +#<Test::User name="Jane" age=21>
-```
+    Diff:
+    @@ -1 +1 @@
+    -#<Test::User name="Jane" age=22>
+    +#<Test::User name="Jane" age=21>
+  ```
 
-will become this:
+  will become this:
 
-```ruby
-   expected: #<Test::User name: "Jane", age: 22>
-        got: #<Test::User name: "Jane", age: 21>
+  ```ruby
+    expected: #<Test::User name: "Jane", age: 22>
+          got: #<Test::User name: "Jane", age: 21>
 
-   (compared using eql?)
+    (compared using eql?)
 
-     #<Test::User {
-       name: "Jane",
-   -   age: 22
-   +   age: 21
-     }>
-```
+      #<Test::User {
+        name: "Jane",
+    -   age: 22
+    +   age: 21
+      }>
+  ```
 
 
 [Compare v1.7.1...v1.8.0](https://github.com/dry-rb/dry-struct/compare/v1.7.1...v1.8.0)
