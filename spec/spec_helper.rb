@@ -27,6 +27,11 @@ else
 end
 
 Dir[Pathname(__dir__).join("shared/*.rb")].each(&method(:require))
+
+Warning.ignore(/rspec-expectations/)
+Warning.ignore(/super_diff/)
+Warning.process { raise _1 }
+
 require "dry/types/spec/types"
 
 RSpec.configure do |config|
