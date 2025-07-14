@@ -7,6 +7,7 @@ require "dry/types"
 
 require "dry/struct/class_interface"
 require "dry/struct/errors"
+require "dry/struct/hashify"
 require "dry/struct/version"
 
 module Dry
