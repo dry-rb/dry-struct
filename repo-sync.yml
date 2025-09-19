@@ -1,0 +1,20 @@
+name:
+  gem: dry-struct
+  constant: Dry::Struct
+github_org: dry-rb
+gemspec:
+  authors: ["Hanakai team"]
+  email: ["info@hanakai.org"]
+  summary: "Typed structs and value objects"
+  homepage: "https://dry-rb.org/gems/dry-struct"
+  required_ruby_version: ">= 3.1.0"
+  development_dependencies:
+    - bundler
+    - rake
+    - rspec
+    - yard
+  runtime_dependencies:
+    - [zeitwerk, "~> 2.6"]
+    - [dry-core, "~> 1.1"]
+    - [dry-types, "~> 1.8", ">= 1.8.2"]
+    - [ice_nine, "~> 0.11"]

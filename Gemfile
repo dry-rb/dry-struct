@@ -20,3 +20,7 @@ group :benchmarks do
   gem "sqlite3", platform: :mri
   gem "virtus"
 end
+
+if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
+  gem "debug", group: :tools
+end

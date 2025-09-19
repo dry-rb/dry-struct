@@ -38,7 +38,6 @@ RSpec.configure do |config|
   config.before { stub_const("Test", Module.new) }
 
   config.order = :random
-  config.filter_run_when_matching :focus
 
   config.around :each, :suppress_deprecations do |ex|
     logger = Dry::Core::Deprecations.logger
