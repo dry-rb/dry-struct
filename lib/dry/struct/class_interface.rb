@@ -236,7 +236,7 @@ module Dry
 
       # @param [Hash{Symbol => Object},Dry::Struct] attributes
       # @raise [Struct::Error] if the given attributes don't conform {#schema}
-      def new(attributes = default_attributes, safe = false, &) # rubocop:disable Style/OptionalBooleanParameter
+      def new(attributes = default_attributes, safe = false, &)
         if attributes.is_a?(Struct)
           if equal?(attributes.class)
             attributes
@@ -253,8 +253,8 @@ module Dry
         else
           load(schema.call_unsafe(attributes))
         end
-      rescue Types::CoercionError => e
-        raise Error, "[#{self}.new] #{e}", e.backtrace
+      rescue Types::CoercionError => exception
+        raise Error, "[#{self}.new] #{exception}", exception.backtrace
       end
 
       # @api private
@@ -295,8 +295,8 @@ module Dry
       # @return [Dry::Types::Result]
       def try(input)
         success(self[input])
-      rescue Error => e
-        failure_result = failure(input, e)
+      rescue Error => exception
+        failure_result = failure(input, exception)
         block_given? ? yield(failure_result) : failure_result
       end
 

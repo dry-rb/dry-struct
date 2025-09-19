@@ -206,8 +206,8 @@ module Dry
         resolve_defaults: false
       )
       self.class.load(__attributes__.merge(new_attributes))
-    rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => e
-      raise Error, "[#{self}.new] #{e}"
+    rescue Types::SchemaError, Types::MissingKeyError, Types::UnknownKeysError => exception
+      raise Error, "[#{self}.new] #{exception}"
     end
     alias_method :__new__, :new
 
