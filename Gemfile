@@ -22,5 +22,5 @@ group :benchmarks do
 end
 
 if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.4.0")
-  gem "debug", group: :tools
+  gem "debug", group: :tools, platform: :mri
 end
