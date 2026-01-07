@@ -5,7 +5,7 @@ require "weakref"
 module Dry
   class Struct
     # Class-level interface of {Struct} and {Value}
-    module ClassInterface # rubocop:disable Metrics/ModuleLength
+    module ClassInterface
       include Core::ClassAttributes
 
       include Types::Type
