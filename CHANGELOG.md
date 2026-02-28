@@ -7,6 +7,10 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Changed
+
+- Performance improvements for building a hash from Dry::Struct when it contains nested structs (found by @rpeng in #200)
+
 
 ## [1.8.0] - 2025-03-09
 
