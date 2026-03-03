@@ -11,9 +11,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - Performance improvements for building a hash from Dry::Struct when it contains nested structs (found by @rpeng in #200)
 
+[Unreleased]: https://github.com/dry-rb/dry-struct/compare/v1.8.0...main
 
 ## [1.8.0] - 2025-03-09
-
 
 ### Added
 
@@ -58,21 +58,17 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
       }>
   ```
 
-
-[Compare v1.7.1...v1.8.0](https://github.com/dry-rb/dry-struct/compare/v1.7.1...v1.8.0)
+[1.8.0]: https://github.com/dry-rb/dry-struct/compare/v1.7.1...v1.8.0
 
 ## [1.7.1] - 2025-01-31
-
 
 ### Fixed
 
 - Syntax errors on 3.3.0 (@flash-gordon, see https://github.com/dry-rb/dry-types/issues/478)
 
-
-[Compare v1.7.0...v1.7.1](https://github.com/dry-rb/dry-struct/compare/v1.7.0...v1.7.1)
+[1.7.1]: https://github.com/dry-rb/dry-struct/compare/v1.7.0...v1.7.1
 
 ## [1.7.0] - 2025-01-06
-
 
 ### Fixed
 
@@ -86,48 +82,41 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - `Dry::Struct::Error` is now a subclass of `Dry::Types::CoercionError` (in #193) (@flash-gordon)
 - `Dry::Struct#[]` now returns `nil` if an optional attribute is not set. This is consistent with calling accessor methods for optional attributes. (issue #171 via #194) (@ivleonov + @flash-gordon)
 
-[Compare v1.6.0...v1.7.0](https://github.com/dry-rb/dry-struct/compare/v1.6.0...v1.7.0)
+[1.7.0]: https://github.com/dry-rb/dry-struct/compare/v1.6.0...v1.7.0
 
 ## [1.6.0] - 2022-11-04
-
 
 ### Changed
 
 - This version uses dry-core 1.0 (@flash-gordon + @solnic)
 
-[Compare v1.5.2...v1.6.0](https://github.com/dry-rb/dry-struct/compare/v1.5.2...v1.6.0)
+[1.6.0]: https://github.com/dry-rb/dry-struct/compare/v1.5.2...v1.6.0
 
 ## [1.5.2] - 2022-10-19
-
 
 ### Fixed
 
 - Coercion failures keep the original error instead of just having a string (@flash-gordon + @newx)
 
-
-[Compare v1.5.1...v1.5.2](https://github.com/dry-rb/dry-struct/compare/v1.5.1...v1.5.2)
+[1.5.2]: https://github.com/dry-rb/dry-struct/compare/v1.5.1...v1.5.2
 
 ## [1.5.1] - 2022-10-17
-
 
 ### Fixed
 
 - Fixed issues with auto-loading `Extensions` module (issue #183 fixed via #184) (@solnic)
 
-
-[Compare v1.5.0...v1.5.1](https://github.com/dry-rb/dry-struct/compare/v1.5.0...v1.5.1)
+[1.5.1]: https://github.com/dry-rb/dry-struct/compare/v1.5.0...v1.5.1
 
 ## [1.5.0] - 2022-10-15
-
 
 ### Changed
 
 - Use zeitwerk for auto-loading (@flash-gordon)
 
-[Compare v1.4.0...v1.5.0](https://github.com/dry-rb/dry-struct/compare/v1.4.0...v1.5.0)
+[1.5.0]: https://github.com/dry-rb/dry-struct/compare/v1.4.0...v1.5.0
 
 ## [1.4.0] - 2021-01-21
-
 
 ### Added
 
@@ -144,11 +133,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
   User.new(name: "John", address: nil) # => #<User name="John" address=nil>
   ```
 
-
-[Compare v1.3.0...v1.4.0](https://github.com/dry-rb/dry-struct/compare/v1.3.0...v1.4.0)
+[1.4.0]: https://github.com/dry-rb/dry-struct/compare/v1.3.0...v1.4.0
 
 ## [1.3.0] - 2020-02-10
-
 
 ### Added
 
@@ -198,20 +185,18 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - [internal] metadata is now stored inside schema (@flash-gordon)
 
-[Compare v1.2.0...v1.3.0](https://github.com/dry-rb/dry-struct/compare/v1.2.0...v1.3.0)
+[1.3.0]: https://github.com/dry-rb/dry-struct/compare/v1.2.0...v1.3.0
 
 ## [1.2.0] - 2019-12-20
-
 
 ### Changed
 
 - `Dry::Struct::Value` is deprecated. `Dry::Struct` instances were never meant to be mutable, we have no support for this. The only difference between `Dry::Struct` and `Dry::Struct::Value` is that the latter is deeply frozen. Freezing objects slows the code down and gives you very little benefit in return. If you have a use case for `Value`, it won't be hard to roll your own solution using [ice_nine](https://github.com/dkubb/ice_nine) (flash-gordon)
 - In the thread of the previous change, structs now use immutable equalizer. This means `Struct#hash` memoizes its value after the first invocation. Depending on the case, this may speed up your code significantly (flash-gordon)
 
-[Compare v1.1.1...v1.2.0](https://github.com/dry-rb/dry-struct/compare/v1.1.1...v1.2.0)
+[1.2.0]: https://github.com/dry-rb/dry-struct/compare/v1.1.1...v1.2.0
 
 ## [1.1.1] - 2019-10-13
-
 
 ### Changed
 
@@ -232,20 +217,17 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
   See more examples in the [specs](https://github.com/dry-rb/dry-struct/blob/8112772eb08d22ff2cd3e6997514d79a9b124968/spec/dry/struct/pattern_matching_spec.rb).
 
-[Compare v1.1.0...v1.1.1](https://github.com/dry-rb/dry-struct/compare/v1.1.0...v1.1.1)
+[1.1.1]: https://github.com/dry-rb/dry-struct/compare/v1.1.0...v1.1.1
 
 ## [1.1.0] - 2019-10-07
-
 
 ### Added
 
 - Experimental support for pattern matching :tada: (flash-gordon)
 
-
-[Compare v1.0.0...v1.1.0](https://github.com/dry-rb/dry-struct/compare/v1.0.0...v1.1.0)
+[1.1.0]: https://github.com/dry-rb/dry-struct/compare/v1.0.0...v1.1.0
 
 ## [1.0.0] - 2019-04-23
-
 
 ### Added
 
@@ -260,10 +242,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - `valid?` and `===` behave differently, `===` works the same way `Class#===` does and `valid?` checks if the value _can be_ coerced to the struct (flash-gordon)
 
-[Compare v0.7.0...v1.0.0](https://github.com/dry-rb/dry-struct/compare/v0.7.0...v1.0.0)
+[1.0.0]: https://github.com/dry-rb/dry-struct/compare/v0.7.0...v1.0.0
 
 ## [0.7.0] - 2019-03-22
-
 
 ### Changed
 
@@ -290,10 +271,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - `Dry::Stuct#new` is now more efficient for partial updates (flash-gordon)
 - Ruby 2.3 is EOL and not officially supported. It may work but we don't test it.
 
-[Compare v0.6.0...v0.7.0](https://github.com/dry-rb/dry-struct/compare/v0.6.0...v0.7.0)
+[0.7.0]: https://github.com/dry-rb/dry-struct/compare/v0.6.0...v0.7.0
 
 ## [0.6.0] - 2018-10-24
-
 
 ### Added
 
@@ -315,10 +295,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - [BREAKING] `Struct.attribute?` in the old sense is deprecated, use `has_attribute?` as a replacement
 
-[Compare v0.5.1...v0.6.0](https://github.com/dry-rb/dry-struct/compare/v0.5.1...v0.6.0)
+[0.6.0]: https://github.com/dry-rb/dry-struct/compare/v0.5.1...v0.6.0
 
 ## [0.5.1] - 2018-08-11
-
 
 ### Added
 
@@ -336,11 +315,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - Constant resolution is now restricted to the current module when structs are automatically defined using the block syntax. This shouldn't break any existing code (piktur)
 
-
-[Compare v0.5.0...v0.5.1](https://github.com/dry-rb/dry-struct/compare/v0.5.0...v0.5.1)
+[0.5.1]: https://github.com/dry-rb/dry-struct/compare/v0.5.0...v0.5.1
 
 ## [0.5.0] - 2018-05-03
-
 
 ### Added
 
@@ -397,11 +374,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - Adding a new attribute invalidates `attribute_names` (flash-gordon)
 - Struct classes track subclasses and define attributes in them, now it doesn't matter whether you define attributes first and _then_ subclass or vice versa. Note this can lead to memory leaks in Rails environment when struct classes are reloaded (flash-gordon)
 
-
-[Compare v0.4.0...v0.5.0](https://github.com/dry-rb/dry-struct/compare/v0.4.0...v0.5.0)
+[0.5.0]: https://github.com/dry-rb/dry-struct/compare/v0.4.0...v0.5.0
 
 ## [0.4.0] - 2017-11-04
-
 
 ### Fixed
 
@@ -413,10 +388,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - `Struct#new` uses raw attributes instead of method calls, this makes the behavior consistent with the change above (flash-gordon)
 - `constructor_type` now actively rejects `:weak` and `:symbolized` values (GustavoCaso)
 
-[Compare v0.3.1...v0.4.0](https://github.com/dry-rb/dry-struct/compare/v0.3.1...v0.4.0)
+[0.4.0]: https://github.com/dry-rb/dry-struct/compare/v0.3.1...v0.4.0
 
 ## [0.3.1] - 2017-06-30
-
 
 ### Added
 
@@ -424,11 +398,9 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - `Struct.attribute?` and `Struct.attribute_names` for introspecting struct attributes (flash-gordon)
 - `Struct#__new__` is a safe-to-use-in-gems alias for `Struct#new` (flash-gordon)
 
-
-[Compare v0.3.0...v0.3.1](https://github.com/dry-rb/dry-struct/compare/v0.3.0...v0.3.1)
+[0.3.1]: https://github.com/dry-rb/dry-struct/compare/v0.3.0...v0.3.1
 
 ## [0.3.0] - 2017-05-05
-
 
 ### Added
 
@@ -443,39 +415,33 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 - `.new` without arguments doesn't use nil as an input for non-default types anymore (flash-gordon)
 
-[Compare v0.2.1...v0.3.0](https://github.com/dry-rb/dry-struct/compare/v0.2.1...v0.3.0)
+[0.3.0]: https://github.com/dry-rb/dry-struct/compare/v0.2.1...v0.3.0
 
 ## [0.2.1] - 2017-02-27
-
 
 ### Fixed
 
 - Fixed `Dry::Struct::Value` which appeared to be broken in the last release (flash-gordon)
 
-
-[Compare v0.2.0...v0.2.1](https://github.com/dry-rb/dry-struct/compare/v0.2.0...v0.2.1)
+[0.2.1]: https://github.com/dry-rb/dry-struct/compare/v0.2.0...v0.2.1
 
 ## [0.2.0] - 2016-02-26
-
 
 ### Changed
 
 - Struct attributes can be overridden in a subclass (flash-gordon)
 
-[Compare v0.1.1...v0.2.0](https://github.com/dry-rb/dry-struct/compare/v0.1.1...v0.2.0)
+[0.2.0]: https://github.com/dry-rb/dry-struct/compare/v0.1.1...v0.2.0
 
 ## [0.1.1] - 2016-11-13
-
 
 ### Fixed
 
 - Make `Dry::Struct` act as a constrained type. This fixes the behavior of sum types containing structs (flash-gordon)
 
-
-[Compare v0.1.0...v0.1.1](https://github.com/dry-rb/dry-struct/compare/v0.1.0...v0.1.1)
+[0.1.1]: https://github.com/dry-rb/dry-struct/compare/v0.1.0...v0.1.1
 
 ## [0.1.0] - 2016-09-21
-
 
 ### Added
 
@@ -487,8 +453,10 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 - [BREAKING] `:strict` now raises on unexpected keys (backus)
 - Structs no longer auto-register themselves in the types container as they implement `Type` interface and we don't have to wrap them in `Type::Definition` (flash-gordon)
 
-[Compare v0.0.1...v0.1.0](https://github.com/dry-rb/dry-struct/compare/v0.0.1...v0.1.0)
+[0.1.0]: https://github.com/dry-rb/dry-struct/compare/v0.0.1...v0.1.0
 
 ## [0.0.1] - 2016-07-17
 
 Initial release of code imported from dry-types
+
+[0.0.1]: https://github.com/dry-rb/dry-struct/releases/tag/v0.0.1
