@@ -7,11 +7,27 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ## [Unreleased]
 
+### Added
+
 ### Changed
 
-- Performance improvements for building a hash from Dry::Struct when it contains nested structs (found by @rpeng in #200)
+### Deprecated
 
-[Unreleased]: https://github.com/dry-rb/dry-struct/compare/v1.8.0...main
+### Removed
+
+### Fixed
+
+### Security
+
+[Unreleased]: https://github.com/dry-rb/dry-struct/compare/v1.8.1...main
+
+## [1.8.1] - 2026-03-03
+
+### Changed
+
+- Performance improvements for building a hash from `Dry::Struct` when it contains nested structs. (@katafrakt in #202, identified by @rpeng in #200)
+
+[1.8.1]: https://github.com/dry-rb/dry-struct/compare/v1.8.0...v1.8.1
 
 ## [1.8.0] - 2025-03-09
 
