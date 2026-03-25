@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ice_nine" if RUBY_ENGINE != "ruby"
+
 module Dry
   class Struct
     extend Core::Deprecations[:"dry-struct"]
@@ -24,7 +26,16 @@ module Dry
 
       # @param (see ClassInterface#new)
       # @return [Value]
-      def self.new(*) = ::Ractor.make_shareable(super)
+      def self.new(*)
+        obj = super
+        if defined?(::Ractor)
+          ::Ractor.make_shareable(obj)
+        elsif defined?(::IceNine)
+          ::IceNine.deep_freeze(obj)
+        else
+          obj.freeze
+        end
+      end
     end
 
     deprecate_constant :Value

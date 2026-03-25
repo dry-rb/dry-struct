@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 3.1.0"
 
+  spec.add_runtime_dependency "ice_nine" if RUBY_ENGINE != "ruby"
   spec.add_runtime_dependency "zeitwerk", "~> 2.6"
   spec.add_runtime_dependency "dry-core", "~> 1.1"
   spec.add_runtime_dependency "dry-types", "~> 1.8", ">= 1.8.2"
