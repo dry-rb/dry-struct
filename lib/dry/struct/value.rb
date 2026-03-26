@@ -7,7 +7,7 @@ module Dry
     extend Core::Deprecations[:"dry-struct"]
 
     # {Value} objects behave like {Struct}s but *deeply frozen*
-    # using `Ractor.make_shareable`
+    # using `Ractor.make_shareable` on CRuby, or `IceNine` on other engines
     #
     # @example
     #   class Location < Dry::Struct::Value
