@@ -2,7 +2,7 @@
 
 [actions]: https://github.com/dry-rb/dry-struct/actions
 [chat]: https://discord.gg/naQApPAsZB
-[forum]: https://discourse.hanamirb.org
+[forum]: https://discourse.hanakai.org
 [rubygem]: https://rubygems.org/gems/dry-struct
 
 # dry-struct [![Gem Version](https://badge.fury.io/rb/dry-struct.svg)][rubygem] [![CI Status](https://github.com/dry-rb/dry-struct/workflows/CI/badge.svg)][actions]
