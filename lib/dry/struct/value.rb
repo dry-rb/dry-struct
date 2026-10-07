@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "ice_nine"
+require "ice_nine" if RUBY_ENGINE != "ruby"
 
 module Dry
   class Struct
     extend Core::Deprecations[:"dry-struct"]
 
     # {Value} objects behave like {Struct}s but *deeply frozen*
-    # using [`ice_nine`](https://github.com/dkubb/ice_nine)
+    # using `Ractor.make_shareable` on CRuby, or `IceNine` on other engines
     #
     # @example
     #   class Location < Dry::Struct::Value
@@ -21,15 +21,21 @@ module Dry
     #   loc1.frozen? #=> true
     #   loc2.frozen? #=> true
     #   loc1 == loc2 #=> true
-    #
-    # @see https://github.com/dkubb/ice_nine
     class Value < self
       abstract
 
       # @param (see ClassInterface#new)
       # @return [Value]
-      # @see https://github.com/dkubb/ice_nine
-      def self.new(*) = ::IceNine.deep_freeze(super)
+      def self.new(*)
+        obj = super
+        if defined?(::Ractor)
+          ::Ractor.make_shareable(obj)
+        elsif defined?(::IceNine)
+          ::IceNine.deep_freeze(obj)
+        else
+          obj.freeze
+        end
+      end
     end
 
     deprecate_constant :Value
