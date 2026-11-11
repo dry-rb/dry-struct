@@ -11,6 +11,8 @@ and this project adheres to [Break Versioning](https://www.taoensso.com/break-ve
 
 ### Changed
 
+- Speed up `Dry::Struct#to_h` by reading attributes directly and returning values of core classes (such as strings, numbers, and times) without checking whether they can be converted. (@parndt)
+
 ### Deprecated
 
 ### Removed

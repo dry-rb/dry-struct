@@ -244,6 +244,42 @@ RSpec.describe Dry::Struct do
       expect(value.to_h).to eql(mappable: mappable)
     end
 
+    it "returns values of core classes as they are" do
+      struct = Class.new(Dry::Struct) do
+        attribute :values, Dry::Types["any"]
+      end
+
+      time = Time.now
+      values = ["text", :symbol, 1, 1.5, nil, true, false, time]
+
+      expect(struct.new(values: values).to_h[:values]).to eql(values)
+      expect(struct.new(values: time).to_h[:values]).to be(time)
+    end
+
+    it "converts an instance of a core class's subclass that responds to #to_hash" do
+      struct = Class.new(Dry::Struct) do
+        attribute :value, Dry::Types["any"]
+      end
+
+      string_with_hash = Class.new(String) do
+        def to_hash = {text: to_s}
+      end
+
+      expect(struct.new(value: string_with_hash.new("hi")).to_h).to eql(value: {text: "hi"})
+    end
+
+    it "includes attributes added after it was first called" do
+      struct = Class.new(Dry::Struct) do
+        attribute :name, Dry::Types["string"]
+      end
+
+      expect(struct.new(name: "Jane").to_h).to eql(name: "Jane")
+
+      struct.attribute :age, Dry::Types["integer"]
+
+      expect(struct.new(name: "Jane", age: 21).to_h).to eql(name: "Jane", age: 21)
+    end
+
     context "with omittable keys" do
       it "returns hash with attributes but will not try fetching omittable keys if not set" do
         type = Class.new(Dry::Struct) do

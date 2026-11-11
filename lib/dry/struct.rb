@@ -172,8 +172,8 @@ module Dry
     #   rom_n_roda.to_hash
     #     #=> {title: 'Web Development with ROM and Roda', subtitle: nil}
     def to_h
-      self.class.schema.each_with_object({}) do |key, result|
-        result[key.name] = Hashify[self[key.name]] if attributes.key?(key.name)
+      self.class.attribute_names.each_with_object({}) do |name, result|
+        result[name] = Hashify[@attributes[name]] if @attributes.key?(name)
       end
     end
     # TODO: remove in 2.0
